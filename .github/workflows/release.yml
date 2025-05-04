@@ -1,0 +1,43 @@
+name: Build and (Pre)Release
+
+on:
+  push:
+    branches:
+      - main
+      - develop/**
+
+jobs:
+  tag-release:
+    name: Generate Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create GitHub App Token
+        id: generate-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ vars.APP_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ steps.generate-token.outputs.token }}
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v3.2.1
+        with:
+          versionSpec: '5.12.0'
+      - name: Run GitVersion
+        id: gitversion
+        uses: gittools/actions/gitversion/execute@v3.2.1
+        with:
+          useConfigFile: true
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          token: ${{ steps.generate-token.outputs.token }}
+          tag_name: ${{ steps.gitversion.outputs.semVer }}
+          name: Release ${{ steps.gitversion.outputs.semVer }}
+          generate_release_notes: true
+          prerelease: ${{ contains(steps.gitversion.outputs.semVer, '-') }}
+        
