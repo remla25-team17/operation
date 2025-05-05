@@ -30,7 +30,7 @@ PR's with [NO CODE] are PR's just for readme's, comments, documents or activity.
 
 -- Marina --
 
-Created PR: https://github.com/remla25-team17/model-service/pull/6
+- Created PR: https://github.com/remla25-team17/model-service/pull/6
 - Created PR: https://github.com/remla25-team17/lib-ml/pull/5
 - Created PR: https://github.com/remla25-team17/lib-ml/pull/8
   
@@ -40,7 +40,7 @@ Created PR: https://github.com/remla25-team17/model-service/pull/6
 - Approved PR: https://github.com/remla25-team17/operation/pull/2 [GITVERSIONING]
 - Approved PR: https://github.com/remla25-team17/lib-ml/pull/7 [GITVERSIONING]
 - Approved PR: https://github.com/remla25-team17/lib-version/pull/2 [GITVERSIONING]
-- https://github.com/remla25-team17/model-service/pull/14
+- Approved PR: https://github.com/remla25-team17/model-service/pull/14
 
 
 -- Matteo --
@@ -58,8 +58,8 @@ Created PR: https://github.com/remla25-team17/model-service/pull/6
 - Created PR: https://github.com/remla25-team17/model-training/pull/3
 - Created PR: https://github.com/remla25-team17/model-service/pull/13
 - Created PR: https://github.com/remla25-team17/model-service/pull/11
-- https://github.com/remla25-team17/operation/pull/13 [NO CODE]
-- https://github.com/remla25-team17/model-service/pull/14
+- Created PR: https://github.com/remla25-team17/operation/pull/13 [NO CODE]
+- Created PR: https://github.com/remla25-team17/model-service/pull/14
   
 - Approved PR: https://github.com/remla25-team17/model-service/pull/12
 - Approved PR: https://github.com/remla25-team17/lib-ml/pull/11 [FIX_PRERELEASE]
