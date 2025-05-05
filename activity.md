@@ -40,6 +40,7 @@ Created PR: https://github.com/remla25-team17/model-service/pull/6
 - Approved PR: https://github.com/remla25-team17/operation/pull/2 [GITVERSIONING]
 - Approved PR: https://github.com/remla25-team17/lib-ml/pull/7 [GITVERSIONING]
 - Approved PR: https://github.com/remla25-team17/lib-version/pull/2 [GITVERSIONING]
+- https://github.com/remla25-team17/model-service/pull/14
 
 
 -- Matteo --
