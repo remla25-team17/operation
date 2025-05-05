@@ -58,6 +58,7 @@ Created PR: https://github.com/remla25-team17/model-service/pull/6
 - Created PR: https://github.com/remla25-team17/model-service/pull/13
 - Created PR: https://github.com/remla25-team17/model-service/pull/11
 - https://github.com/remla25-team17/operation/pull/13 [NO CODE]
+- https://github.com/remla25-team17/model-service/pull/14
   
 - Approved PR: https://github.com/remla25-team17/model-service/pull/12
 - Approved PR: https://github.com/remla25-team17/lib-ml/pull/11 [FIX_PRERELEASE]
