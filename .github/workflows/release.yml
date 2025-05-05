@@ -38,6 +38,7 @@ jobs:
           token: ${{ steps.generate-token.outputs.token }}
           tag_name: ${{ steps.gitversion.outputs.semVer }}
           name: Release ${{ steps.gitversion.outputs.semVer }}
+          target_commitish: ${{ github.sha }}
           generate_release_notes: true
           prerelease: ${{ contains(steps.gitversion.outputs.semVer, '-') }}
         
