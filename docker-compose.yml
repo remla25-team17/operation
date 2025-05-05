@@ -9,7 +9,7 @@ services:
     restart: unless-stopped
 
   app:
-    image: ghcr.io/remla25-team17/app:latest
+    image: ghcr.io/remla25-team17/app-service:latest
     container_name: app
     ports:
       - "5000:5000"  
