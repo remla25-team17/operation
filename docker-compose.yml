@@ -6,6 +6,11 @@ services:
     container_name: model-service
     ports:
       - "8080:8080"  
+    volumes:
+      - ./model:/app/model/
+      - ./bag_of-words:/app/bag_of_words/
+    env_file: 
+      - environments/model-service.env
     restart: unless-stopped
 
   app:
@@ -15,6 +20,6 @@ services:
       - "5000:5000"  
     depends_on:
       - model-service
-    environment:
-      - MODEL_SERVICE_URL=http://localhost:8080  # example of linking app to model-service
+    env_file: 
+      - environments/app.env
     restart: unless-stopped
