@@ -4,10 +4,15 @@ PR's with [NO CODE] are PR's just for readme's, comments, documents or activity.
 
 -- Monica: --
 - Created PR: https://github.com/remla25-team17/lib-version/pull/4
-- Created PR: https://github.com/remla25-team17/app/pull/6
+- Created PR: https://github.com/remla25-team17/lib-version/pull/7 [NO CODE]
+- Created PR: https://github.com/remla25-team17/lib-version/pull/6 [NO CODE]
+- - Created PR: https://github.com/remla25-team17/app/pull/6
+- Created PR: https://github.com/remla25-team17/app/pull/11 [FIX]
   
 - Approved PR: https://github.com/remla25-team17/app/pull/1
 - Approved PR: https://github.com/remla25-team17/app/pull/8
+- Approved PR: https://github.com/remla25-team17/app/pull/12
+- Approved PR: https://github.com/remla25-team17/app/pull/13 [NO CODE]
 
 -- Ana: --
 - Created PR: https://github.com/remla25-team17/model-training/pull/2 [GITVERSIONING]
