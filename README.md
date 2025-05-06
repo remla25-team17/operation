@@ -19,7 +19,7 @@ The Docker Compose file defines two main services:
 
 These images are pulled directly from GHCR:
 
-- `ghcr.io/remla25-team17/app:latest`
+- `ghcr.io/remla25-team17/app-service:latest`
 - `ghcr.io/remla25-team17/model-service:latest`
 
 ### 🐳 **How to run:**
