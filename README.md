@@ -26,21 +26,21 @@ operation/
 │   ├── app.env                # App service environment variables
 │   └── model-service.env      # Model service environment variables
 │
+├── model/                     # Directory for machine learning model
+│   └── model.pkl              # Trained sentiment analysis model file
+│
+├── bag_of_words/              # Directory for bag of words model
+│   └── bag_of_words.pkl       # Bag of words vectorizer file
+│
 ├── secrets/                   # Secret files for secure deployment
 │   └── example_secret.txt     # Example secret file
 │
-├── docker-compose.override.yml # Platform-specific settings (linux/arm64, linux/amd64)
 ├── docker-compose.yml         # Main Docker Compose file defining services and networks
 │
 ├── GitVersion.yml             # Configuration for semantic versioning
 ├── README.md                  # This documentation file
 └── LICENSE                    # MIT license file
 ```
-
-### Core files
-
-- `docker-compose.yml`: The main Docker Compose file that defines services, networks, volumes, and secrets configuration.
-- `docker-compose.override.yml`: Extends the main configuration with platform-specific settings (e.g., `linux/arm64` and `linux/amd64`). Kept separate from `docker-compose.yml` to ensure compatibility with Docker Swarm deployment.
 
 ## [🚀 Deployment](#-deployment)
 
@@ -51,16 +51,23 @@ The Docker Compose file defines two main services:
 - `app`: The main Sentiment Analysis frontend application.
 - `model-service`: The machine learning model API that serves predictions.
 
-These images are pulled directly from GHCR:
+The Docker Compose file uses environment variables to specify the images:
 
-- `ghcr.io/remla25-team17/app-service:latest`
-- `ghcr.io/remla25-team17/model-service:latest`
+- `${APP_IMAGE_NAME}:${APP_IMAGE_TAG}` for the app service
+- `${MODEL_IMAGE_NAME}:${MODEL_IMAGE_TAG}` for the model service
 
 ### 🐳 **Docker Compose:**
 
 1️⃣ Make sure you have **Docker and Docker Compose** installed.
 
-2️⃣ Save the `docker-compose.yml` and `docker-compose.override.yml` files (found in this repository).
+2️⃣ Set the required environment variables before running docker compose:
+
+```bash
+export APP_IMAGE_NAME=ghcr.io/remla25-team17/app-service
+export APP_IMAGE_TAG=latest
+export MODEL_IMAGE_NAME=ghcr.io/remla25-team17/model-service
+export MODEL_IMAGE_TAG=latest
+```
 
 3️⃣ Start the services:
 
@@ -72,8 +79,9 @@ This will:
 
 - Pull the latest images (if not already pulled),
 - Run both services together in a single network,
+- Mount the model and bag_of_words directories into the model-service container
 - Expose the following ports by default:
-  - **Model service:** [http://localhost:8080](http://localhost:8080)
+  - **Model service:** internally available through the model-service hostname
   - **App:** [http://localhost:5000](http://localhost:5000)
 
 To run in the background (detached mode):
@@ -88,37 +96,13 @@ To stop the services:
 docker compose down
 ```
 
-💡 _Note: The Docker Compose file uses a custom bridge network to allow `app` to communicate with `model-service` internally without needing any extra configuration._
+💡 _Note: The Docker Compose file connects the app and model-service containers, allowing them to communicate internally without needing any extra configuration._
 
 ### 🔄 **Docker Swarm Deployment**
 
-For production environments or when secure secrets management is required, you can deploy using Docker Swarm mode:
+For production environments or when high availability and better orchestration is required, you can deploy using Docker Swarm mode:
 
-🔧 Step 1: Create a Secret File
-Add a secrets file to the `secrets` directory, e.g., db_password.txt.
-
-```bash
-echo "supersecretpassword" > secrets/db_password.txt
-```
-
-📝 Step 2: Add the Secret to docker-compose.yml
-Add this at the bottom of your docker-compose.yml:
-
-```yaml
-secrets:
-  db_password:
-    file: ./secrets/db_password.txt
-```
-
-Then, inside the `app` or `model-service` section, add:
-
-```yaml
-secrets:
-  - db_password
-```
-
-⚙️ Step 3: Deploy with Docker Swarm
-You must use Swarm mode to use secrets:
+⚙️ Deploy with Docker Swarm:
 
 **1. Initialize Swarm (only once)**
 
@@ -127,37 +111,13 @@ docker swarm init
 ```
 
 **2. Deploy the stack**
-Use a different file name for the stack (e.g., `docker-stack.yml`):
 
 ```bash
 docker stack deploy -c docker-compose.yml mystack
 ```
 
-🧪 Step 5: Test That It Works
-You can exec into the container and check if the secret is mounted:
+**3. Clean Up**
 
-```bash
-docker service ls  # Find container
-docker exec -it <container-id> cat /run/secrets/db_password
-```
-
-Finding the container ID can be done with:
-
-1. List running containers:
-
-```bash
-docker ps
-```
-
-2. Look for a container with a name like:
-
-```php-template
-mystack_model-service.1.<container-id>
-```
-
-You should see: supersecretpassword
-
-🧼 Step 6: Clean Up
 To remove the stack:
 
 ```bash
@@ -170,7 +130,7 @@ To leave Swarm:
 docker swarm leave --force
 ```
 
-💡 _Note: Docker Swarm provides secure secrets management, service replication, and better orchestration for production environments._
+💡 _Note: Docker Swarm provides service replication and better orchestration for production environments._
 
 ---
 

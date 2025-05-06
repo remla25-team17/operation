@@ -2,8 +2,9 @@ version: "3.8"
 
 services:
   model-service:
-    image: ghcr.io/remla25-team17/model-service:latest
+    image: ${MODEL_IMAGE_NAME}:${MODEL_IMAGE_TAG}
     container_name: model-service
+    platform: linux/amd64
     volumes:
       - ./model:/app/model/
       - ./bag_of_words:/app/bag_of_words/
@@ -14,8 +15,9 @@ services:
     restart: unless-stopped
 
   app:
-    image: ghcr.io/remla25-team17/app-service:latest
+    image: ${APP_IMAGE_NAME}:${APP_IMAGE_TAG}
     container_name: app
+    platform: linux/amd64
     ports:
       - "5000:5000"
     depends_on:
