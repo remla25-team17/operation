@@ -10,7 +10,7 @@ This repository contains an overview of the services and deployment procedures f
   - [🔄 Docker Swarm](#-docker-swarm-deployment)
 - [🛠 Application](#-application)
 - [⚙️ GitHub Actions & CI/CD](#️-github-actions--cicd)
-- [Resources](#-resources)
+- [Use of Gen AI](#-gen-ai)
 
 ## [Structure](#structure)
 
@@ -155,10 +155,16 @@ Each of these components works together to deliver an end-to-end sentiment analy
 We use **GitHub Actions** to automate our entire CI/CD pipeline. Key aspects include:
 
 - **Automated builds:** Every push to `main` and `develop` triggers the CI workflow to build the code.
-- **Docker image publishing:** Our workflows build Docker images for both `app` and `model-service` and push them to GHCR under:
-  - `ghcr.io/remla25-team17/app-service:<version>`
-  - `ghcr.io/remla25-team17/model-service:<version>`
 - **Versioning:** We use **GitVersion** to automate semantic versioning based on Git history and branch naming conventions. This ensures:
   - Stable releases for `main`
   - Pre-releases (e.g., `canary` tags) for `develop` and feature branches.
 - **Release automation:** New releases are automatically published to GitHub Releases with changelogs and contributor lists, ensuring traceability.
+
+
+## [Use of Gen AI](#-gen-ai)
+Across this project, we have used GenAI solutions (e.g. ChatGPT, GitHub Copilot) for the following:
+- Generating templates and suggesting content for the READMEs across all the repositories. 
+- The AI was especially helpful in debugging various issues. One place that we used this was for creating the `GitVersion.yml` file across all the repositories. The problem was that the documentation for GitVersion was scattered and outdated in some places and ChatGPT helped in retrieving up-to-date information easily. 
+- Another place that we used AI was in the `release.yml` files. Specifically, there was the issue where we did not understand why the pre-release included the changelog from the main branch but not from the `develop/` one. Hence, ChatGPT suggested to make a deep fetch request and enforce the current commit-sha.
+- Also, we used AI to write the schema specifications for the Flask API in `model-service` and validate this.
+- Lastly, we use AI for understanding various concepts that we have been working on, especially helping us understand the root cause of some issues.
