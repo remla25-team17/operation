@@ -1,6 +1,0 @@
-version: '3.8'
-services:
-  app:
-    platform: linux/amd64
-  model-service:
-    platform: linux/amd64
