@@ -3,7 +3,7 @@ version: "3.8"
 services:
   model-service:
     image: ${MODEL_IMAGE_NAME}:${MODEL_IMAGE_TAG}
-    container_name: model-
+    container_name: model-service
     platform: linux/amd64
     volumes:
       - ./model:/app/model/
