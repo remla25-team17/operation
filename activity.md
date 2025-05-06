@@ -52,7 +52,12 @@ PR's with [NO CODE] are PR's just for readme's, comments, documents or activity.
 
 - Created PR: https://github.com/remla25-team17/app/pull/1
 - Created PR: https://github.com/remla25-team17/app/pull/8
+- Created PR: https://github.com/remla25-team17/app/pull/14
+- Created PR: https://github.com/remla25-team17/app/pull/13 [NO CODE]
+- Created PR: https://github.com/remla25-team17/app/pull/13 [NO CODE]
   
+- Approved PR: https://github.com/remla25-team17/app/pull/6
+- Approved PR: https://github.com/remla25-team17/app/pull/11 [FIX]
 - Approved PR: https://github.com/remla25-team17/lib-ml/pull/11 [FIX_PRERELEASE]
 - Approved PR: https://github.com/remla25-team17/lib-version/pull/5 [FIX_PRERELEASE]
 - Approved PR: https://github.com/remla25-team17/app/pull/3 [GITVERSIONING]
