@@ -1,0 +1,8 @@
+- name: deploy
+  hosts: node-*
+  become: yes
+
+  tasks:
+
+        
+

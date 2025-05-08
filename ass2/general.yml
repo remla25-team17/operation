@@ -1,26 +1,53 @@
-# - hosts: all
-#   tasks:
-#     - name: install docker
-#       ansible.builtin.apt:
-#         name: docker.io
-#         state: present
-#     - name: start docker service
-#       ansible.builtin.service:
-#         name: docker
-#         state: started
-#     - name: add nginx 
-#       ansible.builtin.apt:
-#         name: nginx
-#         state: present
+- name: deploy
+  hosts: all
+  become: yes
 
-#     - name: copy ssh key file
-#       ansible.builtin.copy:
-#         src: "key_jordy"
-#         dest: "/keys"
-#         mode: "0644"
+  tasks:
 
-#     - name: Set authorized key taken from file
-#       ansible.builtin.authorized_key:
-#         user: Jordy
-#         state: present
-#         key: "{{ lookup('file', '/keys/key_jordy') }}"
+    - name: Add Jordy's GitHub key
+      ansible.posix.authorized_key:
+        user: vagrant
+        state: present
+        key: "{{ lookup('url', 'https://github.com/jofeltje2.keys', split_lines=False) }}"
+
+    - name: Add Ana's GitHub key
+      ansible.posix.authorized_key:
+        user: vagrant
+        state: present
+        key: "{{ lookup('url', 'https://github.com/anaterna.keys', split_lines=False) }}"
+
+    - name: Add Marina's GitHub key
+      ansible.posix.authorized_key:
+        user: vagrant
+        state: present
+        key: "{{ lookup('url', 'https://github.com/mescribano23.keys', split_lines=False) }}"
+
+    - name: Add Matteo's GitHub key
+      ansible.posix.authorized_key:
+        user: vagrant
+        state: present
+        key: "{{ lookup('url', 'https://github.com/mfregonara.keys', split_lines=False) }}"
+
+    - name: Add Monica's GitHub key
+      ansible.posix.authorized_key:
+        user: vagrant
+        state: present
+        key: "{{ lookup('url', 'https://github.com/monica-paun.keys', split_lines=False) }}"
+
+    - name: disable swap
+      ansible.builtin.shell:
+        cmd: swapoff -a
+
+    - name: remove swap
+      ansible.builtin.lineinfile:
+        path: /etc/fstab
+        regexp: '^/swap.img'
+        state: absent
+
+    
+
+
+
+
+        
+
