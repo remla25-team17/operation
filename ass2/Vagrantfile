@@ -122,6 +122,12 @@ Vagrant.configure("2") do |config|
   # Define your base box
   config.vm.box = "bento/ubuntu-24.04"
 
+  config.ssh.insert_key = false
+
+
+
+  
+
   # # Disable automatic key insertion to use your own key
   # config.ssh.insert_key = false
 
@@ -132,8 +138,22 @@ Vagrant.configure("2") do |config|
   config.vm.define "ctrl" do |ctrl|
     ctrl.vm.hostname = "ctrl"
     ctrl.vm.network "private_network", ip: "192.168.56.100"
+
+    public_key = File.read(File.expand_path("~/vagrant_ssh/vagrant_id_rsa.pub")).strip
+    ctrl.vm.provision "shell", privileged: false, inline: <<-SHELL
+      mkdir -p /home/vagrant/.ssh
+      echo "#{public_key}" >> /home/vagrant/.ssh/authorized_keys
+      chmod 700 /home/vagrant/.ssh
+      chmod 600 /home/vagrant/.ssh/authorized_keys
+      chown -R vagrant:vagrant /home/vagrant/.ssh
+    SHELL
+    #provisioning ansible
     ctrl.vm.provision "ansible" do |ansible|
       ansible.playbook = "ctrl.yml"
+      #ansible.inventory_path = "inventory.cfg"
+      ansible.extra_vars = {
+        ansible_ssh_private_key_file: "~/vagrant_ssh/vagrant_id_rsa"
+      }
     end
 
     # ctrl.vm.provision "shell", inline: <<-SHELL
@@ -145,20 +165,21 @@ Vagrant.configure("2") do |config|
     # SHEL
   end
 
-  # Define worker nodes
-  (1..2).each do |i|
-    config.vm.define "node-#{i}" do |node|
-      node.vm.hostname = "node-#{i}"
-      node.vm.network "private_network", ip: "192.168.56.#{100 + i}"
-      node.vm.provision "ansible" do |ansible|
-        ansible.playbook = "node.yml" 
-      # node.vm.provision "shell", inline: <<-SHELL
-      #   mkdir -p /home/vagrant/.ssh
-      #   echo "#{ssh_pub_key}" >> /home/vagrant/.ssh/authorized_keys
-      #   chown -R vagrant:vagrant /home/vagrant/.ssh
-      #   chmod 700 /home/vagrant/.ssh
-      #   chmod 600 /home/vagrant/.ssh/authorized_keys
-      # SHELL
-    end
-  end
+  # # Define worker nodes
+  # (1..2).each do |i|
+  #   config.vm.define "node-#{i}" do |node|
+  #     node.vm.hostname = "node-#{i}"
+  #     node.vm.network "private_network", ip: "192.168.56.#{100 + i}"
+  #     # node.vm.provision "ansible" do |ansible|
+  #     #   ansible.playbook = "node.yml" 
+  #     # end
+  #     # node.vm.provision "shell", inline: <<-SHELL
+  #     #   mkdir -p /home/vagrant/.ssh
+  #     #   echo "#{ssh_pub_key}" >> /home/vagrant/.ssh/authorized_keys
+  #     #   chown -R vagrant:vagrant /home/vagrant/.ssh
+  #     #   chmod 700 /home/vagrant/.ssh
+  #     #   chmod 600 /home/vagrant/.ssh/authorized_keys
+  #     # SHELL
+  #   end
+  # end
 end
