@@ -44,6 +44,31 @@
         regexp: '^/swap.img'
         state: absent
 
+    - name: br_netfilter_k8s_conf
+      ansible.builtin.shell:
+        cmd: touch /etc/modules-load.d/k8s.conf
+
+    - name: br_netfilter_copy_module_overlay
+      ansible.builtin.shell:
+        cmd: echo 'overlay' > /etc/modules-load.d/k8s.conf
+
+    - name: br_netfilter_copy_modules_br_netfilter
+      ansible.builtin.shell:
+        cmd: echo 'br_netfilter' > /etc/modules-load.d/k8s.conf
+
+    - name: load module br_netfilter
+      ansible.builtin.shell:
+        cmd: modprobe br_netfilter
+
+    - name: load module overlay
+      ansible.builtin.shell:
+        cmd: modprobe overlay
+
+
+
+
+
+
     
 
 

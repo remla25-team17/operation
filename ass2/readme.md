@@ -34,6 +34,11 @@ chmod +x run.bash
 ```
 
 After changing ansible playbooks, you can run "vagrant provision" to apply the changes to the vms.
+
+```bash
+vagrant provision
+```
+
 If you however change the vagrantfile and you change something else than the something.vm.provision, then you have to destroy the vms and run the run.bash script or run "vagrant up" again.
 
 Since for destroying we need to confirm destroying each vm, we have a destroy.bash that forces the destruction of all the VMs without confirmation.
