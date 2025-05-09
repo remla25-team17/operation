@@ -1,0 +1,10 @@
+- name: deploy
+  hosts: ctrl
+  become: yes
+
+  tasks:
+
+
+
+        
+

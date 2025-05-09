@@ -1,0 +1,93 @@
+num_workers = 2
+
+#create hosts string based on the number of workers
+hosts = ""
+hosts = hosts + "192.168.56.100 ctrl\n"
+(1..num_workers).each do |i|
+  hosts = hosts + "192.168.56.#{100 + i} node-#{i}\n"
+end
+
+public_key = File.read(File.expand_path(File.join(Dir.home, "vagrant_ssh", "vagrant_id_rsa.pub"))).strip
+
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "bento/ubuntu-24.04" #base box
+
+  config.ssh.insert_key = false #disable automatic key insertion
+
+
+  config.vm.define "ctrl" do |ctrl| #controller vm
+    ctrl.vm.hostname = "ctrl"
+    ctrl.vm.network "private_network", ip: "192.168.56.100"
+
+    ctrl.vm.provider "virtualbox" do |vb|
+      vb.memory = 4096
+      vb.cpus = 1
+    end
+
+    ctrl.vm.provision "shell", privileged: false, inline: <<-SHELL
+      mkdir -p /home/vagrant/.ssh
+      echo "#{public_key}" >> /home/vagrant/.ssh/authorized_keys
+      chmod 700 /home/vagrant/.ssh
+      chmod 600 /home/vagrant/.ssh/authorized_keys
+      chown -R vagrant:vagrant /home/vagrant/.ssh
+    SHELL
+    #provisioning ansible
+    ctrl.vm.provision "ansible" do |ansible|
+      ansible.playbook = "general.yml" #playbook
+      #ansible.inventory_path = "inventory.cfg"
+      ansible.extra_vars = {
+        ansible_ssh_private_key_file: "~/vagrant_ssh/vagrant_id_rsa", #ssh key to use
+        ansible_hosts: hosts
+      }
+    end
+
+    ctrl.vm.provision "ansible" do |ansible|
+      ansible.playbook = "ctrl.yml" #playbook
+      #ansible.inventory_path = "inventory.cfg"
+      ansible.extra_vars = {
+        ansible_ssh_private_key_file: "~/vagrant_ssh/vagrant_id_rsa" #ssh key to use
+      }
+    
+    end
+
+  end
+
+  # Define worker nodes
+  (1..num_workers).each do |i|
+    config.vm.define "node-#{i}" do |node|
+      node.vm.hostname = "node-#{i}"
+      node.vm.network "private_network", ip: "192.168.56.#{100 + i}"
+
+      node.vm.provider "virtualbox" do |vb|
+        vb.memory = 6144
+        vb.cpus = 2
+      end
+      
+
+      node.vm.provision "shell", privileged: false, inline: <<-SHELL
+        mkdir -p /home/vagrant/.ssh
+        echo "#{public_key}" >> /home/vagrant/.ssh/authorized_keys
+        chmod 700 /home/vagrant/.ssh
+        chmod 600 /home/vagrant/.ssh/authorized_keys
+        chown -R vagrant:vagrant /home/vagrant/.ssh
+      SHELL
+
+      node.vm.provision "ansible" do |ansible|
+        ansible.playbook = "general.yml" 
+        #ansible.inventory_path = "inventory.cfg"
+        ansible.extra_vars = {
+          ansible_ssh_private_key_file: "~/vagrant_ssh/vagrant_id_rsa", #ssh key to use
+          ansible_hosts: hosts
+        }
+      end
+      node.vm.provision "ansible" do |ansible|
+        ansible.playbook = "node.yml"
+        #ansible.inventory_path = "inventory.cfg"
+        ansible.extra_vars = {
+          ansible_ssh_private_key_file: "~/vagrant_ssh/vagrant_id_rsa" #ssh key to use
+        }
+      end
+    end
+  end
+end

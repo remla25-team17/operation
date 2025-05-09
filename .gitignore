@@ -1,3 +1,13 @@
+ass2/ssh
+ass2/.vagrant
+model
+
+
+
+
+
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -171,3 +181,4 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
