@@ -100,10 +100,28 @@
         - kubectl=1.32.4-1.1
 
     #Step 11: Configure containerd
-    - name: Create containerd config
+    - name: Create containerd service
       ansible.builtin.service:
         name: containerd
         state: started
+
+    - name: Ensure /etc/containerd exists
+      ansible.builtin.file:
+        path: /etc/containerd
+        state: directory
+        mode: '0755'
+
+    - name: Get default containerd config
+      ansible.builtin.command: containerd config default
+      register: containerd_config
+      changed_when: false  
+
+    - name: Create /etc/containerd/config.toml if not exists
+      ansible.builtin.copy:
+        content: "{{ containerd_config.stdout }}"
+        dest: /etc/containerd/config.toml
+        force: no  
+        mode: '0644'
 
     - name: Disable apparmor in containerd
       ansible.builtin.lineinfile:
