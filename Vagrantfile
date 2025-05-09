@@ -10,15 +10,22 @@ num_workers = 2
 public_key = File.read(File.expand_path(File.join(Dir.home, "vagrant_ssh", "vagrant_id_rsa.pub"))).strip
 
 # Generate inventory.cfg dynamically
-hosts = "[ctrl]\n192.168.56.100\n\n[workers]\n"
+inventory = "[ctrl]\n192.168.56.100\n\n[workers]\n"
 (1..num_workers).each do |i|
-  hosts += "192.168.56.#{100 + i}\n"
+  inventory += "192.168.56.#{100 + i}\n"
 end
-hosts += "\n[all:children]\nctrl\nworkers\n"
+inventory += "\n[all:children]\nctrl\nworkers\n"
 
 # Write inventory.cfg to file
 File.open("provisioning/inventory.cfg", "w") do |file|
-  file.write(hosts)
+  file.write(inventory)
+end
+
+# Create hosts string based on the number of workers
+hosts = ""
+hosts = hosts + "192.168.56.100 ctrl\n"
+(1..num_workers).each do |i|
+  hosts = hosts + "192.168.56.#{100 + i} node-#{i}\n"
 end
 
 Vagrant.configure("2") do |config|
@@ -45,8 +52,8 @@ Vagrant.configure("2") do |config|
 
     #provisioning ansible
     ctrl.vm.provision "ansible" do |ansible|
+      ansible.compatibility_mode = "2.0"
       ansible.playbook = "provisioning/general.yml" #playbook
-      # ansible.inventory_path = "provisioning/inventory.cfg"
       ansible.extra_vars = {
         ansible_ssh_private_key_file: "~/vagrant_ssh/vagrant_id_rsa", #ssh key to use
         ansible_hosts: hosts,
@@ -55,8 +62,8 @@ Vagrant.configure("2") do |config|
     end
 
     ctrl.vm.provision "ansible" do |ansible|
+      ansible.compatibility_mode = "2.0"
       ansible.playbook = "provisioning/ctrl.yml" #playbook
-      # ansible.inventory_path = "provisioning/inventory.cfg"
       ansible.extra_vars = {
         ansible_ssh_private_key_file: "~/vagrant_ssh/vagrant_id_rsa" #ssh key to use
       }
@@ -83,8 +90,8 @@ Vagrant.configure("2") do |config|
       SHELL
 
       node.vm.provision "ansible" do |ansible|
+        ansible.compatibility_mode = "2.0"
         ansible.playbook = "provisioning/general.yml"
-        # ansible.inventory_path = "provisioning/inventory.cfg"
         ansible.extra_vars = {
           ansible_ssh_private_key_file: "~/vagrant_ssh/vagrant_id_rsa", #ssh key to use
           ansible_hosts: hosts,
@@ -94,7 +101,6 @@ Vagrant.configure("2") do |config|
       node.vm.provision "ansible" do |ansible|
         ansible.compatibility_mode = "2.0"
         ansible.playbook = "provisioning/node.yml"
-        # ansible.inventory_path = "provisioning/inventory.cfg"
         ansible.extra_vars = {
           ansible_ssh_private_key_file: "~/vagrant_ssh/vagrant_id_rsa" #ssh key to use
         }
