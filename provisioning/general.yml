@@ -1,0 +1,108 @@
+- name: deploy
+  hosts: all
+  become: yes
+
+  tasks:
+
+    - name: Add authorized keys
+      ansible.posix.authorized_key:
+        user: vagrant
+        state: present
+        key: "{{ lookup('file', item) }}"
+      with_items:
+        - ../public-keys/id_ed25519_ana.pub
+        - ../public-keys/id_ed25519_jordy.pub
+        - ../public-keys/id_ed25519_marina.pub
+        - ../public-keys/id_ed25519_matteo.pub
+        - ../public-keys/id_ed25519_monica.pub
+
+    - name: disable swap
+      ansible.builtin.shell:
+        cmd: swapoff -a
+
+    - name: remove swap
+      ansible.builtin.lineinfile:
+        path: /etc/fstab
+        regexp: '^/swap.img'
+        state: absent
+
+    - name: br_netfilter_k8s_conf
+      ansible.builtin.shell:
+        cmd: touch /etc/modules-load.d/k8s.conf
+
+    - name: br_netfilter_copy_module_overlay
+      ansible.builtin.shell:
+        cmd: echo 'overlay' > /etc/modules-load.d/k8s.conf
+
+    - name: br_netfilter_copy_modules_br_netfilter
+      ansible.builtin.shell:
+        cmd: echo 'br_netfilter' > /etc/modules-load.d/k8s.conf
+
+    - name: load module br_netfilter
+      ansible.builtin.shell:
+        cmd: modprobe br_netfilter
+
+    - name: load module overlay
+      ansible.builtin.shell:
+        cmd: modprobe overlay
+
+    - name: enable ip forwarding
+      ansible.posix.sysctl:
+        name: net.ipv4.ip_forward
+        value: '1'
+        sysctl_set: true
+        state: present
+        reload: true
+
+    - name: enable bridge-nf-call-iptables
+      ansible.posix.sysctl:
+        name: net.bridge.bridge-nf-call-iptables
+        value: '1'
+        sysctl_set: true
+        state: present
+        reload: true
+
+    - name: enable bridge-nf-call-ip6tables
+      ansible.posix.sysctl:
+        name: net.bridge.bridge-nf-call-ip6tables
+        value: '1'
+        sysctl_set: true
+        state: present
+        reload: true
+
+    - name: add hosts to /etc/hosts
+      ansible.builtin.blockinfile:
+        path: /etc/hosts
+        block: '{{ ansible_hosts }}'
+
+    - name: Add an Apt signing key, uses whichever key is at the URL
+      ansible.builtin.apt_key:
+        url: https://pkgs.k8s.io/core:/stable:/v1.32/deb/Release.key
+        keyring: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+        state: present
+
+    - name: Add the Kubernetes apt repository
+      ansible.builtin.apt_repository:
+        repo: deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.32/deb/ /
+
+    - name: update apt cache for kubernetes
+      ansible.builtin.apt:
+        update_cache: yes
+        
+
+    
+
+
+
+
+
+
+
+
+    
+
+
+
+
+        
+
