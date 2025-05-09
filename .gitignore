@@ -1,12 +1,6 @@
-ass2/ssh
-ass2/.vagrant
+ssh
+.vagrant
 model
-
-
-
-
-
-
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

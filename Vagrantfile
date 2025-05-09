@@ -46,7 +46,7 @@ Vagrant.configure("2") do |config|
     #provisioning ansible
     ctrl.vm.provision "ansible" do |ansible|
       ansible.playbook = "provisioning/general.yml" #playbook
-      ansible.inventory_path = "provisioning/inventory.cfg"
+      # ansible.inventory_path = "provisioning/inventory.cfg"
       ansible.extra_vars = {
         ansible_ssh_private_key_file: "~/vagrant_ssh/vagrant_id_rsa", #ssh key to use
         ansible_hosts: hosts,
@@ -56,7 +56,7 @@ Vagrant.configure("2") do |config|
 
     ctrl.vm.provision "ansible" do |ansible|
       ansible.playbook = "provisioning/ctrl.yml" #playbook
-      ansible.inventory_path = "provisioning/inventory.cfg"
+      # ansible.inventory_path = "provisioning/inventory.cfg"
       ansible.extra_vars = {
         ansible_ssh_private_key_file: "~/vagrant_ssh/vagrant_id_rsa" #ssh key to use
       }
@@ -84,7 +84,7 @@ Vagrant.configure("2") do |config|
 
       node.vm.provision "ansible" do |ansible|
         ansible.playbook = "provisioning/general.yml"
-        ansible.inventory_path = "provisioning/inventory.cfg"
+        # ansible.inventory_path = "provisioning/inventory.cfg"
         ansible.extra_vars = {
           ansible_ssh_private_key_file: "~/vagrant_ssh/vagrant_id_rsa", #ssh key to use
           ansible_hosts: hosts,
@@ -94,7 +94,7 @@ Vagrant.configure("2") do |config|
       node.vm.provision "ansible" do |ansible|
         ansible.compatibility_mode = "2.0"
         ansible.playbook = "provisioning/node.yml"
-        ansible.inventory_path = "provisioning/inventory.cfg"
+        # ansible.inventory_path = "provisioning/inventory.cfg"
         ansible.extra_vars = {
           ansible_ssh_private_key_file: "~/vagrant_ssh/vagrant_id_rsa" #ssh key to use
         }
