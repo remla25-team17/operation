@@ -99,3 +99,40 @@
         - kubeadm=1.32.4-1.1
         - kubectl=1.32.4-1.1
 
+    #Step 11: Configure containerd
+    - name: Create containerd config
+      ansible.builtin.service:
+        name: containerd
+        state: started
+
+    - name: Disable apparmor in containerd
+      ansible.builtin.lineinfile:
+        path: /etc/containerd/config.toml
+        regexp: 'disable_apparmor =.*'
+        line: 'disable_apparmor = true'
+
+    - name: Update sandbox_image in containerd
+      ansible.builtin.lineinfile:
+        path: /etc/containerd/config.toml
+        regexp: 'sandbox_image =.*'
+        line: 'sandbox_image = "registry.k8s.io/pause:3.10"'
+
+    - name: Set SystemdCgroup to true in containerd
+      ansible.builtin.lineinfile:
+        path: /etc/containerd/config.toml
+        regexp: 'SystemdCgroup =.*'
+        line: 'SystemdCgroup = true'
+
+    - name: Restart containerd
+      ansible.builtin.service:
+        name: containerd
+        state: restarted
+
+    # Step 12: Start kubelet
+    - name: Start kubelet
+      ansible.builtin.systemd:
+        name: kubelet
+        state: started
+        enabled: true
+
+
