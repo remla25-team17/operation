@@ -328,7 +328,7 @@ kubectl version --client
 
 It should show containerd is version 1.7.24, runc version 1.1.12 and kubelet, kubeadm and kubectl version 1.32.4.
 
-### Containerd Configuration
+### Containerd Configuration (Step 11)
 
 Verify containerd is running with the correct configuration:
 
@@ -348,7 +348,7 @@ sudo cat /etc/containerd/config.toml | grep -E 'SystemdCgroup|disable_apparmor|s
 
 Output should show `disable_apparmor = true`, `sandbox_image = "registry.k8s.io/pause:3.10"` and `SystemdCgroup = true`.
 
-### Kubelet Status
+### Kubelet Status (Step 12)
 
 Check that kubelet service is running:
 
