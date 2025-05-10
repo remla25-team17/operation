@@ -8,8 +8,10 @@ This repository contains an overview of the services and deployment procedures f
 - [🚀 Deployment](#-deployment)
   - [🐳 Docker Compose](#-docker-compose)
   - [🔄 Docker Swarm](#-docker-swarm-deployment)
+  - [☸️ Kubernetes via Vagrant](#️-kubernetes-via-vagrant)
 - [🛠 Application](#-application)
 - [⚙️ GitHub Actions & CI/CD](#️-github-actions--cicd)
+- [🧪 Testing Kubernetes Configuration](#-testing-kubernetes-configuration)
 - [Use of Gen AI](#-gen-ai)
 
 ## [Structure](#structure)
@@ -32,10 +34,23 @@ operation/
 ├── bag_of_words/              # Directory for bag of words model
 │   └── bag_of_words.pkl       # Bag of words vectorizer file
 │
+├── provisioning/              # Ansible playbooks for K8s configuration
+│   ├── ansible.cfg            # Ansible configuration
+│   ├── ctrl.yml               # Controller node configuration
+│   ├── general.yml            # General node configuration
+│   ├── inventory.cfg          # Node inventory file
+│   └── node.yml               # Worker node configuration
+│
+├── public-keys/               # SSH public keys for VM access
+│
 ├── secrets/                   # Secret files for secure deployment
 │   └── example_secret.txt     # Example secret file
 │
 ├── docker-compose.yml         # Main Docker Compose file defining services and networks
+├── Vagrantfile                # VM provisioning for Kubernetes cluster
+├── run.bash                   # Script to set up SSH keys and start VMs
+├── generate_key.bash          # Script to generate SSH keys
+├── destroy.bash               # Script to tear down VMs
 │
 ├── GitVersion.yml             # Configuration for semantic versioning
 ├── README.md                  # This documentation file
@@ -132,7 +147,58 @@ docker swarm leave --force
 
 💡 _Note: Docker Swarm provides service replication and better orchestration for production environments._
 
----
+### ☸️ **Kubernetes via Vagrant**
+
+For advanced deployment with Kubernetes, we've set up an automated provisioning system using Vagrant and Ansible:
+
+**1. Generate SSH Key**
+
+First, generate the SSH key pair needed for the VM setup:
+
+```bash
+./generate_key.bash
+```
+
+If you encounter a "permission denied" error, make the script executable:
+```bash
+chmod +x generate_key.bash
+```
+
+**2. Deploy the Kubernetes Cluster**
+
+Run the deployment script to set up the VMs and provision them:
+
+```bash
+./run.bash
+```
+
+This script will:
+- Copy your SSH key to the appropriate location
+- Set correct permissions
+- Start up a 3-node cluster (1 control plane + 2 worker nodes) using Vagrant
+
+If you need to make the script executable:
+```bash
+chmod +x run.bash
+```
+
+**3. Updating Configurations**
+
+After changing Ansible playbooks, you can apply the changes without recreating VMs:
+
+```bash
+vagrant provision
+```
+
+**4. Tear Down the Cluster**
+
+To destroy the VMs when done:
+
+```bash
+./destroy.bash
+```
+
+💡 _Note: The Kubernetes cluster consists of one control node (192.168.56.100) and two worker nodes (192.168.56.101, 192.168.56.102), all provisioned with the necessary Kubernetes components and configured with SSH access._
 
 ## [🛠 Application](#-application)
 
@@ -160,6 +226,142 @@ We use **GitHub Actions** to automate our entire CI/CD pipeline. Key aspects inc
   - Pre-releases (e.g., `canary` tags) for `develop` and feature branches.
 - **Release automation:** New releases are automatically published to GitHub Releases with changelogs and contributor lists, ensuring traceability.
 
+## [🧪 Testing Kubernetes Configuration](#-testing-kubernetes-configuration)
+
+To start Vagrant run:
+
+```bash
+vagrant up 
+```
+
+This will create the virtual machines: ctrl, node-1 and node-2.
+
+### Verify the nodes are accessible 
+
+1. Through the private network:
+```bash
+vagrant ssh ctrl
+ping 192.168.56.100
+```
+
+2. Through the public network:
+```bash
+vagrant ssh ctrl
+ping google.com
+```
+
+### Swap Disabled (Step 5)
+
+Kubernetes requires swap to be disabled. Verify with:
+
+```bash
+vagrant ssh ctrl
+swapon --show
+```
+
+This should return empty output, indicating no swap is enabled.
+
+### Kernel Modules (Step 6)
+
+Verify that required kernel modules are loaded:
+
+```bash
+vagrant ssh ctrl
+cat /etc/modules-load.d/k8s.conf
+```
+
+Both modules should appear in the output.
+
+### IP Forwarding (Step 7)
+
+Confirm IP forwarding is enabled:
+
+```bash
+vagrant ssh ctrl
+sysctl net.ipv4.ip_forward
+sysctl net.bridge.bridge-nf-call-iptables
+sysctl net.bridge.bridge-nf-call-ip6tables
+```
+
+Output should be 
+```bash
+net.ipv4.ip_forward=1
+net.bridge.bridge-nf-call-iptables=1
+net.bridge.bridge-nf-call-ip6tables=1
+```
+
+### Host Entries (Step 8)
+
+Check that the hosts file contains all node entries:
+
+```bash
+vagrant ssh ctrl
+cat /etc/hosts
+```
+
+You should see entries for the control node and worker nodes.
+
+### APT repository and key (Step 9)
+
+Check the repository is under:
+```bash
+/etc/apt/sources.list.d/
+```
+
+And the key is shown with:
+```bash
+apt-key list | grep -i kubernetes
+```
+
+### Kubernetes Packages (Step 10)
+
+Verify Kubernetes components are properly installed:
+
+```bash
+vagrant ssh ctrl
+containerd --version
+runc --version
+kubelet --version
+kubeadm version
+kubectl version --client
+```
+
+It should show containerd is version 1.7.24, runc version 1.1.12 and kubelet, kubeadm and kubectl version 1.32.4.
+
+### Containerd Configuration (Step 11)
+
+Verify containerd is running with the correct configuration:
+
+```bash
+vagrant ssh ctrl
+systemctl status containerd
+```
+
+Status should be "active (running)".
+
+To verify specific containerd settings:
+
+```bash
+vagrant ssh ctrl
+sudo cat /etc/containerd/config.toml | grep -E 'SystemdCgroup|disable_apparmor|sandbox_image'
+```
+
+Output should show `disable_apparmor = true`, `sandbox_image = "registry.k8s.io/pause:3.10"` and `SystemdCgroup = true`.
+
+### Kubelet Status (Step 12)
+
+Check that kubelet service is running:
+
+```bash
+vagrant ssh ctrl
+systemctl status kubelet
+```
+
+Status should be "active (running)" if you're on the control node. On worker nodes, it might show "activating" until the node joins the cluster.
+
+💡 _Replace `ctrl` with `node-1` or `node-2` to test different nodes in your cluster._
+
+To leave the node perform `ctrl+d` and destroy Vagrant using `vagrant destroy -f`
 
 ## [Use of Gen AI](#-gen-ai)
 Across this project, we have used GenAI solutions (e.g. ChatGPT, GitHub Copilot) for the following:

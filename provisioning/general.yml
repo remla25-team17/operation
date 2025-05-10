@@ -1,0 +1,154 @@
+- name: deploy
+  hosts: all
+  become: yes
+
+  tasks:
+
+    # Add the public keys to the authorized keys 
+    - name: Add authorized keys
+      ansible.posix.authorized_key:
+        user: vagrant
+        state: present
+        key: "{{ lookup('file', item) }}"
+      with_items:
+        - ../public-keys/id_ed25519_ana.pub
+        - ../public-keys/id_ed25519_jordy.pub
+        - ../public-keys/id_ed25519_marina.pub
+        - ../public-keys/id_ed25519_matteo.pub
+        - ../public-keys/id_ed25519_monica.pub
+
+    # Step 5: Disable swap
+    - name: disable swap
+      ansible.builtin.shell:
+        cmd: swapoff -a
+
+    - name: remove swap
+      ansible.builtin.lineinfile:
+        path: /etc/fstab
+        regexp: '^.*swap.*$'
+        state: absent
+
+    # Step 6: Set up kernel modules for Kubernetes
+    - name: Create /etc/modules-load.d/k8s.conf
+      ansible.builtin.file:
+        path: /etc/modules-load.d/k8s.conf
+        state: touch
+
+    - name: Add required modules to k8s.conf
+      ansible.builtin.lineinfile:
+        path: /etc/modules-load.d/k8s.conf
+        line: "{{ item }}"
+        state: present
+      loop:
+        - overlay
+        - br_netfilter
+
+    - name: Load required modules
+      ansible.builtin.modprobe:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - overlay
+        - br_netfilter
+
+    # Step 7: Enable IPv4 forwarding
+    - name: enable ip forwarding
+      ansible.posix.sysctl:
+        name: '{{ item }}'
+        value: '1'
+        sysctl_set: true
+        state: present
+        reload: true
+      loop:
+        - net.ipv4.ip_forward
+        - net.bridge.bridge-nf-call-ip6tables
+        - net.bridge.bridge-nf-call-iptables
+
+    # Step 8: Manage /etc/hosts
+    - name: add hosts to /etc/hosts
+      ansible.builtin.blockinfile:
+        path: /etc/hosts
+        block: '{{ ansible_hosts }}'
+
+    # Step 9: Add Kubernetes repository
+    - name: Add an Apt signing key, uses whichever key is at the URL
+      ansible.builtin.apt_key:
+        url: https://pkgs.k8s.io/core:/stable:/v1.32/deb/Release.key
+        keyring: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+        state: present
+
+    - name: Add the Kubernetes apt repository
+      ansible.builtin.apt_repository:
+        repo: deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.32/deb/ /
+
+    - name: Update apt cache for kubernetes
+      ansible.builtin.apt:
+        update_cache: yes
+
+    # Step 10: Install Kubernetes
+    - name: Install Kubernetes
+      ansible.builtin.apt:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - containerd
+        - runc
+        - kubelet=1.32.4-1.1
+        - kubeadm=1.32.4-1.1
+        - kubectl=1.32.4-1.1
+
+    #Step 11: Configure containerd
+    - name: Create containerd service
+      ansible.builtin.service:
+        name: containerd
+        state: started
+
+    - name: Ensure /etc/containerd exists
+      ansible.builtin.file:
+        path: /etc/containerd
+        state: directory
+        mode: '0755'
+
+    - name: Get default containerd config
+      ansible.builtin.command: containerd config default
+      register: containerd_config
+      changed_when: false  
+
+    - name: Create /etc/containerd/config.toml if not exists
+      ansible.builtin.copy:
+        content: "{{ containerd_config.stdout }}"
+        dest: /etc/containerd/config.toml
+        force: no  
+        mode: '0644'
+
+    - name: Disable apparmor in containerd
+      ansible.builtin.lineinfile:
+        path: /etc/containerd/config.toml
+        regexp: 'disable_apparmor =.*'
+        line: 'disable_apparmor = true'
+
+    - name: Update sandbox_image in containerd
+      ansible.builtin.lineinfile:
+        path: /etc/containerd/config.toml
+        regexp: 'sandbox_image =.*'
+        line: 'sandbox_image = "registry.k8s.io/pause:3.10"'
+
+    - name: Set SystemdCgroup to true in containerd
+      ansible.builtin.lineinfile:
+        path: /etc/containerd/config.toml
+        regexp: 'SystemdCgroup =.*'
+        line: 'SystemdCgroup = true'
+
+    - name: Restart containerd
+      ansible.builtin.service:
+        name: containerd
+        state: restarted
+
+    # Step 12: Start kubelet
+    - name: Start kubelet
+      ansible.builtin.systemd:
+        name: kubelet
+        state: started
+        enabled: true
+
+
