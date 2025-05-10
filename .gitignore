@@ -2,6 +2,15 @@ ssh
 .vagrant
 model
 
+ssh/
+.vagrant/
+model/
+
+/.vagrant/
+/ssh/
+/model/
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
