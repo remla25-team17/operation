@@ -270,6 +270,12 @@ vagrant ssh ctrl
 cat /etc/modules-load.d/k8s.conf
 ```
 
+```bash
+vagrant ssh ctrl
+sudo lsmod|grep br_netfilter
+sudo lsmod|grep overlay
+```
+
 Both modules should appear in the output.
 
 ### IP Forwarding (Step 7)
