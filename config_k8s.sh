@@ -18,7 +18,7 @@ echo "Verifying access to the Kubernetes cluster..."
 
 kubectl get nodes
 
-echo "Checking if Flannel is working"
+echo "Checking if Flannel is working by checking the available pods"
 kubectl get pods -n kube-flannel
 
 kubectl get nodes

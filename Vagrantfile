@@ -1,7 +1,7 @@
 #Vagrantfile
 
 CTRL_MEMORY = 4096 #controller memory
-CTRL_CPUS = 1 #controller cpus
+CTRL_CPUS = 2 #controller cpus
 NODE_MEMORY = 6144 #worker memory
 NODE_CPUS = 2 #worker cpus
 
