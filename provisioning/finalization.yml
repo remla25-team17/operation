@@ -1,0 +1,29 @@
+- name: finalization
+  hosts: all
+  become: true
+
+  tasks:
+  # Step 20. Install MetalLB
+  - name: Install MetalLB CRDs
+    ansible.builtin.command: >
+      kubectl apply 
+      --kubeconfig /etc/kubernetes/admin.conf
+      -f https://raw.githubusercontent.com/metallb/metallb/v0.14.9/config/manifests/metallb-native.yaml  
+
+  - name: Wait for MetalLB provisioning to finish
+    ansible.builtin.command: >
+     kubectl wait 
+     --kubeconfig /etc/kubernetes/admin.conf
+      -n metallb-system -l app=metallb,component=controller --for=condition=ready pod --timeout=180s
+
+  - name: Add IPAddressPool
+    ansible.builtin.command: >
+      kubectl apply 
+      --kubeconfig /etc/kubernetes/admin.conf
+      -f ip-address-pool.yaml
+
+  - name: Add L2Advertisement
+    ansible.builtin.command: >
+      kubectl apply 
+      --kubeconfig /etc/kubernetes/admin.conf
+      -f l2-advertisement.yaml
