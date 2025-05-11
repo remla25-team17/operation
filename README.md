@@ -376,7 +376,17 @@ We installed Helm, the Kubernetes package manager, by adding its official APT re
 
 Also, we installed the `helm-diff` plugin to improve visibility into Helm changes and make Ansible's provisioning more reliable by avoiding unnecessary re-installs during re-provisioning.
 
+### Generate Join Command (Step 18)
 
+We generated the command to join the Kubernetes cluster in the controller by delegating it using the `delegate_to` parameter. The command is stored in a variable.
+
+### Run Join Command (Step 19)
+
+We run the command generated in Step 19 in order to join the worker to the Kubernetes cluster.
+
+### Install MetalLB (Step 20)
+
+We installed MetalLB, adding an IPAdressPool and configuring an L2Advertisement.
 
 ## [⚙️ GitHub Actions & CI/CD](#️-github-actions--cicd)
 
