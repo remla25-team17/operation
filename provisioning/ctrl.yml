@@ -1,10 +1,116 @@
-- name: deploy
+- name: Configure ctrl
   hosts: ctrl
   become: yes
+  vars:
+    host_kubeconfig: /vagrant/admin.conf
 
   tasks:
+    # 1. Detect whether the cluster has already been initialised
+    - name: Check if /etc/kubernetes/admin.conf already exists
+      ansible.builtin.stat:
+        path: /etc/kubernetes/admin.conf
+      register: kubeadm_cfg
 
+    # 2. Run kubeadm init only once, when the file is absent
+    - name: Run kubeadm init
+      ansible.builtin.command: >
+        kubeadm init
+        --apiserver-advertise-address=192.168.56.100
+        --node-name ctrl
+        --pod-network-cidr=10.244.0.0/16
+      when: not kubeadm_cfg.stat.exists
 
+    - name: Recheck admin.conf after kubeadm init
+      ansible.builtin.stat:
+        path: /etc/kubernetes/admin.conf
+      register: kubeadm_cfg # overwrites the old value
+    
+    # 3. Make kubectl usable for the vagrant user
+    - name: Ensure ~/.kube exists
+      ansible.builtin.file:
+        path: /home/vagrant/.kube
+        state: directory
+        owner: vagrant
+        group: vagrant
+        mode: '0755'
+      when: kubeadm_cfg.stat.exists 
 
-        
+    - name: Copy admin.conf to vagrant's kube config
+      ansible.builtin.copy:
+        src:  /etc/kubernetes/admin.conf         
+        dest: /home/vagrant/.kube/config
+        remote_src: yes
+        owner: vagrant
+        group: vagrant
+        mode: '0644'
+      when: kubeadm_cfg.stat.exists            
 
+    # copy the same file into the shared Vagrant folder for host use
+    - name: Copy admin.conf to shared folder for host access
+      ansible.builtin.copy:
+        src:  /etc/kubernetes/admin.conf
+        dest: "{{ host_kubeconfig }}"
+        remote_src: yes
+        owner: vagrant
+        group: vagrant
+        mode: '0644'
+      when: kubeadm_cfg.stat.exists
+
+    # Step 5: Wait for Kubernetes API server to become available
+    - name: Wait for Kubernetes API server port to open
+      ansible.builtin.wait_for:
+        port: 6443
+        host: 127.0.0.1
+        timeout: 120
+      when: kubeadm_cfg.stat.exists
+
+    # Step 6: Download the Flannel manifest
+    - name: Download Flannel manifest
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
+        dest: /home/vagrant/kube-flannel.yml
+        mode: '0644'
+      when: kubeadm_cfg.stat.exists
+
+    # Change the DaemonSet to allow host-only setup
+    - name: Change DaemonSet
+      ansible.builtin.lineinfile:
+        path: /home/vagrant/kube-flannel.yml
+        insertafter: '^\s*- --ip-masq$'
+        line: '        - --iface=eth1'
+      when: kubeadm_cfg.stat.exists
+
+    # Apply Flannel manifest to k8s
+    - name: Apply Flannel network
+      ansible.builtin.command: kubectl apply -f /home/vagrant/kube-flannel.yml
+      become_user: vagrant
+      when: kubeadm_cfg.stat.exists
+
+    # Step 7: Install Helm
+    - name: Add Helm GPG Ubuntu/Debian signing key
+      ansible.builtin.apt_key:
+        url: https://baltocdn.com/helm/signing.asc
+        state: present
+
+    - name: Add Helm apt repository
+      ansible.builtin.apt_repository:
+        repo: "deb https://baltocdn.com/helm/stable/debian/ all main"
+        state: present
+
+    - name: Update apt cache for Helm
+      ansible.builtin.apt:
+        update_cache: yes
+
+    - name: Install Helm
+      ansible.builtin.apt:
+        name: helm
+        state: present
+
+    # Step 8: Install helm-diff plugin (Optional, improves idempotency)
+    - name: Install helm-diff plugin
+      become_user: vagrant
+      ansible.builtin.command: helm plugin install https://github.com/databus23/helm-diff
+      environment:
+        HOME: /home/vagrant
+      args:
+        creates: /home/vagrant/.local/share/helm/plugins/helm-diff

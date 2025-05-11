@@ -144,11 +144,11 @@
         name: containerd
         state: restarted
 
-    # Step 12: Start kubelet
-    - name: Start kubelet
-      ansible.builtin.systemd:
-        name: kubelet
-        state: started
-        enabled: true
+    # Step 12: Start kubelet - Disabled because kubeadm init takes care of that
+    # - name: Start kubelet
+    #   ansible.builtin.systemd:
+    #     name: kubelet
+    #     state: started
+    #     enabled: true
 
 

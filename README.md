@@ -5,13 +5,13 @@ This repository contains an overview of the services and deployment procedures f
 ## 📚 Table of Contents
 
 - [Structure](#structure)
+- [🛠 Application](#-application)
 - [🚀 Deployment](#-deployment)
   - [🐳 Docker Compose](#-docker-compose)
   - [🔄 Docker Swarm](#-docker-swarm-deployment)
   - [☸️ Kubernetes via Vagrant](#️-kubernetes-via-vagrant)
-- [🛠 Application](#-application)
-- [⚙️ GitHub Actions & CI/CD](#️-github-actions--cicd)
 - [🧪 Testing Kubernetes Configuration](#-testing-kubernetes-configuration)
+- [⚙️ GitHub Actions & CI/CD](#️-github-actions--cicd)
 - [Use of Gen AI](#-gen-ai)
 
 ## [Structure](#structure)
@@ -51,11 +51,28 @@ operation/
 ├── run.bash                   # Script to set up SSH keys and start VMs
 ├── generate_key.bash          # Script to generate SSH keys
 ├── destroy.bash               # Script to tear down VMs
+├── config_k8s.sh              # Script to setup local K8s connection
 │
 ├── GitVersion.yml             # Configuration for semantic versioning
 ├── README.md                  # This documentation file
 └── LICENSE                    # MIT license file
 ```
+
+## [🛠 Application](#-application)
+
+Our Sentiment Analysis application is implemented across multiple services and repositories, each focusing on a specific part of the system:
+
+| Repository                                                         | Description                                                                                      |
+| ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
+| [model-training](https://github.com/remla25-team17/model-training) | Handles training and evaluation of the sentiment analysis model.                                 |
+| [model-service](https://github.com/remla25-team17/model-service)   | Flask API that serves the trained model for real-time predictions.                               |
+| [lib-ml](https://github.com/remla25-team17/lib-ml)                 | Shared machine learning utilities and preprocessing code used by both training and service apps. |
+| [app](https://github.com/remla25-team17/app)                       | The main application that connects to the `model-service` and exposes user-facing endpoints.     |
+| [lib-version](https://github.com/remla25-team17/lib-version)       | Provides versioning utilities to keep services aligned and trackable.                            |
+
+Each of these components works together to deliver an end-to-end sentiment analysis pipeline, from training to real-time predictions.
+
+---
 
 ## [🚀 Deployment](#-deployment)
 
@@ -165,6 +182,7 @@ chmod +x generate_key.bash
 ```
 
 **2. Deploy the Kubernetes Cluster**
+> Note: Make sure that you have a VM provider (e.g. VirtualBox) installed as well as Ansible.
 
 Run the deployment script to set up the VMs and provision them:
 
@@ -200,31 +218,6 @@ To destroy the VMs when done:
 
 💡 _Note: The Kubernetes cluster consists of one control node (192.168.56.100) and two worker nodes (192.168.56.101, 192.168.56.102), all provisioned with the necessary Kubernetes components and configured with SSH access._
 
-## [🛠 Application](#-application)
-
-Our Sentiment Analysis application is implemented across multiple services and repositories, each focusing on a specific part of the system:
-
-| Repository                                                         | Description                                                                                      |
-| ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
-| [model-training](https://github.com/remla25-team17/model-training) | Handles training and evaluation of the sentiment analysis model.                                 |
-| [model-service](https://github.com/remla25-team17/model-service)   | Flask API that serves the trained model for real-time predictions.                               |
-| [lib-ml](https://github.com/remla25-team17/lib-ml)                 | Shared machine learning utilities and preprocessing code used by both training and service apps. |
-| [app](https://github.com/remla25-team17/app)                       | The main application that connects to the `model-service` and exposes user-facing endpoints.     |
-| [lib-version](https://github.com/remla25-team17/lib-version)       | Provides versioning utilities to keep services aligned and trackable.                            |
-
-Each of these components works together to deliver an end-to-end sentiment analysis pipeline, from training to real-time predictions.
-
----
-
-## [⚙️ GitHub Actions & CI/CD](#️-github-actions--cicd)
-
-We use **GitHub Actions** to automate our entire CI/CD pipeline. Key aspects include:
-
-- **Automated builds:** Every push to `main` and `develop` triggers the CI workflow to build the code.
-- **Versioning:** We use **GitVersion** to automate semantic versioning based on Git history and branch naming conventions. This ensures:
-  - Stable releases for `main`
-  - Pre-releases (e.g., `canary` tags) for `develop` and feature branches.
-- **Release automation:** New releases are automatically published to GitHub Releases with changelogs and contributor lists, ensuring traceability.
 
 ## [🧪 Testing Kubernetes Configuration](#-testing-kubernetes-configuration)
 
@@ -362,6 +355,39 @@ Status should be "active (running)" if you're on the control node. On worker nod
 💡 _Replace `ctrl` with `node-1` or `node-2` to test different nodes in your cluster._
 
 To leave the node perform `ctrl+d` and destroy Vagrant using `vagrant destroy -f`
+
+
+### Initialize the Kubernetes Cluster (Step 13)
+
+We initialized the Kubernetes control plane using `kubeadm`, configuring it to advertise the controller's IP address and setting the appropriate Pod network CIDR (Classless Inter-Domain Routing).
+
+### Configure kubectl Access (Step 14)
+We made the cluster configuration available to the `vagrant` user on the controller VM, enabling direct use of `kubectl`. Additionally, we copied the configuration file to the host machine so that `kubectl` can be used from outside the VM. Example script: `sh ./cnfig_k8s.sh`.
+
+
+
+### Deploy Flannel Network Plugin (Step 15)
+
+We installed the Flannel networking plugin to enable Pod-to-Pod communication across the cluster. The Flannel configuration was patched to use the correct network interface (`eth1`) that matches our Vagrant host-only setup.
+
+### Install Helm (Step 16-17)
+
+We installed Helm, the Kubernetes package manager, by adding its official APT repository and installing it via the system package manager. This allows us to manage and deploy applications on the cluster more easily.
+
+Also, we installed the `helm-diff` plugin to improve visibility into Helm changes and make Ansible's provisioning more reliable by avoiding unnecessary re-installs during re-provisioning.
+
+
+
+## [⚙️ GitHub Actions & CI/CD](#️-github-actions--cicd)
+
+We use **GitHub Actions** to automate our entire CI/CD pipeline. Key aspects include:
+
+- **Automated builds:** Every push to `main` and `develop` triggers the CI workflow to build the code.
+- **Versioning:** We use **GitVersion** to automate semantic versioning based on Git history and branch naming conventions. This ensures:
+  - Stable releases for `main`
+  - Pre-releases (e.g., `canary` tags) for `develop` and feature branches.
+- **Release automation:** New releases are automatically published to GitHub Releases with changelogs and contributor lists, ensuring traceability.
+
 
 ## [Use of Gen AI](#-gen-ai)
 Across this project, we have used GenAI solutions (e.g. ChatGPT, GitHub Copilot) for the following:
