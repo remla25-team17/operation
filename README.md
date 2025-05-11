@@ -363,6 +363,26 @@ Status should be "active (running)" if you're on the control node. On worker nod
 
 To leave the node perform `ctrl+d` and destroy Vagrant using `vagrant destroy -f`
 
+
+### Initialize the Kubernetes Cluster (Step 13)
+
+We initialized the Kubernetes control plane using `kubeadm`, configuring it to advertise the controller's IP address and setting the appropriate Pod network CIDR (Classless Inter-Domain Routing).
+
+### Configure kubectl Access (Step 14)
+We made the cluster configuration available to the `vagrant` user on the controller VM, enabling direct use of `kubectl`. Additionally, we copied the configuration file to the host machine so that `kubectl` can be used from outside the VM.
+
+### Deploy Flannel Network Plugin (Step 15)
+
+We installed the Flannel networking plugin to enable Pod-to-Pod communication across the cluster. The Flannel configuration was patched to use the correct network interface (`eth1`) that matches our Vagrant host-only setup.
+
+### Install Helm (Step 16-17)
+
+We installed Helm, the Kubernetes package manager, by adding its official APT repository and installing it via the system package manager. This allows us to manage and deploy applications on the cluster more easily.
+
+Also, we installed the `helm-diff` plugin to improve visibility into Helm changes and make Ansible's provisioning more reliable by avoiding unnecessary re-installs during re-provisioning.
+
+
+
 ## [Use of Gen AI](#-gen-ai)
 Across this project, we have used GenAI solutions (e.g. ChatGPT, GitHub Copilot) for the following:
 - Generating templates and suggesting content for the READMEs across all the repositories. 
