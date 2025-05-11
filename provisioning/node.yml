@@ -1,20 +1,28 @@
 - name: deploy
-  hosts: workers
+  hosts: node-1, node-2
   become: yes
 
   tasks:
+    - name: Ensure kubelet is started and enabled
+      ansible.builtin.systemd:
+        name: kubelet
+        state: started
+        enabled: yes
+
     # Step 18. Generate join command for setting up k8s workers
     - name: Generate join command
       ansible.builtin.command: >
         kubeadm token create
         --print-join-command
-      delegate_to: 192.168.56.100
+      delegate_to: ctrl
       register: join_command
+
+    - name: Print join command
+      debug:
+        var: join_command.stdout
 
     # Step 19. Run join command
     - name: Run join command
-      ansible.builtin.shell:
-        "{{ join_command.stdout }}"
-
-        
-
+      ansible.builtin.shell: "{{ join_command.stdout }} --ignore-preflight-errors=all"
+      args:
+        creates: /etc/kubernetes/kubelet.conf
