@@ -383,6 +383,8 @@ We generated the command to join the Kubernetes cluster in the controller by del
 ### Run Join Command (Step 19)
 
 We run the command generated in Step 19 in order to join the worker to the Kubernetes cluster.
+Currently, this step gives the following error: `dial tcp 192.168.56.100:6443: connect: protocol not available.`
+The issue appear to be that worker node (`node-1`) cannot establish a TCP connection to the Kubernetes API server on the at `192.168.56.100:6443`.
 
 ### Install MetalLB (Step 20)
 
