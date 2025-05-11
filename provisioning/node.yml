@@ -3,6 +3,18 @@
   become: yes
 
   tasks:
+    # Step 18. Generate join command for setting up k8s workers
+    - name: Generate join command
+      ansible.builtin.command: >
+        kubeadm token create
+        --print-join-command
+      delegate_to: 192.168.56.100
+      register: join_command
+
+    # Step 19. Run join command
+    - name: Run join command
+      ansible.builtin.shell:
+        "{{ join_command.stdout }}"
 
         
 
