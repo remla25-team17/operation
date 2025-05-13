@@ -5,9 +5,7 @@ title: Project Information
 
 # REMLA A1 - Team 17
 
-operation: \
-https://github.com/remla25-team17/operation/tree/a1 \
-https://github.com/remla25-team17/operation/tree/a2 \
+operation: https://github.com/remla25-team17/operation/tree/a2 \
 model training: https://github.com/remla25-team17/model-training/tree/a1 \
 model service: https://github.com/remla25-team17/model-service/tree/a1 \
 lib-ml: https://github.com/remla25-team17/lib-ml/tree/a1 \
