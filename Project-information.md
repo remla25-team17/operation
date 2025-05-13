@@ -31,4 +31,16 @@ We have implemented everything up to and including the excellent requirements.
 **Docker Compose Operation**
 We have implemented everything up to and including the excellent requirements.
 
+## Comments for A2:
 
+### Setting up (Virtual) Infrastructure
+
+We have implemented everything up to and including the excellent requirements.
+
+### Setting up Software Environment
+
+We have implemented everything up to and including the excellent requirements.
+
+### Setting up Kubernetes
+
+We have implemented everything up to and including the excellent requirements.

@@ -390,6 +390,18 @@ The issue appear to be that worker node (`node-1`) cannot establish a TCP connec
 
 We installed MetalLB, adding an IPAdressPool and configuring an L2Advertisement.
 
+### Install the Nginx Ingress Controller (Step 21)
+
+We deployed the Nginx Ingress Controller using Helm to expose services within the cluster. The controller was configured to work with MetalLB by assigning a specific IP from the MetalLB pool using the `controller.service.loadBalancerIP` setting.
+
+### Install Kubernetes Dashboard (Step 22)
+
+We set up the Kubernetes Dashboard, adding a `ServiceAccount` and `ClusterRoleBinding` for an admin user. An Ingress resource was created to enable HTTPS access using a self-signed certificate managed by cert-manager.
+
+### Install Istio (Step 23)
+
+We integrated Istio into the cluster by configuring its ingress gateway as a LoadBalancer service. 
+
 ## [⚙️ GitHub Actions & CI/CD](#️-github-actions--cicd)
 
 We use **GitHub Actions** to automate our entire CI/CD pipeline. Key aspects include:
