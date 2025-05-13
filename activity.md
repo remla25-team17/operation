@@ -105,14 +105,14 @@ PR's with [NO CODE] are PR's just for readme's, comments, documents or activity.
 # A2:
 
 -- Monica: --
-- Created PR:
+- Created PR: https://github.com/remla25-team17/operation/pull/30
 
 - Approved PR: https://github.com/remla25-team17/operation/pull/28
 
 -- Ana --
 - Created PR: https://github.com/remla25-team17/operation/pull/27
 
-- Approved PR:
+- Approved PR: https://github.com/remla25-team17/operation/pull/30
 
 -- Marina --
 - Created PR: https://github.com/remla25-team17/operation/pull/25
