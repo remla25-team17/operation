@@ -1,29 +1,140 @@
 - name: finalization
   hosts: all
-  become: true
+
+  environment:
+    KUBECONFIG: /vagrant/admin.conf
 
   tasks:
+
+  - name: Install pip
+    become: true
+    ansible.builtin.apt:
+      name: python3-pip
+      state: present
+
+  - name: Install pip packages
+    pip:
+      break_system_packages: true
+      name:
+        - pyyaml
+        - kubernetes
+
+  - name: Copy configuration files
+    ansible.builtin.copy:
+      src: "{{ item }}"
+      dest: "/home/vagrant/{{ item }}"
+      owner: vagrant
+      group: vagrant
+      mode: '0644'
+    with_items:
+      - ip-address-pool.yaml
+      - l2-advertisement.yaml
+      - dashboard-adminuser.yml
+      - istioconfig.yml
+      - certificate-issuer.yaml
+      - dashboard-ingress.yaml
+
   # Step 20. Install MetalLB
   - name: Install MetalLB CRDs
-    ansible.builtin.command: >
-      kubectl apply 
-      --kubeconfig /etc/kubernetes/admin.conf
-      -f https://raw.githubusercontent.com/metallb/metallb/v0.14.9/config/manifests/metallb-native.yaml  
-
-  - name: Wait for MetalLB provisioning to finish
-    ansible.builtin.command: >
-     kubectl wait 
-     --kubeconfig /etc/kubernetes/admin.conf
-      -n metallb-system -l app=metallb,component=controller --for=condition=ready pod --timeout=180s
+    kubernetes.core.k8s:
+      state: present
+      src: https://raw.githubusercontent.com/metallb/metallb/v0.14.9/config/manifests/metallb-native.yaml
+      wait: true
 
   - name: Add IPAddressPool
-    ansible.builtin.command: >
-      kubectl apply 
-      --kubeconfig /etc/kubernetes/admin.conf
-      -f ip-address-pool.yaml
+    kubernetes.core.k8s:
+      state: present
+      src: ip-address-pool.yaml
 
   - name: Add L2Advertisement
-    ansible.builtin.command: >
-      kubectl apply 
-      --kubeconfig /etc/kubernetes/admin.conf
-      -f l2-advertisement.yaml
+    kubernetes.core.k8s:
+      state: present
+      src: l2-advertisement.yaml
+
+  - name: Add NGINX Ingress helm repository
+    kubernetes.core.helm_repository:
+      name: ingress-nginx
+      repo_url: https://kubernetes.github.io/ingress-nginx
+      state: present
+
+    # Step 21. Install NGINX Ingress Controller
+  - name: Install NGINX Ingress Controller
+    kubernetes.core.helm:
+      update_repo_cache: true
+      name: ingress-nginx
+      chart_ref: ingress-nginx/ingress-nginx
+      namespace: ingress-nginx
+      create_namespace: true
+      values:
+        controller:
+          service:
+              loadBalancerIP: 192.168.56.90
+
+  - name: Add cert-manager helm repository
+    kubernetes.core.helm_repository:
+      name: jetstack
+      url: https://charts.jetstack.io
+      state: present
+
+  - name: Install Cert-Manager
+    kubernetes.core.helm:
+      update_repo_cache: true
+      release_name: cert-manager
+      chart_ref: jetstack/cert-manager
+      release_namespace: cert-manager
+      create_namespace: yes
+      release_state: present
+      values:
+        installCRDs: true
+      wait: true
+
+  - name: Add cert-manager configuration
+    kubernetes.core.k8s:
+      state: present
+      src: certificate-issuer.yaml
+
+  # Step 22. Install Kubernetes Dashboard
+  - name: Add Kubernetes Dashboard helm repository
+    kubernetes.core.helm_repository:
+      name: kubernetes-dashboard
+      repo_url: https://kubernetes.github.io/dashboard/
+      state: present
+
+  - name: Install Kubernetes Dashboard
+    kubernetes.core.helm:
+      update_repo_cache: true
+      release_name: kubernetes-dashboard
+      chart_ref: kubernetes-dashboard/kubernetes-dashboard
+      release_namespace: kubernetes-dashboard
+      create_namespace: true
+      release_state: present
+      wait: true
+
+  - name: Apply dashboard admin user
+    kubernetes.core.k8s:
+      state: present
+      src: dashboard-adminuser.yml
+      namespace: kubernetes-dashboard
+
+  - name: Create Kubernetes Dashboard ingress
+    kubernetes.core.k8s:
+      state: present
+      src: dashboard-ingress.yaml
+      namespace: kubernetes-dashboard
+#
+  # Step 23. Install Istio
+  - name: Download Istioctl
+    ansible.builtin.get_url:
+      url: https://github.com/istio/istio/releases/download/1.25.2/istio-1.25.2-linux-amd64.tar.gz
+      dest: /home/vagrant/istio-1.25.2-linux-amd64.tar.gz
+
+  - name: Unarchive Istioctl
+    ansible.builtin.unarchive:
+      src: /home/vagrant/istio-1.25.2-linux-amd64.tar.gz
+      dest: /home/vagrant/
+      remote_src: yes
+
+  - name: Install Istioctl
+    ansible.builtin.command: |
+      istio-1.25.2/bin/istioctl install -y -f istioconfig.yml
+
