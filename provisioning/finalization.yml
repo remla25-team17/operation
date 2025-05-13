@@ -3,6 +3,20 @@
   become: true
 
   tasks:
+  - name: Copy configuration files
+    ansible.builtin.copy:
+      src: "{{ item }}"
+      dest: "/home/vagrant/{{ item }}"
+      owner: vagrant
+      group: vagrant
+      mode: '0644'
+    with_items:
+      - ip-address-pool.yaml
+      - l2-advertisement.yaml
+      - dashboard-adminuser.yml
+      - istioconfig.yml
+      - issuer.yaml
+
   # Step 20. Install MetalLB
   - name: Install MetalLB CRDs
     ansible.builtin.command: >
@@ -27,3 +41,28 @@
       kubectl apply 
       --kubeconfig /etc/kubernetes/admin.conf
       -f l2-advertisement.yaml
+
+  # Step 21. Install NGINX Ingress Controller
+  - name: Install NGINX Ingress Controller
+    ansible.builtin.command: >
+      helm repo add https://kubernetes.github.io/ingress-nginx
+      helm repo update
+      helm upgrade --install ingress-nginx ingress-nginx/ingress-nginx --set controller.service.loadBalancerIP=192.168.56.90
+
+  # Step 22. Install Kubernetes Dashboard
+  - name: Install Kubernetes Dashboard
+    ansible.builtin.command: >
+      helm repo add kubernetes-dashboard https://kubernetes.github.io/dashboard/
+      helm repo update
+      helm upgrade --install kubernetes-dashboard kubernetes-dashboard/kubernetes-dashboard --create-namespace --namespace kubernetes-dashboard
+      kubectl apply -f dashboard-adminuser.yml
+      kubectl get secret admin-user -n kubernetes-dashboard -o jsonpath="{.data.token}" | base64 -d
+      kubectl proxy
+
+  # Step 23. Install Istio
+  - name: Install Istio
+    ansible.builtin.command: >
+      curl -L https://istio.io/downloadIstio | sh -
+      cd istio-1.25.2
+      export PATH=$PWD/bin:$PATH
+      istioctl install -y -f istioconfig.yml

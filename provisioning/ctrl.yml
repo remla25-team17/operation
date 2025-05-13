@@ -90,11 +90,12 @@
     - name: Add Helm GPG Ubuntu/Debian signing key
       ansible.builtin.apt_key:
         url: https://baltocdn.com/helm/signing.asc
+        keyring: /etc/apt/keyrings/helm-apt-keyring.gpg
         state: present
 
     - name: Add Helm apt repository
       ansible.builtin.apt_repository:
-        repo: "deb https://baltocdn.com/helm/stable/debian/ all main"
+        repo: "deb [signed-by=/etc/apt/keyrings/helm-apt-keyring.gpg] https://baltocdn.com/helm/stable/debian/ all main"
         state: present
 
     - name: Update apt cache for Helm
@@ -110,7 +111,3 @@
     - name: Install helm-diff plugin
       become_user: vagrant
       ansible.builtin.command: helm plugin install https://github.com/databus23/helm-diff
-      environment:
-        HOME: /home/vagrant
-      args:
-        creates: /home/vagrant/.local/share/helm/plugins/helm-diff
