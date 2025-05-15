@@ -9,23 +9,18 @@ num_workers = 2
 
 public_key = File.read(File.expand_path(File.join(Dir.home, "vagrant_ssh", "vagrant_id_rsa.pub"))).strip
 
+INVENTORY_PATH = "provisioning/templates/inventory.cfg"
+
 # Generate inventory.cfg dynamically
-inventory = "[ctrl]\n192.168.56.100\n\n[workers]\n"
+inventory = "[controller]\nctrl ansible_host=192.168.56.100\n\n[workers]\n"
 (1..num_workers).each do |i|
-  inventory += "192.168.56.#{100 + i}\n"
+  inventory += "node-#{ i } ansible_host=192.168.56.#{100 + i}\n"
 end
-inventory += "\n[all:children]\nctrl\nworkers\n"
+inventory += "\n[all:children]\ncontroller\nworkers\n"
 
 # Write inventory.cfg to file
-File.open("provisioning/inventory.cfg", "w") do |file|
+File.open(INVENTORY_PATH, "w") do |file|
   file.write(inventory)
-end
-
-# Create hosts string based on the number of workers
-hosts = ""
-hosts = hosts + "192.168.56.100 ctrl\n"
-(1..num_workers).each do |i|
-  hosts = hosts + "192.168.56.#{100 + i} node-#{i}\n"
 end
 
 Vagrant.configure("2") do |config|
@@ -54,9 +49,9 @@ Vagrant.configure("2") do |config|
     ctrl.vm.provision "ansible" do |ansible|
       ansible.compatibility_mode = "2.0"
       ansible.playbook = "provisioning/general.yml" #playbook
+      ansible.inventory_path = INVENTORY_PATH #inventory file
       ansible.extra_vars = {
         ansible_ssh_private_key_file: "~/vagrant_ssh/vagrant_id_rsa", #ssh key to use
-        ansible_hosts: hosts,
         num_workers: num_workers
       }
     end
@@ -64,6 +59,7 @@ Vagrant.configure("2") do |config|
     ctrl.vm.provision "ansible" do |ansible|
       ansible.compatibility_mode = "2.0"
       ansible.playbook = "provisioning/ctrl.yml" #playbook
+      ansible.inventory_path = INVENTORY_PATH #inventory file
       ansible.extra_vars = {
         ansible_ssh_private_key_file: "~/vagrant_ssh/vagrant_id_rsa" #ssh key to use
       }
@@ -92,15 +88,17 @@ Vagrant.configure("2") do |config|
       node.vm.provision "ansible" do |ansible|
         ansible.compatibility_mode = "2.0"
         ansible.playbook = "provisioning/general.yml"
+        ansible.inventory_path = INVENTORY_PATH #inventory file
         ansible.extra_vars = {
           ansible_ssh_private_key_file: "~/vagrant_ssh/vagrant_id_rsa", #ssh key to use
-          ansible_hosts: hosts,
           num_workers: num_workers
         }
       end
+
       node.vm.provision "ansible" do |ansible|
         ansible.compatibility_mode = "2.0"
         ansible.playbook = "provisioning/node.yml"
+        ansible.inventory_path = INVENTORY_PATH #inventory file
         ansible.extra_vars = {
           ansible_ssh_private_key_file: "~/vagrant_ssh/vagrant_id_rsa" #ssh key to use
         }

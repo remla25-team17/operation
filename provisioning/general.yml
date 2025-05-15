@@ -65,10 +65,13 @@
         - net.bridge.bridge-nf-call-iptables
 
     # Step 8: Manage /etc/hosts
-    - name: add hosts to /etc/hosts
+    - name: Add hosts to /etc/hosts
       ansible.builtin.blockinfile:
         path: /etc/hosts
-        block: '{{ ansible_hosts }}'
+        block: "{{ lookup('template', 'templates/hosts.j2') }}"
+        owner: root
+        group: root
+        mode: '0644'
 
     # Step 9: Add Kubernetes repository
     - name: Add an Apt signing key, uses whichever key is at the URL

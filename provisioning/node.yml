@@ -1,5 +1,5 @@
 - name: deploy
-  hosts: node-1, node-2
+  hosts: workers
   become: yes
 
   tasks:
