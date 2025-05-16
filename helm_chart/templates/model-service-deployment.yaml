@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: model-service
+spec:
+  replicas: {{ .Values.model.replicas | default 1 }}
+  selector:
+    matchLabels:
+      app: model-service
+  template:
+    metadata:
+      labels:
+        app: model-service
+    spec:
+      containers:
+        - name: model-service
+          image: {{ .Values.model.image.repository }}:{{ .Values.model.image.tag }}
+          imagePullPolicy: {{ .Values.model.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.backendService.port }}
+          envFrom:
+            - configMapRef:
+                name: model-service-config
+            - secretRef:
+                name: {{ .Release.Name }}-secret
+          volumeMounts:
+            - name: shared-volume
+              mountPath: /app/shared
+      volumes:
+        - name: shared-volume
+          hostPath:
+            path: {{ .Values.volume.hostPath }}
+            type: Directory
+            
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: model-service
+spec:
+  selector:
+    app: model-service
+  ports:
+    - port: {{ .Values.backendService.port }}
+      targetPort: {{ .Values.backendService.port }}
+  type: {{ .Values.service.type }}
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: model-service-config
+data:
+  MODEL_SERVICE_VERSION: "{{ .Values.model.version | default "0.1.2" }}"
+  MODEL_URL: "{{ .Values.model.modelUrl | default "https://github.com/remla25-team17/model-training/releases/download/0.1.2/model.pkl" }}"
+  MODEL_PATH: "{{ .Values.model.modelPath | default "model/model.pkl" }}"
+  BOW_URL: "{{ .Values.model.bowUrl | default "https://github.com/remla25-team17/model-training/releases/download/0.1.2/bag_of_words.pkl" }}"
+  BOW_PATH: "{{ .Values.model.bowPath | default "model/bag_of_words.pkl" }}"
+  PORT: "{{ .Values.backendService.port }}"
+  HOST: "0.0.0.0"

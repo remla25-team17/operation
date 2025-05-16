@@ -1,0 +1,37 @@
+app:
+  replicas: 1
+  version: "0.1.0"
+  image:
+    repository: "ghcr.io/remla25-team17/app-service"
+    tag: "latest"
+    pullPolicy: IfNotPresent
+
+model:
+  replicas: 1
+  version: "0.1.2"
+  image:
+    repository: "ghcr.io/remla25-team17/model-service"
+    tag: "latest"
+    pullPolicy: IfNotPresent
+  modelUrl: "https://github.com/remla25-team17/model-training/releases/download/0.1.2/model.pkl"
+  modelPath: "model/model.pkl"
+  bowUrl: "https://github.com/remla25-team17/model-training/releases/download/0.1.2/bag_of_words.pkl"
+  bowPath: "model/bag_of_words.pkl"
+
+service:
+  type: ClusterIP
+  port: 5000
+
+backendService:
+  port: 8080
+
+ingress:
+  enabled: true
+  hostname: "app.local"
+
+secrets:
+  smtpPassword: "password"
+
+volume:
+  enabled: true
+  hostPath: "/mnt/shared"
