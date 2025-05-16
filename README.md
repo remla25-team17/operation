@@ -11,6 +11,7 @@ This repository contains an overview of the services and deployment procedures f
   - [🔄 Docker Swarm](#-docker-swarm-deployment)
 - [☸️ Kubernetes Cluster via Vagrant](#️-kubernetes-via-vagrant)
   - [🧪 Testing Kubernetes Cluster Configuration](#-testing-kubernetes-configuration)
+- [Helm](#-helm)
 - [🚀 Kubernetes Orchestration and Deployment](#️-k8s-orchestration)
 - [⚙️ GitHub Actions & CI/CD](#️-github-actions--cicd)
 - [Use of Gen AI](#-gen-ai)
@@ -410,6 +411,19 @@ We set up the Kubernetes Dashboard, adding a `ServiceAccount` and `ClusterRoleBi
 
 We integrated Istio into the cluster by configuring its ingress gateway as a LoadBalancer service. 
 
+## [Helm](#-helm)
+
+**Create Deployment**
+1. Create a deployment on Helm `helm install <release name> ./helm_chart`
+2. You can check the status of your pods with `kubectl get pods`
+3. When all pods are running check the services with `kubectl get services`. See what port the app service is running on.
+4. Use port-forwarding to access the app. Open a **new terminal** and write `kubectl port-forward service/app 5000:5000`
+The sentiment analysis app is now available at http://localhost:5000
+
+**Stop Deployment**
+1. Check what you have running `helm ls`
+2. Destroy Helm deployment `helm uninstall <release-name>`
+3. Verify everything is properly removed `kubectl get all`
 
 ## [⚙️ Kubernetes Orchestration](#️-k8s-orchestration)
 

@@ -28,9 +28,7 @@ spec:
               mountPath: /app/shared
       volumes:
         - name: shared-volume
-          hostPath:
-            path: {{ .Values.volume.hostPath }}
-            type: Directory
+          emptyDir: {}
             
 ---
 apiVersion: v1
@@ -51,10 +49,10 @@ kind: ConfigMap
 metadata:
   name: model-service-config
 data:
-  MODEL_SERVICE_VERSION: "{{ .Values.model.version | default "0.1.2" }}"
-  MODEL_URL: "{{ .Values.model.modelUrl | default "https://github.com/remla25-team17/model-training/releases/download/0.1.2/model.pkl" }}"
-  MODEL_PATH: "{{ .Values.model.modelPath | default "model/model.pkl" }}"
-  BOW_URL: "{{ .Values.model.bowUrl | default "https://github.com/remla25-team17/model-training/releases/download/0.1.2/bag_of_words.pkl" }}"
-  BOW_PATH: "{{ .Values.model.bowPath | default "model/bag_of_words.pkl" }}"
+  MODEL_SERVICE_VERSION: "{{ .Values.model.version }}"
+  MODEL_URL: "{{ .Values.model.modelUrl }}"
+  MODEL_PATH: "{{ .Values.model.modelPath }}"
+  BOW_URL: "{{ .Values.model.bowUrl }}"
+  BOW_PATH: "{{ .Values.model.bowPath }}"
   PORT: "{{ .Values.backendService.port }}"
-  HOST: "0.0.0.0"
+  HOST: "{{ .Values.backendService.host }}"

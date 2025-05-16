@@ -44,6 +44,6 @@ metadata:
   name: app-config
 data:
   MODEL_SERVICE_URL: "http://model-service:{{ .Values.backendService.port }}"
-  APP_SERVICE_VERSION: "{{ .Values.app.version | default "0.1.0" }}"
+  APP_SERVICE_VERSION: "{{ .Values.app.version }}"
   PORT: "{{ .Values.service.port }}"
-  HOST: "0.0.0.0"
+  HOST: "{{ .Values.service.host }}"
