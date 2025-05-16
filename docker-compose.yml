@@ -30,4 +30,4 @@ services:
 
 secrets:
   example_secret:
-    file: ./secrets/example_secret.txt
+    file: ./secretsDocker/example_secret.txt
