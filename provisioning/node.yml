@@ -15,6 +15,7 @@
         kubeadm token create
         --print-join-command
       delegate_to: ctrl
+      run_once: true
       register: join_command
 
     - name: Print join command
