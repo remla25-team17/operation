@@ -416,7 +416,7 @@ We integrated Istio into the cluster by configuring its ingress gateway as a Loa
 **Create Deployment**
 1. Create a deployment on Helm `helm install <release name> ./helm_chart`
 2. You can check the status of your pods with `kubectl get pods`
-3. When all pods are running check the services with `kubectl get services`. See what port the app service is running on.
+3. When all pods are `Running` check the services with `kubectl get services`. See what port the app service is running on.
 4. Use port-forwarding to access the app. Open a **new terminal** and write `kubectl port-forward service/app 5000:5000`
 The sentiment analysis app is now available at http://localhost:5000
 

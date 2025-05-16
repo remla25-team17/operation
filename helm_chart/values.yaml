@@ -5,6 +5,7 @@ app:
     repository: "ghcr.io/remla25-team17/app-service"
     tag: "latest"
     pullPolicy: IfNotPresent
+  modelServiceUrl: "http://model-service"
 
 model:
   replicas: 1
