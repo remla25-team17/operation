@@ -43,7 +43,7 @@ kind: ConfigMap
 metadata:
   name: app-config
 data:
-  MODEL_SERVICE_URL: "http://model-service:{{ .Values.backendService.port }}"
+  MODEL_SERVICE_URL: "{{ .Values.app.modelServiceUrl }}:{{ .Values.backendService.port }}"
   APP_SERVICE_VERSION: "{{ .Values.app.version }}"
   PORT: "{{ .Values.service.port }}"
   HOST: "{{ .Values.service.host }}"
