@@ -38,7 +38,6 @@ operation/
 ├── k8s/                       # Kubernetes resources 
 │   ├── app-deployment.yaml    
 │   ├── app-ingress.yaml
-│   ├── secrets.yaml
 │   └── model-service-deployment.yaml
 │
 ├── provisioning/              # Ansible playbooks for K8s configuration
@@ -423,12 +422,35 @@ To set up our deployment with Kubernetes, the following components are introduce
 - `Ingress` defines external access (usually HTTP/HTTPS) to your services. 
 - `Ingress Controller` is the actual software that runs your Ingress (e.g. NGINX).
 
-We will deploy our web application in our Kubernetes cluster, specifically:
-- `provisioning/ctrl.yaml`: provisions the controller node (master/control plane).
-- `provisioning/node.yaml`: provisions worker nodes where the app and model-service pods should run.
+> Note! Before deploying the app, make sure the Secret is created when you SSH in the VM!:
+```bash
+vagrant ssh ctrl
+kubectl create secret generic universal-secret --from-literal=PASSWORD='password'
+```
+Now you can safely deploy the application:
 
+```bash
+cd ../../vagrant/k8s/
+kubectl apply -f
+```
 
+Then add the following IP mapping locally:
 
+```bash
+echo "192.168.56.90 app.local" | sudo tee -a /etc/hosts
+```
+
+>Now you can access the application at `http://app.local/`
+
+For testing purposes, ensure the following commands 
+```bash
+kubectl get pods -n ingress-nginx
+kubectl get svc -n ingress-nginx
+kubectl get ingress
+kubectl get svc
+kubectl get pods
+kubectl describe ingress app-ingress
+```
 
 ## [⚙️ GitHub Actions & CI/CD](#️-github-actions--cicd)
 
