@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app
+spec:
+  replicas: {{ .Values.app.replicas | default 1 }}
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+        - name: app
+          image: {{ .Values.app.image.repository }}:{{ .Values.app.image.tag }}
+          imagePullPolicy: {{ .Values.app.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.service.port }}
+          envFrom:
+            - configMapRef:
+                name: app-config
+            - secretRef:
+                name: {{ .Release.Name }}-secret
+                
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app
+spec:
+  selector:
+    app: app
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.port }}
+  type: {{ .Values.service.type }}
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  MODEL_SERVICE_URL: "http://model-service:{{ .Values.backendService.port }}"
+  APP_SERVICE_VERSION: "{{ .Values.app.version | default "0.1.0" }}"
+  PORT: "{{ .Values.service.port }}"
+  HOST: "0.0.0.0"
