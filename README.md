@@ -427,14 +427,15 @@ To set up our deployment with Kubernetes, the following components are introduce
 vagrant ssh ctrl
 kubectl create secret generic universal-secret --from-literal=PASSWORD='password'
 ```
+
 Now you can safely deploy the application:
 
 ```bash
 cd ../../vagrant/k8s/
-kubectl apply -f
+kubectl apply -f .
 ```
 
-Then add the following IP mapping locally:
+Then run the following IP mapping locally:
 
 ```bash
 echo "192.168.56.90 app.local" | sudo tee -a /etc/hosts
@@ -442,7 +443,7 @@ echo "192.168.56.90 app.local" | sudo tee -a /etc/hosts
 
 >Now you can access the application at `http://app.local/`
 
-For testing purposes, ensure the following commands 
+For testing purposes, run the following commands 
 ```bash
 kubectl get pods -n ingress-nginx
 kubectl get svc -n ingress-nginx
