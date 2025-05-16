@@ -21,9 +21,11 @@ model:
 service:
   type: ClusterIP
   port: 5000
+  host: "0.0.0.0"
 
 backendService:
   port: 8080
+  host: "0.0.0.0"
 
 ingress:
   enabled: true
