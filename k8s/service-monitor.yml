@@ -10,5 +10,5 @@ spec:
       app: app
   endpoints:
     - port: app-port
-      path: /metrics
+      path: /api/v1/metrics
       interval: 15s
