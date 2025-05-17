@@ -417,9 +417,8 @@ Make sure minikube is running. Use `minikube status` to check, if it is not runn
 
 1. Create a deployment on Helm `helm install <release name> ./helm_chart`
 2. You can check the status of your pods with `kubectl get pods`
-3. When all pods are `Running` check the services with `kubectl get services`. See what port the app service is running on.
-4. Use port-forwarding to access the app. Open a **new terminal** and write `kubectl port-forward service/<release name>-app 5000:5000`
-The sentiment analysis app is now available at http://localhost:5000
+3. When all pods are `Running` check the services with `minikube service list`. 
+4. Click on the address provided through the ingress controller (the row of target port=http/80), it should take you to the sentiment app website.
 
 **Stop Deployment**
 1. Check what you have running `helm ls`
