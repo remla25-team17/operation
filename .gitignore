@@ -1,6 +1,7 @@
 ssh
 .vagrant
 model
+provisioning/templates/inventory.cfg
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
