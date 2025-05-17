@@ -46,9 +46,9 @@ volume:
 labels:
   app.kubernetes.io/managed-by: "helm"
 
-  monitoring:
-    enabled: true
-    release: prometheus
-    path: /api/v1/metrics
-    interval: 15s
+monitoring:
+  enabled: true
+  release: prometheus
+  path: /api/v1/metrics
+  interval: 15s
 
