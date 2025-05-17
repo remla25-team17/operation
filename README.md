@@ -6,11 +6,13 @@ This repository contains an overview of the services and deployment procedures f
 
 - [Structure](#structure)
 - [🛠 Application](#-application)
-- [🚀 Deployment](#-deployment)
+- [🚀 Local Deployment](#-deployment)
   - [🐳 Docker Compose](#-docker-compose)
   - [🔄 Docker Swarm](#-docker-swarm-deployment)
-  - [☸️ Kubernetes via Vagrant](#️-kubernetes-via-vagrant)
-- [🧪 Testing Kubernetes Configuration](#-testing-kubernetes-configuration)
+- [☸️ Kubernetes Cluster via Vagrant](#️-kubernetes-via-vagrant)
+  - [🧪 Testing Kubernetes Cluster Configuration](#-testing-kubernetes-configuration)
+- [Helm](#helm)
+- [🚀 Kubernetes Orchestration and Deployment](#️-k8s-orchestration)
 - [⚙️ GitHub Actions & CI/CD](#️-github-actions--cicd)
 - [Use of Gen AI](#-gen-ai)
 
@@ -34,6 +36,12 @@ operation/
 ├── bag_of_words/              # Directory for bag of words model
 │   └── bag_of_words.pkl       # Bag of words vectorizer file
 │
+├── k8s/                       # Kubernetes resources 
+│   ├── app-deployment.yaml    
+│   ├── app-ingress.yaml
+│   ├── secrets.yaml
+│   └── model-service-deployment.yaml
+│
 ├── provisioning/              # Ansible playbooks for K8s configuration
 │   ├── ansible.cfg            # Ansible configuration
 │   ├── ctrl.yml               # Controller node configuration
@@ -43,15 +51,17 @@ operation/
 │
 ├── public-keys/               # SSH public keys for VM access
 │
-├── secrets/                   # Secret files for secure deployment
+├── secretsDocker/             # Secret files for secure Docker deployment
 │   └── example_secret.txt     # Example secret file
+│
+├── scripts/
+│   ├── run.bash               # Script to set up SSH keys and start VMs          
+│   ├── generate_key.bash      # Script to generate SSH keys
+│   ├── destroy.bash           # Script to tear down VMs
+│   └── config_k8s.sh          # Script to setup local K8s connection
 │
 ├── docker-compose.yml         # Main Docker Compose file defining services and networks
 ├── Vagrantfile                # VM provisioning for Kubernetes cluster
-├── run.bash                   # Script to set up SSH keys and start VMs
-├── generate_key.bash          # Script to generate SSH keys
-├── destroy.bash               # Script to tear down VMs
-├── config_k8s.sh              # Script to setup local K8s connection
 │
 ├── GitVersion.yml             # Configuration for semantic versioning
 ├── README.md                  # This documentation file
@@ -164,9 +174,10 @@ docker swarm leave --force
 
 💡 _Note: Docker Swarm provides service replication and better orchestration for production environments._
 
-### ☸️ **Kubernetes via Vagrant**
+## ☸️ **Kubernetes via Vagrant**
 
-For advanced deployment with Kubernetes, we've set up an automated provisioning system using Vagrant and Ansible:
+For advanced deployment with Kubernetes, we've set up an automated provisioning system using Vagrant and Ansible.
+> Note: All the script files that we mention are inside the `scripts/` directory.
 
 **1. Generate SSH Key**
 
@@ -219,7 +230,7 @@ To destroy the VMs when done:
 💡 _Note: The Kubernetes cluster consists of one control node (192.168.56.100) and two worker nodes (192.168.56.101, 192.168.56.102), all provisioned with the necessary Kubernetes components and configured with SSH access._
 
 
-## [🧪 Testing Kubernetes Configuration](#-testing-kubernetes-configuration)
+### [🧪 Testing Kubernetes Configuration](#-testing-kubernetes-configuration)
 
 To start Vagrant run:
 
@@ -399,6 +410,38 @@ We set up the Kubernetes Dashboard, adding a `ServiceAccount` and `ClusterRoleBi
 ### Install Istio (Step 23)
 
 We integrated Istio into the cluster by configuring its ingress gateway as a LoadBalancer service. 
+
+## [Helm](#-helm)
+
+**Create Deployment**
+Make sure minikube is running. Use `minikube status` to check, if it is not running start it with `minikube start`
+
+1. Create a deployment on Helm `helm install <release name> ./helm_chart`
+2. You can check the status of your pods with `kubectl get pods`
+3. When all pods are `Running` check the services with `minikube service list`. 
+4. Click on the address provided through the ingress controller (the row of target port=http/80), it should take you to the sentiment app website.
+
+**Stop Deployment**
+1. Check what you have running `helm ls`
+2. Destroy Helm deployment `helm uninstall <release-name>`
+3. Verify everything is properly removed `kubectl get all`
+
+## [⚙️ Kubernetes Orchestration](#️-k8s-orchestration)
+
+To set up our deployment with Kubernetes, the following components are introduced:
+- `Deployment` which manages the pods and keeps them running. It also handles scaling, restarts and updates.
+- `ConfigMap` stores non-sensitive configuration as key-value pairs, which can be injected into containers as environment variables or mounted as files. 
+- `Secret` stores sensitive information like passwords that are encrypted and hidden.
+- `Service` exposes a set of pods to other services (or to the outside world). It acts as a stable DNS name and load balancer.
+- `Ingress` defines external access (usually HTTP/HTTPS) to your services. 
+- `Ingress Controller` is the actual software that runs your Ingress (e.g. NGINX).
+
+We will deploy our web application in our Kubernetes cluster, specifically:
+- `provisioning/ctrl.yaml`: provisions the controller node (master/control plane).
+- `provisioning/node.yaml`: provisions worker nodes where the app and model-service pods should run.
+
+
+
 
 ## [⚙️ GitHub Actions & CI/CD](#️-github-actions--cicd)
 
