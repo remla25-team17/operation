@@ -28,7 +28,13 @@ spec:
               mountPath: /app/shared
       volumes:
         - name: shared-volume
+          {{- if .Values.volume.enabled }}
+          hostPath:
+            path: {{ .Values.volume.hostPath }}
+            type: Directory
+          {{- else }}
           emptyDir: {}
+          {{- end }}
             
 ---
 apiVersion: v1
@@ -39,7 +45,7 @@ spec:
   selector:
     app: {{ .Release.Name }}-model-service
   ports:
-    - port: {{ .Values.backendService.port }}
+    - port: 80
       targetPort: {{ .Values.backendService.port }}
   type: {{ .Values.service.type }}
 

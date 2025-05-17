@@ -41,7 +41,3 @@ secrets:
 volume:
   enabled: true
   hostPath: "/mnt/shared"
-
-# Common labels to apply to all resources
-labels:
-  app.kubernetes.io/managed-by: "helm"

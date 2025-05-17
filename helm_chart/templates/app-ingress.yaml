@@ -5,20 +5,22 @@ metadata:
   name: {{ .Release.Name }}-app-ingress
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
-  labels:
-    app.kubernetes.io/name: {{ .Release.Name }}-app
-    app.kubernetes.io/instance: {{ .Release.Name }}
 spec:
   ingressClassName: nginx
-  rules:
-    - host: {{ .Release.Name }}.app.local
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: {{ .Release.Name }}-app
-                port:
-                  number: {{ .Values.service.port }}
+  defaultBackend:
+    service:
+      name: {{ .Release.Name }}-app
+      port:
+        number: 80
+  # rules:
+  #   - host: {{ .Release.Name }}.app.local
+  #     http:
+  #       paths:
+  #         - path: /
+  #           pathType: Prefix
+  #           backend:
+  #             service:
+  #               name: {{ .Release.Name }}-app
+  #               port:
+  #                 number: 80
 {{- end }}
