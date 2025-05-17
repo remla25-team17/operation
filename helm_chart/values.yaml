@@ -1,13 +1,16 @@
 app:
+  name: app
   replicas: 1
   version: "0.1.0"
   image:
     repository: "ghcr.io/remla25-team17/app-service"
     tag: "latest"
     pullPolicy: IfNotPresent
-  modelServiceUrl: "http://model-service"
+  # This will now reference the templated service name
+  modelServiceUrl: "http://{{ .Release.Name }}-model-service"
 
 model:
+  name: model-service
   replicas: 1
   version: "0.1.2"
   image:
@@ -38,3 +41,7 @@ secrets:
 volume:
   enabled: true
   hostPath: "/mnt/shared"
+
+# Common labels to apply to all resources
+labels:
+  app.kubernetes.io/managed-by: "helm"

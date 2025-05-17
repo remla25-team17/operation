@@ -1,26 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: app
+  name: {{ .Release.Name }}-app
 spec:
   replicas: {{ .Values.app.replicas | default 1 }}
   selector:
     matchLabels:
-      app: app
+      app: {{ .Release.Name }}-app
   template:
     metadata:
       labels:
-        app: app
+        app: {{ .Release.Name }}-app
     spec:
       containers:
-        - name: app
+        - name: {{ .Release.Name }}-app
           image: {{ .Values.app.image.repository }}:{{ .Values.app.image.tag }}
           imagePullPolicy: {{ .Values.app.image.pullPolicy }}
           ports:
             - containerPort: {{ .Values.service.port }}
           envFrom:
             - configMapRef:
-                name: app-config
+                name: {{ .Release.Name }}-app-config
             - secretRef:
                 name: {{ .Release.Name }}-secret
                 
@@ -28,10 +28,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: app
+  name: {{ .Release.Name }}-app
 spec:
   selector:
-    app: app
+    app: {{ .Release.Name }}-app
   ports:
     - port: {{ .Values.service.port }}
       targetPort: {{ .Values.service.port }}
@@ -41,7 +41,7 @@ spec:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: app-config
+  name: {{ .Release.Name }}-app-config
 data:
   MODEL_SERVICE_URL: "{{ .Values.app.modelServiceUrl }}:{{ .Values.backendService.port }}"
   APP_SERVICE_VERSION: "{{ .Values.app.version }}"
