@@ -13,6 +13,7 @@ This repository contains an overview of the services and deployment procedures f
   - [🧪 Testing Kubernetes Cluster Configuration](#-testing-kubernetes-configuration)
 - [🚀 Kubernetes Orchestration and Deployment](#️-k8s-orchestration)
 - [⚓ Helm](#-helm)
+- [🔎 Monitoring](#-monitoring)
 - [⚙️ GitHub Actions & CI/CD](#️-github-actions--cicd)
 - [Use of Gen AI](#-gen-ai)
 
@@ -471,6 +472,42 @@ To access the app you have 2 options:
 1. Check what you have running `helm ls`
 2. Destroy Helm deployment `helm uninstall <release-name>`
 3. Verify everything is properly removed `kubectl get all`
+
+## [🔎 Monitoring](#-monitoring)
+
+### Prometheus Installation
+
+Follow these instruction to install Prometheus on the cluster:
+
+   ```bash
+   helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+   helm repo update
+   helm install prometheus prometheus-community/kube-prometheus-stack
+   ```
+
+Check that the ServiceMonitor resources are correctly created and the Prometheus pods are running:
+   ```bash
+  kubectl get servicemonitors -A
+  kubectl get pods -n default
+  ```
+
+### Accessing the Prometheus Dashboard
+To access the Prometheus dashbaord locally, run:
+   ```bash
+    kubectl port-forward svc/prometheus-kube-prometheus-prometheus 9090
+   ```
+
+### Available Metrics
+
+The following custom metrics are exposed by the application and can be scraped by Prometheus:
+
+| **Metric Name**       | **Type**     | **Description**                                                        |
+|-----------------------|--------------|------------------------------------------------------------------------|
+| `num_requests_total`  | Counter      | Total number of requests made to the `sentiment` API.                  |
+| `request_latency_seconds` | Histogram  | Latency distribution of `sentiment` API requests, measured in seconds. |
+| `cpu_usage_percent`   | Gauge        | Current CPU usage percentage.                       |
+| `ram_usage_percent`   | Gauge        | Current RAM usage percentage.                       |
+
 
 ## [⚙️ GitHub Actions & CI/CD](#️-github-actions--cicd)
 
