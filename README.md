@@ -11,8 +11,8 @@ This repository contains an overview of the services and deployment procedures f
   - [🔄 Docker Swarm](#-docker-swarm-deployment)
 - [☸️ Kubernetes Cluster via Vagrant](#️-kubernetes-via-vagrant)
   - [🧪 Testing Kubernetes Cluster Configuration](#-testing-kubernetes-configuration)
-- [⚓ Helm](#-helm)
 - [🚀 Kubernetes Orchestration and Deployment](#️-k8s-orchestration)
+- [⚓ Helm](#-helm)
 - [⚙️ GitHub Actions & CI/CD](#️-github-actions--cicd)
 - [Use of Gen AI](#-gen-ai)
 
@@ -410,28 +410,6 @@ We set up the Kubernetes Dashboard, adding a `ServiceAccount` and `ClusterRoleBi
 
 We integrated Istio into the cluster by configuring its ingress gateway as a LoadBalancer service. 
 
-## [⚓ Helm](#-helm)
-
-### **Create Deployment**
-Make sure minikube is running. Use `minikube status` to check. If it is not running, start it with `minikube start`
-
-1. Create a deployment on Helm `helm install <release name> ./helm_chart`
-2. You can check the status of your pods with `kubectl get pods`
-3. When all pods are **Running** check the services with `minikube service list`. 
-
-To access the app you have 2 options:
-1. Directly click on the address provided through the ingress controller (the row of target port=http/80), it should take you to the sentiment app website.
-2. Run the following IP mapping locally `echo "<INGRESS CTRL IP ADDRESS> app.local" | sudo tee -a /etc/hosts`\
-  -> For example, `<INGRESS CTRL IP ADDRESS>` could be `192.168.59.100` 
-
->Now you can access the application at `http://app.local/`
-
-
-### **Stop Deployment**
-1. Check what you have running `helm ls`
-2. Destroy Helm deployment `helm uninstall <release-name>`
-3. Verify everything is properly removed `kubectl get all`
-
 ## [⚙️ Kubernetes Orchestration](#️-k8s-orchestration)
 
 To set up our deployment with Kubernetes, the following components are introduced:
@@ -472,6 +450,27 @@ kubectl get svc
 kubectl get pods
 kubectl describe ingress app-ingress
 ```
+
+## [⚓ Helm](#-helm)
+
+### **Create Deployment**
+Make sure minikube is running. Use `minikube status` to check. If it is not running, start it with `minikube start`
+
+1. Create a deployment on Helm `helm install <release name> ./helm_chart`
+2. You can check the status of your pods with `kubectl get pods`
+3. When all pods are **Running** check the services with `minikube service list`. 
+
+To access the app you have 2 options:
+1. Directly click on the address provided through the ingress controller (the row of target port=http/80), it should take you to the sentiment app website.
+2. Run the following IP mapping locally `echo "<INGRESS CTRL IP ADDRESS> app.local" | sudo tee -a /etc/hosts`\
+  -> For example, `<INGRESS CTRL IP ADDRESS>` could be `192.168.59.100` 
+
+>Now you can access the application at `http://app.local/`
+
+### **Stop Deployment**
+1. Check what you have running `helm ls`
+2. Destroy Helm deployment `helm uninstall <release-name>`
+3. Verify everything is properly removed `kubectl get all`
 
 ## [⚙️ GitHub Actions & CI/CD](#️-github-actions--cicd)
 
