@@ -27,6 +27,7 @@ Vagrant.configure("2") do |config|
   config.vm.box = "bento/ubuntu-24.04" #base box
 
   config.ssh.insert_key = false #disable automatic key insertion
+  config.vm.synced_folder "./shared-folder", "/mnt/shared", type: "virtualbox"
 
   config.vm.define "ctrl" do |ctrl| #controller vm
     ctrl.vm.hostname = "ctrl"

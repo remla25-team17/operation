@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+        - name: app
+          image: ghcr.io/remla25-team17/app-service:latest # Use Helm instead
+          ports:
+            - containerPort: 5000 # Use Helm instead
+          envFrom:
+            - configMapRef:
+                name: app-config
+            - secretRef:
+                name: universal-secret
+                  
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app
+spec:
+  selector:
+    app: app
+  ports:
+    - name: http
+      port: 5000
+      targetPort: 5000
+  type: ClusterIP
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+data:
+  MODEL_SERVICE_URL: "http://model-service:8080" #Use Helm next: MODEL_SERVICE_URL: "{{ .Values.modelServiceUrl }}"
+  APP_SERVICE_VERSION: "0.1.0"
+  PORT: "5000"
+  HOST: "0.0.0.0"
+
