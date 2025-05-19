@@ -131,7 +131,12 @@ PR's with [NO CODE] are PR's just for readme's, comments, documents or activity.
 
 # Week 3:
 
--- Monica: --
+-- Monica --
+- Created PR: https://github.com/remla25-team17/operation/pull/43
+
+- Approved PR: https://github.com/remla25-team17/app/pull/19
+- Approved PR: https://github.com/remla25-team17/operation/pull/40
+
 
 
 -- Ana --
@@ -152,3 +157,5 @@ PR's with [NO CODE] are PR's just for readme's, comments, documents or activity.
 - Created PR: https://github.com/remla25-team17/operation/pull/41
 
 - Approved PR: https://github.com/remla25-team17/app/pull/20
+- Approved PR: https://github.com/remla25-team17/operation/pull/43
+
