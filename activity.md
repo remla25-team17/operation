@@ -133,11 +133,10 @@ PR's with [NO CODE] are PR's just for readme's, comments, documents or activity.
 
 -- Monica --
 - Created PR: https://github.com/remla25-team17/operation/pull/43
+- Created PR: https://github.com/remla25-team17/operation/pull/45 [FIX]
 
 - Approved PR: https://github.com/remla25-team17/app/pull/19
 - Approved PR: https://github.com/remla25-team17/operation/pull/40
-
-
 
 -- Ana --
 - Created PR: https://github.com/remla25-team17/operation/pull/35
@@ -150,6 +149,7 @@ PR's with [NO CODE] are PR's just for readme's, comments, documents or activity.
 
 - Approved PR: https://github.com/remla25-team17/app/pull/17 [FIX_IMPORT] (A3)
 - Approved PR: https://github.com/remla25-team17/operation/pull/41 (A3)
+- Approved PR: https://github.com/remla25-team17/operation/pull/45 [FIX] (A3)
 
 -- Matteo --
 
