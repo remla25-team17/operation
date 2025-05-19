@@ -527,3 +527,6 @@ Across this project, we have used GenAI solutions (e.g. ChatGPT, GitHub Copilot)
 - Another place that we used AI was in the `release.yml` files. Specifically, there was the issue where we did not understand why the pre-release included the changelog from the main branch but not from the `develop/` one. Hence, ChatGPT suggested to make a deep fetch request and enforce the current commit-sha.
 - Also, we used AI to write the schema specifications for the Flask API in `model-service` and validate this.
 - Lastly, we use AI for understanding various concepts that we have been working on, especially helping us understand the root cause of some issues.
+
+
+helm upgrade --install remla-app ./helm_chart --namespace default
