@@ -488,5 +488,7 @@ Across this project, we have used GenAI solutions (e.g. ChatGPT, GitHub Copilot)
 - Generating templates and suggesting content for the READMEs across all the repositories. 
 - The AI was especially helpful in debugging various issues. One place that we used this was for creating the `GitVersion.yml` file across all the repositories. The problem was that the documentation for GitVersion was scattered and outdated in some places and ChatGPT helped in retrieving up-to-date information easily. 
 - Another place that we used AI was in the `release.yml` files. Specifically, there was the issue where we did not understand why the pre-release included the changelog from the main branch but not from the `develop/` one. Hence, ChatGPT suggested to make a deep fetch request and enforce the current commit-sha.
-- Also, we used AI to write the schema specifications for the Flask API in `model-service` and validate this.
-- Lastly, we use AI for understanding various concepts that we have been working on, especially helping us understand the root cause of some issues.
+- We used AI to write the schema specifications for the Flask API in `model-service` and validate this.
+- We use AI for understanding various concepts that we have been working on, especially helping us understand the root cause of some issues.
+- We used AI to debug step 18 in `provisioning/node.yml`. If this was run on two nodes the second would give an error. The task was missing `run_once: true`.
+- We used AI to debug why the app from the helm chart was not connecting to the model-service and it suggested to change some ports to 80.
