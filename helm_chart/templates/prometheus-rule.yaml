@@ -1,0 +1,18 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: {{ .Release.Name }}-app-prometheus-rule
+  labels:
+    release: {{ .Values.monitoring.release | default "prometheus" }} 
+spec:
+  groups:
+    - name: {{ .Release.Name }}-app-rules
+      rules:
+        - alert: IncreasedAPIRequestVolume
+          expr: increase(num_requests_total[1m]) > 5
+          for: 1m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Increased API request volume detected"
+            description: "The API request volume has increased significantly in the last minute."

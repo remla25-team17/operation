@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-grafana-dashboards
+  labels:
+    grafana_dashboard: "1"
+data:
+  main_dashboard.json: |-
+{{ .Files.Get "grafana/main_dashboard.json" | indent 4 }}

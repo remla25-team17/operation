@@ -13,6 +13,7 @@ This repository contains an overview of the services and deployment procedures f
   - [🧪 Testing Kubernetes Cluster Configuration](#-testing-kubernetes-configuration)
 - [🚀 Kubernetes Orchestration and Deployment](#️-k8s-orchestration)
 - [⚓ Helm](#-helm)
+- [🔎 Monitoring](#-monitoring)
 - [⚙️ GitHub Actions & CI/CD](#️-github-actions--cicd)
 - [Use of Gen AI](#-gen-ai)
 
@@ -459,6 +460,7 @@ Make sure minikube is running. Use `minikube status` to check. If it is not runn
 1. Create a deployment on Helm `helm install <release name> ./helm_chart`
 2. You can check the status of your pods with `kubectl get pods`
 3. When all pods are **Running** check the services with `minikube service list`. 
+4. After changing values you can use `helm upgrade --install <release-name> ./helm_chart --namespace default`
 
 To access the app you have 2 options:
 1. Directly click on the address provided through the ingress controller (the row of target port=http/80), it should take you to the sentiment app website.
@@ -471,6 +473,57 @@ To access the app you have 2 options:
 1. Check what you have running `helm ls`
 2. Destroy Helm deployment `helm uninstall <release-name>`
 3. Verify everything is properly removed `kubectl get all`
+
+## [🔎 Monitoring](#-monitoring)
+
+### Prometheus Installation
+
+Follow these instruction to install Prometheus on the cluster:
+
+   ```bash
+   helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+   helm repo update
+   helm install prometheus prometheus-community/kube-prometheus-stack
+   ```
+
+Check that the ServiceMonitor resources are correctly created and the Prometheus pods are running:
+   ```bash
+  kubectl get servicemonitors -A
+  kubectl get pods -n default
+  ```
+
+### Accessing the Prometheus Dashboard
+To access the Prometheus dashbaord locally, run:
+   ```bash
+    kubectl port-forward svc/prometheus-kube-prometheus-prometheus 9090
+   ```
+
+### Available Metrics
+
+The following custom metrics are exposed by the application and can be scraped by Prometheus:
+
+| **Metric Name**       | **Type**     | **Description**                                                        |
+|-----------------------|--------------|------------------------------------------------------------------------|
+| `num_requests_total`  | Counter      | Total number of requests made to the `sentiment` API.                  |
+| `request_latency_seconds` | Histogram  | Latency distribution of `sentiment` API requests, measured in seconds. |
+| `cpu_usage_percent`   | Gauge        | Current CPU usage percentage.                       |
+| `ram_usage_percent`   | Gauge        | Current RAM usage percentage.                       |
+
+
+### Grafana Installation
+
+Run the following commands to access the Grafana dashboard and Prometheus:
+```bash
+kubectl port-forward svc/prometheus-grafana 3000:80 -n default &
+kubectl port-forward svc/prometheus-kube-prometheus-prometheus 9090:9090 -n default &
+```
+
+To manually import the app dashboard:
+1. Log in to Grafana (http://localhost:3000). (default username: admin, default password: prom-operator)
+2. Go to **Dashboards → Manage** → **Import**.
+3. Paste the contents of `grafana/main_dashboard.json`, click **Load**, then **Import**.
+4. Select your Prometheus data source when prompted.
+
 
 ## [⚙️ GitHub Actions & CI/CD](#️-github-actions--cicd)
 
@@ -491,4 +544,4 @@ Across this project, we have used GenAI solutions (e.g. ChatGPT, GitHub Copilot)
 - We used AI to write the schema specifications for the Flask API in `model-service` and validate this.
 - We use AI for understanding various concepts that we have been working on, especially helping us understand the root cause of some issues.
 - We used AI to debug step 18 in `provisioning/node.yml`. If this was run on two nodes the second would give an error. The task was missing `run_once: true`.
-- We used AI to debug why the app from the helm chart was not connecting to the model-service and it suggested to change some ports to 80.
+- We used AI to debug why the app from the helm chart was not connecting to the model-service and it suggested to change some ports to 80
