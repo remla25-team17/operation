@@ -35,8 +35,7 @@ spec:
   selector:
     app: {{ .Release.Name }}-app
   ports:
-    - name: http
-      port: {{ .Values.service.port }}
+    - port: 80
       targetPort: {{ .Values.service.port }}
 
   type: {{ .Values.service.type }}

@@ -545,6 +545,4 @@ Across this project, we have used GenAI solutions (e.g. ChatGPT, GitHub Copilot)
 - Lastly, we use AI for understanding various concepts that we have been working on, especially helping us understand the root cause of some issues.
 
 
-helm upgrade --install remla-app ./helm_chart --namespace default
-
 
