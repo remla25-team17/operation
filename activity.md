@@ -140,7 +140,8 @@ PR's with [NO CODE] are PR's just for readme's, comments, documents or activity.
 
 
 -- Ana --
-
+- Created PR: https://github.com/remla25-team17/operation/pull/35
+- Reviewd PR: https://github.com/remla25-team17/operation/pull/36
 
 -- Marina --
 - Created PR: https://github.com/remla25-team17/operation/pull/33 (A2)
