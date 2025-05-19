@@ -40,10 +40,27 @@ secrets:
 
 volume:
   enabled: true
-  hostPath: "/mnt/shared"
+  hostPath: "/test/"
 
 monitoring:
   release: prometheus
   path: /api/v1/metrics
   interval: 15s
+
+alertmanager:
+  config:
+    global:
+      resolve_timeout: 5m
+
+    route:
+      reciver: 'team17'
+
+    receivers:
+      - name: 'team17'
+        email_configs:
+          - to: 'remla25-team17@example.com'
+            from: 'remla25-team17@example.com'
+            smarthost: 'smtp.example.com:587'
+            auth_username: 'remla25-team17'
+            auth_password: {{.Values.secrets.smtpPassword }}
 
