@@ -42,7 +42,7 @@ secrets:
 
 volume:
   enabled: true
-  hostPath: "/test/"
+  hostPath: "/mnt/shared"
 
 monitoring:
   release: prometheus
