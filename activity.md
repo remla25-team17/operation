@@ -153,6 +153,13 @@ PR's with [NO CODE] are PR's just for readme's, comments, documents or activity.
 
 -- Matteo --
 
+- Created PR: https://github.com/remla25-team17/operation/pull/40
+- Created PR: https://github.com/remla25-team17/app/pull/19
+- Created PR: https://github.com/remla25-team17/app/pull/20 [FIX]
+
+- Approved PR: https://github.com/remla25-team17/operation/pull/33 [FIX]
+- Approved PR: https://github.com/remla25-team17/operation/pull/34 [FIX]
+- Approved PR: https://github.com/remla25-team17/operation/pull/35
 
 -- Jordy --
 - Created PR: https://github.com/remla25-team17/operation/pull/41
