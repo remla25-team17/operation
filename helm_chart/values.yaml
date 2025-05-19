@@ -41,3 +41,9 @@ secrets:
 volume:
   enabled: true
   hostPath: "/mnt/shared"
+
+monitoring:
+  release: prometheus
+  path: /api/v1/metrics
+  interval: 15s
+
