@@ -1,4 +1,5 @@
 # A1:
+Week 1
 
 PR's with [GITVERSIONING] or [FIX_PRELEASE] are copies of each other, these all can be counted as only 1 pr created and no reviews.
 PR's with [NO CODE] are PR's just for readme's, comments, documents or activity.md and should also not be counted as contribution
@@ -103,6 +104,7 @@ PR's with [NO CODE] are PR's just for readme's, comments, documents or activity.
 - Approved PR: https://github.com/remla25-team17/operation/pull/21
 
 # A2:
+Week 2
 
 -- Monica: --
 - Created PR: https://github.com/remla25-team17/operation/pull/30
@@ -128,3 +130,11 @@ PR's with [NO CODE] are PR's just for readme's, comments, documents or activity.
 - Created PR: https://github.com/remla25-team17/operation/pull/24
 
 - Approved PR: https://github.com/remla25-team17/operation/pull/25
+
+# A3: 
+week 3
+
+-- Jordy --
+- Created PR: https://github.com/remla25-team17/operation/pull/41
+
+- Approved PR: https://github.com/remla25-team17/app/pull/20
