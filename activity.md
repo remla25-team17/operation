@@ -110,40 +110,8 @@ Approved PR: https://github.com/remla25-team17/model-training/pull/3 (A1)
 -- Matteo: --
 
 Created PR: https://github.com/remla25-team17/app/pull/1
-
-Created PR: https://github.com/remla25-team17/app/pull/8
-
-Created PR: https://github.com/remla25-team17/app/pull/14
-
-Created PR: https://github.com/remla25-team17/app/pull/13 [NO CODE]
-
-Created PR: https://github.com/remla25-team17/app/pull/10 [NO CODE]
-
-Created PR: https://github.com/remla25-team17/app/pull/16
-
-Created PR: https://github.com/remla25-team17/operation/pull/21
   
 Approved PR: https://github.com/remla25-team17/app/pull/6
-
-Approved PR: https://github.com/remla25-team17/app/pull/11
-
-Approved PR: https://github.com/remla25-team17/lib-ml/pull/11 [FIX_PRERELEASE]
-
-Approved PR: https://github.com/remla25-team17/lib-version/pull/5 [FIX_PRERELEASE]
-
-Approved PR: https://github.com/remla25-team17/app/pull/3 [GITVERSIONING]
-
-Approved PR: https://github.com/remla25-team17/app/pull/9 [FIX_PRERELEASE]
-
-Approved PR: https://github.com/remla25-team17/lib-ml/pull/10
-
-Approved PR: https://github.com/remla25-team17/lib-version/pull/6 [NO CODE]
-
-Approved PR: https://github.com/remla25-team17/lib-version/pull/7 [NO CODE]
-
-Approved PR: https://github.com/remla25-team17/app/pull/15
-
-Approved PR: https://github.com/remla25-team17/operation/pull/20 [NO CODE]
 
 -- Jordy: --
 
@@ -237,15 +205,7 @@ Approved PR: https://github.com/remla25-team17/operation/pull/45 [FIX] (A3)
 
 -- Matteo: --
 
-Created PR: https://github.com/remla25-team17/operation/pull/40
-
 Created PR: https://github.com/remla25-team17/app/pull/19
-
-Created PR: https://github.com/remla25-team17/app/pull/20 [FIX]
-
-Approved PR: https://github.com/remla25-team17/operation/pull/33 [FIX]
-
-Approved PR: https://github.com/remla25-team17/operation/pull/34 [FIX]
 
 Approved PR: https://github.com/remla25-team17/operation/pull/35
 
@@ -274,9 +234,9 @@ Approved PR:
 
 -- Matteo: --
 
-Created PR:
+Created PR: https://github.com/remla25-team17/model-training/pull/6
 
-Approved PR: 
+Approved PR: https://github.com/remla25-team17/model-training/pull/4
 
 -- Marina: --
 
