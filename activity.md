@@ -116,28 +116,8 @@ Approved PR: https://github.com/remla25-team17/app/pull/6
 -- Jordy: --
 
 Created PR: https://github.com/remla25-team17/model-training/pull/3
-
-Created PR: https://github.com/remla25-team17/model-service/pull/13
-
-Created PR: https://github.com/remla25-team17/model-service/pull/11
-
-Created PR: https://github.com/remla25-team17/operation/pull/13 [NO CODE]
-
-Created PR: https://github.com/remla25-team17/model-service/pull/14
-
-Created PR: https://github.com/remla25-team17/lib-ml/pull/10
   
 Approved PR: https://github.com/remla25-team17/model-service/pull/12
-
-Approved PR: https://github.com/remla25-team17/lib-ml/pull/11 [FIX_PRERELEASE]
-
-Approved PR: https://github.com/remla25-team17/lib-version/pull/5 [FIX_PRERELEASE]
-
-Approved PR: https://github.com/remla25-team17/app/pull/9 [FIX_PRERELEASE]
-
-Approved PR: https://github.com/remla25-team17/app/pull/16
-
-Approved PR: https://github.com/remla25-team17/operation/pull/21
 
 # Week 3:
 
@@ -213,8 +193,6 @@ Approved PR: https://github.com/remla25-team17/operation/pull/35
 
 Created PR: https://github.com/remla25-team17/operation/pull/41
 
-Approved PR: https://github.com/remla25-team17/app/pull/20
-
 Approved PR: https://github.com/remla25-team17/operation/pull/43
 
 
@@ -228,9 +206,9 @@ Approved PR: https://github.com/remla25-team17/model-training/pull/6
 
 -- Jordy: --
 
-Created PR:
+Created PR: https://github.com/remla25-team17/model-training/pull/8
 
-Approved PR: 
+Approved PR: https://github.com/remla25-team17/model-training/pull/9
 
 -- Matteo: --
 
