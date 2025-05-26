@@ -1,37 +1,28 @@
 # Week 2:
 
-PR's with [GITVERSIONING] or [FIX_PRELEASE] are copies of each other, these all can be counted as only 1 pr created and no reviews.
-PR's with [NO CODE] are PR's just for readme's, comments, documents or activity.md and should also not be counted as contribution
-
 -- Monica: --
 
-Created PR: https://github.com/remla25-team17/lib-version/pull/4
+Created PR: https://github.com/remla25-team17/lib-version/pull/4 (A1)
 
-Created PR: https://github.com/remla25-team17/lib-version/pull/7 [NO CODE]
+Created PR: https://github.com/remla25-team17/app/pull/6 (A1)
 
-Created PR: https://github.com/remla25-team17/lib-version/pull/6 [NO CODE]
+Created PR: https://github.com/remla25-team17/app/pull/11 (A1)
 
-Created PR: https://github.com/remla25-team17/app/pull/6
-
-Created PR: https://github.com/remla25-team17/app/pull/11
-
-Created PR: https://github.com/remla25-team17/app/pull/15
+Created PR: https://github.com/remla25-team17/app/pull/15 (A1)
   
-Approved PR: https://github.com/remla25-team17/app/pull/1
+Approved PR: https://github.com/remla25-team17/app/pull/1 (A1)
 
-Approved PR: https://github.com/remla25-team17/app/pull/8
+Approved PR: https://github.com/remla25-team17/app/pull/8 (A1)
 
-Approved PR: https://github.com/remla25-team17/app/pull/12
-
-Approved PR: https://github.com/remla25-team17/app/pull/13 [NO CODE]
+Approved PR: https://github.com/remla25-team17/app/pull/12 (A1)
 
 -- Ana: --
 
-Created PR: https://github.com/remla25-team17/model-service/pull/12
+Created PR: https://github.com/remla25-team17/model-service/pull/12 (A1)
 
-Created PR: https://github.com/remla25-team17/operation/pull/5
+Created PR: https://github.com/remla25-team17/operation/pull/5 (A1)
 
-Approved PR: https://github.com/remla25-team17/model-service/pull/6
+Approved PR: https://github.com/remla25-team17/model-service/pull/6 (A1)
 
 -- Marina: --
 
@@ -41,9 +32,9 @@ Approved PR: https://github.com/remla25-team17/app/pull/14 (A1)
 
 -- Matteo: --
 
-Created PR: https://github.com/remla25-team17/app/pull/1
+Created PR: https://github.com/remla25-team17/app/pull/1 (A1)
   
-Approved PR: https://github.com/remla25-team17/app/pull/6
+Approved PR: https://github.com/remla25-team17/app/pull/6 (A1)
 
 -- Jordy: --
 
@@ -55,15 +46,15 @@ Approved PR: https://github.com/remla25-team17/model-service/pull/12 (A1)
 
 -- Monica: --
 
-Created PR: https://github.com/remla25-team17/operation/pull/30
+Created PR: https://github.com/remla25-team17/operation/pull/30 (A2)
 
-Approved PR: https://github.com/remla25-team17/operation/pull/28
+Approved PR: https://github.com/remla25-team17/operation/pull/28 (A2)
 
 -- Ana: --
 
-Created PR: https://github.com/remla25-team17/operation/pull/27
+Created PR: https://github.com/remla25-team17/operation/pull/27 (A2)
 
-Approved PR: https://github.com/remla25-team17/operation/pull/30
+Approved PR: https://github.com/remla25-team17/operation/pull/30 (A2)
 
 -- Marina: --
 
@@ -73,9 +64,9 @@ Approved PR: https://github.com/remla25-team17/operation/pull/24 (A2)
 
 -- Matteo: --
 
-Created PR: https://github.com/remla25-team17/operation/pull/28
+Created PR: https://github.com/remla25-team17/operation/pull/28 (A2)
 
-Approved PR: https://github.com/remla25-team17/operation/pull/27
+Approved PR: https://github.com/remla25-team17/operation/pull/27 (A2)
 
 -- Jordy: --
 
@@ -87,19 +78,19 @@ Approved PR: https://github.com/remla25-team17/operation/pull/25 (A2)
 
 -- Monica: --
 
-Created PR: https://github.com/remla25-team17/operation/pull/43
+Created PR: https://github.com/remla25-team17/operation/pull/43 (A3)
 
-Created PR: https://github.com/remla25-team17/operation/pull/45 [FIX]
+Created PR: https://github.com/remla25-team17/operation/pull/45 (A2)
 
-Approved PR: https://github.com/remla25-team17/app/pull/19
+Approved PR: https://github.com/remla25-team17/app/pull/19 (A3)
 
-Approved PR: https://github.com/remla25-team17/operation/pull/40
+Approved PR: https://github.com/remla25-team17/operation/pull/40 (A3)
 
 -- Ana: --
 
-Created PR: https://github.com/remla25-team17/operation/pull/35
+Created PR: https://github.com/remla25-team17/operation/pull/35 (A3)
 
-Reviewd PR: https://github.com/remla25-team17/operation/pull/36
+Reviewd PR: https://github.com/remla25-team17/operation/pull/36 (A3)
 
 -- Marina: --
 
@@ -109,9 +100,9 @@ Approved PR: https://github.com/remla25-team17/operation/pull/41 (A3)
 
 -- Matteo: --
 
-Created PR: https://github.com/remla25-team17/app/pull/19
+Created PR: https://github.com/remla25-team17/app/pull/19 (A3)
 
-Approved PR: https://github.com/remla25-team17/operation/pull/35
+Approved PR: https://github.com/remla25-team17/operation/pull/35 (A3)
 
 -- Jordy: --
 
@@ -124,9 +115,9 @@ Approved PR: https://github.com/remla25-team17/operation/pull/43 (A3)
 
 -- Ana: --
 
-Created PR: https://github.com/remla25-team17/model-training/pull/7 (related to A4)
+Created PR: https://github.com/remla25-team17/model-training/pull/7 (A4)
 
-Approved PR: https://github.com/remla25-team17/model-training/pull/6
+Approved PR: https://github.com/remla25-team17/model-training/pull/6 (A4)
 
 -- Jordy: --
 
@@ -136,9 +127,9 @@ Approved PR: https://github.com/remla25-team17/model-training/pull/9 (A4)
 
 -- Matteo: --
 
-Created PR: https://github.com/remla25-team17/model-training/pull/6
+Created PR: https://github.com/remla25-team17/model-training/pull/6 (A4)
 
-Approved PR: https://github.com/remla25-team17/model-training/pull/4
+Approved PR: https://github.com/remla25-team17/model-training/pull/4 (A4)
 
 -- Marina: --
 
@@ -148,6 +139,6 @@ Approved PR: https://github.com/remla25-team17/model-training/pull/7 (A4)
 
 -- Monica: --
 
-Created PR: https://github.com/remla25-team17/model-training/pull/9
+Created PR: https://github.com/remla25-team17/model-training/pull/9 (A4)
 
-Approved PR: https://github.com/remla25-team17/model-training/pull/8
+Approved PR: https://github.com/remla25-team17/model-training/pull/8 (A4)
