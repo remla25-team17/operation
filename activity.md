@@ -35,41 +35,9 @@ Approved PR: https://github.com/remla25-team17/model-service/pull/6
 
 -- Marina: --
 
-Created PR: https://github.com/remla25-team17/app/pull/12 (A1)
-
-Created PR: https://github.com/remla25-team17/operation/pull/16 (A1)
-
-Created PR: https://github.com/remla25-team17/operation/pull/19 (A1)
-
-Created PR: https://github.com/remla25-team17/model-service/pull/6 (A1)
-
-Created PR: https://github.com/remla25-team17/model-service/pull/15 [FIXING_ENV_VARIABLES] (A1)
-
 Created PR: https://github.com/remla25-team17/lib-ml/pull/5 (A1. This PR set up the lib_ml.)
 
-Created PR: https://github.com/remla25-team17/lib-ml/pull/8 [FIX_BUILD] (A1)
-
 Approved PR: https://github.com/remla25-team17/app/pull/14 (A1)
-
-Approved PR: https://github.com/remla25-team17/app/pull/10 [NO CODE] (A1)
-
-Approved PR: https://github.com/remla25-team17/operation/pull/2 [GITVERSIONING] (A1)
-
-Approved PR: https://github.com/remla25-team17/operation/pull/5 (A1)
-
-Approved PR: https://github.com/remla25-team17/lib-version/pull/2 [GITVERSIONING] (A1)
-
-Approved PR: https://github.com/remla25-team17/model-service/pull/1 [GITVERSIONING] (A1)
-
-Approved PR: https://github.com/remla25-team17/model-service/pull/13 (A1)
-
-Approved PR: https://github.com/remla25-team17/model-service/pull/14 (A1)
-
-Approved PR: https://github.com/remla25-team17/lib-ml/pull/7 [GITVERSIONING] (A1)
-
-Approved PR: https://github.com/remla25-team17/model-training/pull/2 [GITVERSIONING] (A1)
-
-Approved PR: https://github.com/remla25-team17/model-training/pull/3 (A1)
 
 -- Matteo: --
 
@@ -135,17 +103,9 @@ Reviewd PR: https://github.com/remla25-team17/operation/pull/36
 
 -- Marina: --
 
-Created PR: https://github.com/remla25-team17/operation/pull/33 (A2)
-
-Created PR: https://github.com/remla25-team17/operation/pull/34 (A2)
-
 Created PR: https://github.com/remla25-team17/operation/pull/36 (A3. This PR contributes to making the Helm chart.)
 
-Approved PR: https://github.com/remla25-team17/app/pull/17 [FIX_IMPORT] (A3)
-
 Approved PR: https://github.com/remla25-team17/operation/pull/41 (A3)
-
-Approved PR: https://github.com/remla25-team17/operation/pull/45 [FIX] (A3)
 
 -- Matteo: --
 
@@ -182,9 +142,9 @@ Approved PR: https://github.com/remla25-team17/model-training/pull/4
 
 -- Marina: --
 
-Created PR:
+Created PR: https://github.com/remla25-team17/model-training/pull/4 (A4. This PR creates the training files and creates the cookiecutter template.)
 
-Approved PR: 
+Approved PR: https://github.com/remla25-team17/model-training/pull/7 (A4)
 
 -- Monica: --
 
