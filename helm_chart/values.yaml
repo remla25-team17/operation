@@ -4,7 +4,8 @@ app:
   version: "0.1.0"
   image:
     repository: "ghcr.io/remla25-team17/app-service"
-    tag: "latest"
+    tag1: "latest"
+    tag2: "latest"
     pullPolicy: IfNotPresent
   # This will now reference the templated service name
   modelServiceUrl: "http://{{ .Release.Name }}-model-service"
@@ -15,13 +16,12 @@ model:
   version: "0.1.2"
   image:
     repository: "ghcr.io/remla25-team17/model-service"
-    tag: "latest"
+    tag1: "latest"
+    tag2: "latest"
     pullPolicy: IfNotPresent
-  modelUrl: "https://github.com/remla25-team17/model-training/
-  releases/download/0.1.2/model.pkl"
+  modelUrl: "https://github.com/remla25-team17/model-training/releases/download/0.1.2/model.pkl"
   modelPath: "model/model.pkl"
-  bowUrl: "https://github.com/remla25-team17/model-training/
-  releases/download/0.1.2/bag_of_words.pkl"
+  bowUrl: "https://github.com/remla25-team17/model-training/releases/download/0.1.2/bag_of_words.pkl"
   bowPath: "model/bag_of_words.pkl"
 
 service:
@@ -42,7 +42,7 @@ secrets:
 
 volume:
   enabled: true
-  hostPath: "/mnt/shared"
+  hostPath: /mnt/shared
 
 monitoring:
   release: prometheus

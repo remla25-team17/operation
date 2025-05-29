@@ -1,20 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-model-service
+  name: {{ .Release.Name }}-model-service-v1
+  labels: 
+    app: {{ .Release.Name }}-model-service
+    version: v1 
 spec:
   replicas: {{ .Values.model.replicas | default 1 }}
   selector:
     matchLabels:
       app: {{ .Release.Name }}-model-service
+      version: v1
   template:
     metadata:
       labels:
         app: {{ .Release.Name }}-model-service
+        version: v1
     spec:
       containers:
         - name: {{ .Release.Name }}-model-service
-          image: {{ .Values.model.image.repository }}:{{ .Values.model.image.tag }}
+          image: {{ .Values.model.image.repository }}:{{ .Values.model.image.tag1 }}
           imagePullPolicy: {{ .Values.model.image.pullPolicy }}
           ports:
             - containerPort: {{ .Values.backendService.port }}
@@ -25,17 +30,59 @@ spec:
                 name: {{ .Release.Name }}-secret
           volumeMounts:
             - name: shared-volume
-              mountPath: /app/shared
+              mountPath: /mnt/shared
       volumes:
         - name: shared-volume
           {{- if .Values.volume.enabled }}
           hostPath:
             path: {{ .Values.volume.hostPath }}
-            type: Directory
           {{- else }}
           emptyDir: {}
           {{- end }}
             
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-model-service-v2
+  labels: 
+    app: {{ .Release.Name }}-model-service
+    version: v2
+spec:
+  replicas: {{ .Values.model.replicas | default 1 }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-model-service
+      version: v2
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-model-service
+        version: v2
+    spec:
+      containers:
+        - name: {{ .Release.Name }}-model-service
+          image: {{ .Values.model.image.repository }}:{{ .Values.model.image.tag2 }}
+          imagePullPolicy: {{ .Values.model.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.backendService.port }}
+          envFrom:
+            - configMapRef:
+                name: {{ .Release.Name }}-model-service-config
+            - secretRef:
+                name: {{ .Release.Name }}-secret
+          volumeMounts:
+            - name: shared-volume
+              mountPath: /mnt/shared
+      volumes:
+        - name: shared-volume
+          {{- if .Values.volume.enabled }}
+          hostPath:
+            path: {{ .Values.volume.hostPath }}
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
+
 ---
 apiVersion: v1
 kind: Service
