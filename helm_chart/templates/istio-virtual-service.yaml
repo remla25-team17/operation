@@ -7,8 +7,22 @@ spec:
   hosts: [ "*" ]
   http:
   - match:
-    - uri: { prefix: / }
+    - headers:
+        x-end-user:
+          exact: "user1"
     route:
+    - destination: 
+        host: {{ .Release.Name }}-app
+        subset: v1
+    - headers:
+        x-end-user:
+          exact: "user2"
+    route:
+    - destination: 
+        host: {{ .Release.Name }}-app
+        subset: v2
+
+  - route:
     - destination: 
         host: {{ .Release.Name }}-app
         subset: v1 
