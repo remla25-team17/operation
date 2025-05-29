@@ -13,6 +13,7 @@ This repository contains an overview of the services and deployment procedures f
   - [🧪 Testing Kubernetes Cluster Configuration](#-testing-kubernetes-configuration)
 - [🚀 Kubernetes Orchestration and Deployment](#️-k8s-orchestration)
 - [⚓ Helm](#-helm)
+- [🌐 Istio Traffic Routing](#-istio-traffic-routing)
 - [🔎 Monitoring](#-monitoring)
 - [⚙️ GitHub Actions & CI/CD](#️-github-actions--cicd)
 - [Use of Gen AI](#-gen-ai)
@@ -31,39 +32,69 @@ operation/
 │   ├── app.env                # App service environment variables
 │   └── model-service.env      # Model service environment variables
 │
-├── model/                     # Directory for machine learning model
-│   └── model.pkl              # Trained sentiment analysis model file
+├── helm_chart/                # Helm chart for Kubernetes deployment
+│   ├── Chart.yaml             # Chart metadata
+│   ├── values.yaml            # Default configuration values
+│   ├── grafana/               # Grafana dashboard definitions
+│   │   └── main_dashboard.json # Main monitoring dashboard
+│   └── templates/             # Kubernetes resource templates
+│       ├── app-deployment.yaml            # App service deployment
+│       ├── app-destinationrule.yaml       # Istio destination rules for app
+│       ├── app-ingress.yaml               # Ingress for app service
+│       ├── app-service-monitor.yaml       # Prometheus monitoring config
+│       ├── istio-gateway.yaml             # Istio gateway configuration
+│       ├── istio-virtual-service.yaml     # Istio traffic routing rules
+│       ├── model-service-deployment.yaml  # Model service deployment
+│       ├── model-service-destinationrule.yaml # Istio rules for model service
+│       ├── model-service-virtualservice.yaml  # Istio routing for model service
+│       ├── prometheus-rule.yaml           # Prometheus alerting rules
+│       ├── secrets.yaml                   # Secret management
+│       └── additional configuration files...
 │
-├── bag_of_words/              # Directory for bag of words model
-│   └── bag_of_words.pkl       # Bag of words vectorizer file
-│
-├── k8s/                       # Kubernetes resources 
-│   ├── app-deployment.yaml    
-│   ├── app-ingress.yaml
-│   └── model-service-deployment.yaml
+├── k8s/                       # Kubernetes resources for direct application
+│   ├── app-deployment.yaml    # App service deployment
+│   ├── app-ingress.yaml       # Ingress configuration
+│   └── model-service-deployment.yaml # Model service deployment
 │
 ├── provisioning/              # Ansible playbooks for K8s configuration
-│   ├── ansible.cfg            # Ansible configuration
 │   ├── ctrl.yml               # Controller node configuration
 │   ├── general.yml            # General node configuration
-│   ├── inventory.cfg          # Node inventory file
-│   └── node.yml               # Worker node configuration
+│   ├── node.yml               # Worker node configuration
+│   ├── finalization.yml       # Final cluster setup
+│   ├── istioconfig.yml        # Istio service mesh configuration
+│   ├── ip-address-pool.yaml   # MetalLB IP configuration
+│   ├── l2-advertisement.yaml  # MetalLB L2 configuration
+│   ├── certificate-issuer.yaml # Certificate management
+│   ├── dashboard-adminuser.yml # Kubernetes dashboard user
+│   ├── dashboard-ingress.yaml  # Dashboard access configuration
+│   └── templates/             # Template files for provisioning
+│       └── hosts.j2           # Host template
 │
 ├── public-keys/               # SSH public keys for VM access
+│   └── id_ed25519_*.pub       # Team member public keys
 │
-├── secretsDocker/             # Secret files for secure Docker deployment
-│   └── example_secret.txt     # Example secret file
-│
-├── scripts/
-│   ├── run.bash               # Script to set up SSH keys and start VMs          
+├── scripts/                   # Utility scripts
+│   ├── run.bash               # Script to set up SSH keys and start VMs
 │   ├── generate_key.bash      # Script to generate SSH keys
 │   ├── destroy.bash           # Script to tear down VMs
 │   └── config_k8s.sh          # Script to setup local K8s connection
 │
-├── docker-compose.yml         # Main Docker Compose file defining services and networks
-├── Vagrantfile                # VM provisioning for Kubernetes cluster
+├── secretsDocker/             # Secret files for secure Docker deployment
+│   └── example_secret.txt     # Example secret file
 │
+├── shared-folder/             # Shared volume mount for VMs
+│   └── readme.txt             # Shared folder documentation
+│
+├── ssh/                       # SSH keys for VM authentication
+│   ├── id_rsa                 # Private key
+│   └── id_rsa.pub             # Public key
+│
+├── docker-compose.yml         # Docker Compose file for local deployment
+├── Vagrantfile                # VM provisioning for Kubernetes cluster
+├── admin.conf                 # Kubernetes admin configuration
 ├── GitVersion.yml             # Configuration for semantic versioning
+├── activity.md                # Team activity tracking
+├── Project-information.md     # Project overview and requirements
 ├── README.md                  # This documentation file
 └── LICENSE                    # MIT license file
 ```
@@ -454,13 +485,35 @@ kubectl describe ingress app-ingress
 
 ## [⚓ Helm](#-helm)
 
-### **Create Deployment**
+#### Prerequisites
+
+Follow these instruction to install Prometheus on the cluster. This will be later needed for Prometheus also:
+
+   ```bash
+   helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+   helm repo update
+   helm install prometheus prometheus-community/kube-prometheus-stack
+   ```
+
+### **Create Helm Deployment**
 Make sure minikube is running. Use `minikube status` to check. If it is not running, start it with `minikube start`
 
-1. Create a deployment on Helm `helm install <release name> ./helm_chart`
-2. You can check the status of your pods with `kubectl get pods`
-3. When all pods are **Running** check the services with `minikube service list`. 
-4. After changing values you can use `helm upgrade --install <release-name> ./helm_chart --namespace default`
+1. Create a deployment on Helm 
+```bash
+helm install <release name> ./helm_chart
+```
+2. You can check the status of your pods with 
+```bash
+kubectl get pods
+```
+3. When all pods are **Running** check the services with 
+```bash 
+minikube service list
+``` 
+4. After changing values you can use 
+```bash
+helm upgrade --install <release-name> ./helm_chart --namespace default
+```
 
 To access the app you have 2 options:
 1. Directly click on the address provided through the ingress controller (the row of target port=http/80), it should take you to the sentiment app website.
@@ -469,10 +522,98 @@ To access the app you have 2 options:
 
 >Now you can access the application at `http://app.local/`
 
-### **Stop Deployment**
-1. Check what you have running `helm ls`
-2. Destroy Helm deployment `helm uninstall <release-name>`
-3. Verify everything is properly removed `kubectl get all`
+### **Stop Helm Deployment**
+1. Check what you have running 
+```bash
+helm ls
+```
+2. Destroy Helm deployment 
+```bash
+helm uninstall <release-name>
+```
+3. Verify everything is properly removed 
+```bash
+kubectl get all
+```
+
+## [🌐 Istio Traffic Routing](#-istio-traffic-routing)
+
+Istio provides advanced traffic management capabilities for your microservices, enabling intelligent routing, canary deployments, and A/B testing without changing your application code.
+
+### Setting up Istio with Minikube
+
+#### 1. Start Minikube with Sufficient Resources
+
+```bash
+minikube start --memory=4096 --cpus=4 --driver=docker
+```
+
+#### 2. Install Istio
+
+First, download the latest release (1.26.0) of Istio from https://istio.io/latest/docs/setup/install/istioctl/ 
+Now install Istio in your cluster after ensuring minikube is running:
+```bash
+istioctl install
+```
+
+#### 3. Deploy the Application with Helm
+
+Install the application using our Helm chart:
+
+```bash
+helm install <release name> ./helm_chart
+```
+
+- You can check the status of your pods with `kubectl get pods`
+
+This will deploy both versions of the application and model service with Istio sidecars.
+
+#### 6. Access the Application
+
+To access the app you have 2 options:
+1. When all pods are **Running** check the services with 
+```bash
+minikube service list
+``` 
+Directly click on the address provided through the istio-ingressgateway (the row of target port=http2/80), it should take you to the sentiment app website.
+
+2. Enable Istio ingress gateway access in Minikube:
+
+```bash
+minikube tunnel
+```
+
+Get the Istio ingress gateway address:
+
+```bash
+kubectl get svc istio-ingressgateway -n istio-system
+```
+
+Add an entry to your hosts file:
+
+```bash
+echo "$(kubectl get svc istio-ingressgateway -n istio-system -o jsonpath='{.status.loadBalancer.ingress[0].ip}') app.local" | sudo tee -a /etc/hosts
+```
+
+Now you can access the application at `http://app.local/`
+
+### Testing Traffic Routing
+
+Our Istio setup includes advanced traffic routing capabilities:
+
+1. **Header-Based Routing**: Users can be directed to specific versions based on HTTP headers:
+   - Requests with header `x-end-user: user1` go to version v1
+   - Requests with header `x-end-user: user2` go to version v2
+
+   Test with:
+   ```bash
+   curl -H "x-end-user: user1" http://app.local/
+   curl -H "x-end-user: user2" http://app.local/
+   ```
+
+2. **Weighted Traffic Splitting**: By default, traffic is split 90/10 between v1 and v2.
+
+This traffic management is defined in the VirtualService resource and doesn't require any changes to the application code.
 
 ## [🔎 Monitoring](#-monitoring)
 
