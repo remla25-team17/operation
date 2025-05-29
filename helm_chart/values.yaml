@@ -6,9 +6,8 @@ app:
     repository: "ghcr.io/remla25-team17/app-service"
     tag1: "latest"
     tag2: "latest"
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
   # This will now reference the templated service name
-  modelServiceUrl: "http://{{ .Release.Name }}-model-service"
 
 model:
   name: model-service
@@ -18,7 +17,7 @@ model:
     repository: "ghcr.io/remla25-team17/model-service"
     tag1: "latest"
     tag2: "latest"
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
   modelUrl: "https://github.com/remla25-team17/model-training/releases/download/0.1.2/model.pkl"
   modelPath: "model/model.pkl"
   bowUrl: "https://github.com/remla25-team17/model-training/releases/download/0.1.2/bag_of_words.pkl"

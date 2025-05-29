@@ -22,7 +22,7 @@ spec:
           image: {{ .Values.model.image.repository }}:{{ .Values.model.image.tag1 }}
           imagePullPolicy: {{ .Values.model.image.pullPolicy }}
           ports:
-            - containerPort: {{ .Values.backendService.port }}
+            - containerPort: 80
           envFrom:
             - configMapRef:
                 name: {{ .Release.Name }}-model-service-config
@@ -92,7 +92,9 @@ spec:
   selector:
     app: {{ .Release.Name }}-model-service
   ports:
-    - port: 80
+    - name: http
+      protocol: TCP
+      port: {{ .Values.backendService.port }}
       targetPort: {{ .Values.backendService.port }}
   type: {{ .Values.service.type }}
 
