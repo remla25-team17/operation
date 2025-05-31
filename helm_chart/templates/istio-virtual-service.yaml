@@ -1,0 +1,33 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: {{ .Release.Name }}-virtualservice
+spec:
+  gateways: [ "{{ .Release.Name }}-gateway" ]
+  hosts: [ "*" ]
+  http:
+  - match:
+    - headers:
+        x-end-user:
+          exact: "user1"
+    route:
+    - destination: 
+        host: {{ .Release.Name }}-app
+        subset: v1
+    - headers:
+        x-end-user:
+          exact: "user2"
+    route:
+    - destination: 
+        host: {{ .Release.Name }}-app
+        subset: v2
+
+  - route:
+    - destination: 
+        host: {{ .Release.Name }}-app
+        subset: v1 
+      weight: 90
+    - destination: 
+        host: {{ .Release.Name }}-app
+        subset: v2 
+      weight: 10

@@ -1,20 +1,57 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-app
+  name: {{ .Release.Name }}-app-v1
+  labels:
+    app: {{ .Release.Name }}-app
+    version: v1
 spec:
   replicas: {{ .Values.app.replicas | default 1 }}
   selector:
     matchLabels:
       app: {{ .Release.Name }}-app
+      version: v1
   template:
     metadata:
       labels:
         app: {{ .Release.Name }}-app
+        version: v1
     spec:
       containers:
         - name: {{ .Release.Name }}-app
-          image: {{ .Values.app.image.repository }}:{{ .Values.app.image.tag }}
+          image: {{ .Values.app.image.repository }}:{{ .Values.app.image.tag1 }}
+          imagePullPolicy: {{ .Values.app.image.pullPolicy }}
+          ports:
+            - containerPort: {{ .Values.service.port }}
+          envFrom:
+            - configMapRef:
+                name: {{ .Release.Name }}-app-config
+            - secretRef:
+                name: {{ .Release.Name }}-secret
+                
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-app-v2
+  labels:
+    app: {{ .Release.Name }}-app
+    version: v2
+spec:
+  replicas: {{ .Values.app.replicas | default 1 }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}-app
+      version: v2
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}-app
+        version: v2
+    spec:
+      containers:
+        - name: {{ .Release.Name }}-app
+          image: {{ .Values.app.image.repository }}:{{ .Values.app.image.tag2 }}
           imagePullPolicy: {{ .Values.app.image.pullPolicy }}
           ports:
             - containerPort: {{ .Values.service.port }}
@@ -35,7 +72,9 @@ spec:
   selector:
     app: {{ .Release.Name }}-app
   ports:
-    - port: 80
+    - name: http
+      protocol: TCP
+      port: 80
       targetPort: {{ .Values.service.port }}
 
   type: {{ .Values.service.type }}
@@ -46,7 +85,7 @@ kind: ConfigMap
 metadata:
   name: {{ .Release.Name }}-app-config
 data:
-  MODEL_SERVICE_URL: "{{ .Values.app.modelServiceUrl }}:{{ .Values.backendService.port }}"
+  MODEL_SERVICE_URL: "http://{{ .Release.Name }}-model-service:{{ .Values.backendService.port }}"
   APP_SERVICE_VERSION: "{{ .Values.app.version }}"
   PORT: "{{ .Values.service.port }}"
   HOST: "{{ .Values.service.host }}"
