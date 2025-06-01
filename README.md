@@ -556,7 +556,16 @@ Now install Istio in your cluster after ensuring minikube is running:
 istioctl install
 ```
 
-#### 3. Deploy the Application with Helm
+#### 3. apply prometheus
+
+```bash
+   helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+   helm repo update
+   helm install prometheus prometheus-community/kube-prometheus-stack
+```
+
+
+#### 4. Deploy the Application with Helm
 
 Install the application using our Helm chart:
 
