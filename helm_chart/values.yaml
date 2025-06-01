@@ -4,8 +4,8 @@ app:
   version: "0.1.0"
   image:
     repository: "ghcr.io/remla25-team17/app-service"
-    tag1: "latest"
-    tag2: "latest"
+    tag1: "0.1.16"
+    tag2: "0.1.17"
     pullPolicy: Always
   # This will now reference the templated service name
 
