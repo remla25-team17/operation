@@ -606,7 +606,7 @@ Now you can access the application at `http://app.local/`
 We also offer the per-user [rate limiting](https://istio.io/latest/docs/tasks/policy-enforcement/rate-limit/) Istio functionality (e.g., block users who send more than 2 requests per minute). In this implementation, when a request arrives at the Istio ingress gateway (e.g., app.local:80), Envoy (the proxy used by Istio) calls an external rate limiting service via gRPC to check if the request should be allowed. This service uses a ConfigMap to define rate our limiting rule. To enable this behavior, one EnvoyFilter is applied to the ingress gateway to insert Envoy’s rate limit HTTP filter, which connects Envoy to the external service. A second EnvoyFilter is applied to define the route-level configuration, specifying which headers (like x-end-user) to use as rate limiting keys. This setup ensures that rate limits are enforced globally at the ingress layer, preventing excessive usage by individual users before traffic reaches any backend services.
 
 #### 1. Deploy the Rate Limiting ConfigMap
-This is already deplyed (`helm_chart/templates/istio-rate-limit-envoy.`) if you followed the Helm chart release. The `ConfigMap` defined the rate limiting rule that will be applied: allow 2 requests per minute per user (based on the x-end-user header)
+This is already deployed (`helm_chart/templates/istio-rate-limit-envoy.`) if you followed the Helm chart release. The `ConfigMap` defined the rate limiting rule that will be applied: allow 2 requests per minute per user (based on the x-end-user header)
 
 #### 2. Deploy Envoy's Rate Limit Service 
 Wait untill the redis and ratelimit pods are created:
