@@ -7,7 +7,7 @@ This document describes an experiment comparing average input text length betwee
 ## Base Design vs. Experiment
 
 ### Base Design (v1)
-The original version of the app (v1 or app service version 0.1.16) features a simple text input field with no visual cues on input length.
+The original version of the app (v1 or app service version 0.1.18) features a simple text input field with no visual cues on input length.
 
 ### Experiment Changes (v2)
 THe new version (v2 or app service version 0.1.17) introduces the following changes:
@@ -16,6 +16,9 @@ THe new version (v2 or app service version 0.1.17) introduces the following chan
 - Increased the size of the input box to encourage more detailed responses
 - Add a message in the UI encouraging more detailed responses
 
+![img.png](new_version_screenshot_1.png)
+
+![img_1.png](new_version_screenshot_2.png)
 
 ## Falsifiable Hypothesis
 
@@ -67,7 +70,4 @@ To manually import the app dashboard:
 Below is a screenshot of our Grafana dashboard showing the comparison between v1 and v2:
 
 ![Input Length Comparison Experiment Dashboard]()
-
-
-
 
