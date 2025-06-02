@@ -69,5 +69,5 @@ To manually import the app dashboard:
 
 Below is a screenshot of our Grafana dashboard showing the comparison between v1 and v2:
 
-![Input Length Comparison Experiment Dashboard]()
+![Input Length Comparison Experiment Dashboard](dashboard_screenshot.png))
 

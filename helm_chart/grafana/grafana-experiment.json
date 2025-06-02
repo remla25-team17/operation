@@ -1,11 +1,24 @@
 {
   "annotations": {
-    "list": []
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
   },
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": null,
+  "id": 31,
   "links": [],
   "panels": [
     {
@@ -15,16 +28,15 @@
       },
       "fieldConfig": {
         "defaults": {
-          "unit": "short",
           "color": {
             "mode": "thresholds"
           },
+          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "orange",
@@ -35,7 +47,8 @@
                 "value": 200
               }
             ]
-          }
+          },
+          "unit": "short"
         },
         "overrides": []
       },
@@ -47,6 +60,11 @@
       },
       "id": 1,
       "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -54,31 +72,30 @@
           "fields": "",
           "values": false
         },
-        "orientation": "horizontal",
+        "showPercentChange": false,
         "textMode": "nameAndValue",
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "center"
+        "wideLayout": true
       },
       "pluginVersion": "12.0.0+security-01",
       "targets": [
         {
           "expr": "sum(rate(input_text_length_sum{app_service_version=\"0.1.18\"}[5m])) / sum(rate(input_text_length_count{app_service_version=\"0.1.18\"}[5m]))",
-          "refId": "A",
           "instant": true,
-          "legendFormat": "v1 (0.1.18)"
+          "legendFormat": "v1 (0.1.18)",
+          "refId": "A"
         },
         {
           "expr": "sum(rate(input_text_length_sum{app_service_version=\"0.1.17\"}[5m])) / sum(rate(input_text_length_count{app_service_version=\"0.1.17\"}[5m]))",
-          "refId": "B",
           "instant": true,
-          "legendFormat": "v2 (0.1.17)"
+          "legendFormat": "v2 (0.1.17)",
+          "refId": "B"
         }
       ],
-      "title": "Average Input Text Length (v1 vs v2)",
+      "title": "Continuous Experimentation - Average Input Text Length Comparison",
       "type": "stat"
     }
   ],
+  "preload": false,
   "refresh": "10s",
   "schemaVersion": 41,
   "tags": [
@@ -97,5 +114,5 @@
   "timezone": "browser",
   "title": "Input Text Length Comparison (Stat View)",
   "uid": "input-text-length-stat",
-  "version": 1
+  "version": 2
 }
