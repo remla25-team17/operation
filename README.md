@@ -28,6 +28,9 @@ operation/
 │   └── workflows/             # CI/CD workflow definitions
 │       └── release.yml        # Release automation workflow
 │
+├── images/ 
+│   └──rate-limiting.png       # Example with rate limting in action
+│
 ├── environments/              # Environment variable files
 │   ├── app.env                # App service environment variables
 │   └── model-service.env      # Model service environment variables
@@ -49,6 +52,7 @@ operation/
 │       ├── model-service-virtualservice.yaml  # Istio routing for model service
 │       ├── prometheus-rule.yaml           # Prometheus alerting rules
 │       ├── secrets.yaml                   # Secret management
+│       ├── istio-rate-limit-envoy.yaml    # The Envoy rate limiting filters
 │       └── additional configuration files...
 │
 ├── k8s/                       # Kubernetes resources for direct application
@@ -443,6 +447,7 @@ We set up the Kubernetes Dashboard, adding a `ServiceAccount` and `ClusterRoleBi
 We integrated Istio into the cluster by configuring its ingress gateway as a LoadBalancer service. 
 
 ## [⚙️ Kubernetes Orchestration](#️-k8s-orchestration)
+> Note: this section explains how to deploy the native K8s resources in the Vagrant cluster that we have previously set up with `kubectl` . Instead, for deploying the resources easily, please follow the [Helm](#-helm) deployment.
 
 To set up our deployment with Kubernetes, the following components are introduced:
 - `Deployment` which manages the pods and keeps them running. It also handles scaling, restarts and updates.
@@ -566,7 +571,6 @@ istioctl install
 
 
 #### 4. Deploy the Application with Helm
-
 Install the application using our Helm chart:
 
 ```bash
@@ -606,6 +610,22 @@ echo "$(kubectl get svc istio-ingressgateway -n istio-system -o jsonpath='{.stat
 
 Now you can access the application at `http://app.local/`
 
+### Rate Limiting
+We also offer the per-user [rate limiting](https://istio.io/latest/docs/tasks/policy-enforcement/rate-limit/) Istio functionality (e.g., block users who send more than 2 requests per minute). In this implementation, when a request arrives at the Istio ingress gateway (e.g., app.local:80), Envoy (the proxy used by Istio) calls an external rate limiting service via gRPC to check if the request should be allowed. This service uses a ConfigMap to define rate our limiting rule. To enable this behavior, one EnvoyFilter is applied to the ingress gateway to insert Envoy’s rate limit HTTP filter, which connects Envoy to the external service. A second EnvoyFilter is applied to define the route-level configuration, specifying which headers (like x-end-user) to use as rate limiting keys. This setup ensures that rate limits are enforced globally at the ingress layer, preventing excessive usage by individual users before traffic reaches any backend services.
+
+#### 1. Deploy the Rate Limiting ConfigMap
+This is already deployed (`helm_chart/templates/istio-rate-limit-envoy.`) if you followed the Helm chart release. The `ConfigMap` defined the rate limiting rule that will be applied: allow 2 requests per minute per user (based on the x-end-user header)
+
+#### 2. Deploy Envoy's Rate Limit Service 
+Wait untill the redis and ratelimit pods are created:
+```bash
+kubectl apply -n istio-system -f https://raw.githubusercontent.com/istio/istio/release-1.26/samples/ratelimit/rate-limit-service.yaml
+```
+
+#### 3. Deploy Envoy Filters 
+This configuration should be already deployed via Helm charts. The actual file can be found at `helm_chart/templates/istio-rate-limit-envoy.yaml`. The first `EnvoyFilter` inserts the rate limiting filter into the Envoy proxy running in the ingress gateway. It tells Envoy to call an external gRPC-based rate limiting service whenever a request comes in. The second `EnvoyFilter` defines how Envoy should generate rate limit keys for each request. Specifically, it tells Envoy to use the value of the `x-end-user` header to check quota.
+
+
 ### Testing Traffic Routing
 
 Our Istio setup includes advanced traffic routing capabilities:
@@ -623,6 +643,18 @@ Our Istio setup includes advanced traffic routing capabilities:
 2. **Weighted Traffic Splitting**: By default, traffic is split 90/10 between v1 and v2.
 
 This traffic management is defined in the VirtualService resource and doesn't require any changes to the application code.
+
+3. **Rate Limiting**: Once the rate limiting steps are taken, you can check the functionality with the command: 
+
+```bash
+for i in {1..10}; do                                                             
+  curl -s -o /dev/null -w "%{http_code}\n" -H "x-end-user: user2" http://app.local/
+  sleep 1
+done
+```
+For example, below we can see that the first 2 requests were successful for `user2` but the following 6 requests were denied. After that, the 1 minute rule has passed and requests are being allowed. We try again to call the application and, as expected, we see that the user is being denied:
+
+![rate limiting](images/rate-limiting.png)
 
 ## [🔎 Monitoring](#-monitoring)
 
@@ -694,4 +726,5 @@ Across this project, we have used GenAI solutions (e.g. ChatGPT, GitHub Copilot)
 - We used AI to write the schema specifications for the Flask API in `model-service` and validate this.
 - We use AI for understanding various concepts that we have been working on, especially helping us understand the root cause of some issues.
 - We used AI to debug step 18 in `provisioning/node.yml`. If this was run on two nodes the second would give an error. The task was missing `run_once: true`.
+
 - We used AI to debug why the app from the helm chart was not connecting to the model-service and it suggested to change some ports to 80
