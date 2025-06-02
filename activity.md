@@ -147,8 +147,8 @@ Approved PR: https://github.com/remla25-team17/model-training/pull/8 (A4)
 # Week 6
 
 -- Ana: --
-Created PR:
-Approved PR:
+Created PR: https://github.com/remla25-team17/operation/pull/62
+Approved PR: https://github.com/remla25-team17/operation/pull/63
 -- Jordy: --
 Created PR: https://github.com/remla25-team17/operation/pull/63
 Approved PR: https://github.com/remla25-team17/operation/pull/62
