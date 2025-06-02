@@ -36,15 +36,15 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "red"
               },
               {
                 "color": "orange",
-                "value": 100
+                "value": 20
               },
               {
-                "color": "red",
-                "value": 200
+                "color": "green",
+                "value": 40
               }
             ]
           },
@@ -79,13 +79,13 @@
       "pluginVersion": "12.0.0+security-01",
       "targets": [
         {
-          "expr": "sum(rate(input_text_length_sum{app_service_version=\"0.1.18\"}[5m])) / sum(rate(input_text_length_count{app_service_version=\"0.1.18\"}[5m]))",
+          "expr": "sum(increase(input_text_length_sum{app_service_version=\"0.1.18\"}[6h])) / sum(increase(input_text_length_count{app_service_version=\"0.1.18\"}[6h]))",
           "instant": true,
           "legendFormat": "v1 (0.1.18)",
           "refId": "A"
         },
         {
-          "expr": "sum(rate(input_text_length_sum{app_service_version=\"0.1.17\"}[5m])) / sum(rate(input_text_length_count{app_service_version=\"0.1.17\"}[5m]))",
+          "expr": "sum(increase(input_text_length_sum{app_service_version=\"0.1.17\"}[6h])) / sum(increase(input_text_length_count{app_service_version=\"0.1.17\"}[6h]))",
           "instant": true,
           "legendFormat": "v2 (0.1.17)",
           "refId": "B"
@@ -112,7 +112,7 @@
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "Input Text Length Comparison (Stat View)",
-  "uid": "input-text-length-stat",
-  "version": 2
+  "title": "Continuous Experimentation - Average Input Text Length Comparison",
+  "uid": "input-text-length",
+  "version": 3
 }
