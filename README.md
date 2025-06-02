@@ -561,8 +561,16 @@ Now install Istio in your cluster after ensuring minikube is running:
 istioctl install
 ```
 
-#### 3. Deploy the Application with Helm
+#### 3. apply prometheus
 
+```bash
+   helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+   helm repo update
+   helm install prometheus prometheus-community/kube-prometheus-stack
+```
+
+
+#### 4. Deploy the Application with Helm
 Install the application using our Helm chart:
 
 ```bash
@@ -718,4 +726,5 @@ Across this project, we have used GenAI solutions (e.g. ChatGPT, GitHub Copilot)
 - We used AI to write the schema specifications for the Flask API in `model-service` and validate this.
 - We use AI for understanding various concepts that we have been working on, especially helping us understand the root cause of some issues.
 - We used AI to debug step 18 in `provisioning/node.yml`. If this was run on two nodes the second would give an error. The task was missing `run_once: true`.
+
 - We used AI to debug why the app from the helm chart was not connecting to the model-service and it suggested to change some ports to 80
