@@ -447,6 +447,7 @@ We set up the Kubernetes Dashboard, adding a `ServiceAccount` and `ClusterRoleBi
 We integrated Istio into the cluster by configuring its ingress gateway as a LoadBalancer service. 
 
 ## [⚙️ Kubernetes Orchestration](#️-k8s-orchestration)
+> Note: this section explains how to deploy the native K8s resources in the Vagrant cluster that we have previously set up with `kubectl` . Instead, for deploying the resources easily, please follow the [Helm](#-helm) deployment.
 
 To set up our deployment with Kubernetes, the following components are introduced:
 - `Deployment` which manages the pods and keeps them running. It also handles scaling, restarts and updates.
