@@ -159,7 +159,7 @@ Approved PR: https://github.com/remla25-team17/operation/pull/63
 -- Marina: --
 Created PR: https://github.com/remla25-team17/operation/pull/58 (A5. This pr added Istio traffic routing.)
 
-Approved PR: https://github.com/remla25-team17/app/pull/23
+Approved PR: https://github.com/remla25-team17/operation/pull/67
 
 -- Matteo: --
 Created PR: https://github.com/remla25-team17/app/pull/22
