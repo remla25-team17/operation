@@ -14,6 +14,7 @@ spec:
     - destination: 
         host: {{ .Release.Name }}-app
         subset: v1
+  - match:
     - headers:
         x-end-user:
           exact: "user2"
@@ -23,7 +24,7 @@ spec:
         subset: v2
 
   - route:
-    - destination: 
+    - destination:
         host: {{ .Release.Name }}-app
         subset: v1 
       weight: 50
