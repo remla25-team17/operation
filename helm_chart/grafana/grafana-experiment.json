@@ -79,13 +79,13 @@
       "pluginVersion": "12.0.0+security-01",
       "targets": [
         {
-          "expr": "sum(increase(input_text_length_sum{app_service_version=\"0.1.18\"}[6h])) / sum(increase(input_text_length_count{app_service_version=\"0.1.18\"}[6h]))",
+          "expr": "sum(input_text_length_sum{app_service_version=\"0.1.18\"}) / sum(input_text_length_count{app_service_version=\"0.1.18\"})",
           "instant": true,
           "legendFormat": "v1 (0.1.18)",
           "refId": "A"
         },
         {
-          "expr": "sum(increase(input_text_length_sum{app_service_version=\"0.1.17\"}[6h])) / sum(increase(input_text_length_count{app_service_version=\"0.1.17\"}[6h]))",
+          "expr": "sum(input_text_length_sum{app_service_version=\"0.1.17\"}) / sum(input_text_length_count{app_service_version=\"0.1.17\"})",
           "instant": true,
           "legendFormat": "v2 (0.1.17)",
           "refId": "B"
@@ -114,5 +114,5 @@
   "timezone": "browser",
   "title": "Continuous Experimentation - Average Input Text Length Comparison",
   "uid": "input-text-length",
-  "version": 3
+  "version": 4
 }
