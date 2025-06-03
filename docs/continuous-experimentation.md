@@ -10,11 +10,16 @@ This document describes an experiment comparing average input text length betwee
 The original version of the app (v1 or app service version 0.1.18) features a simple text input field with no visual cues on input length.
 
 ### Experiment Changes (v2)
-THe new version (v2 or app service version 0.1.17) introduces the following changes:
+The new version (v2 or app service version 0.1.17) introduces the following changes:
 - A character counter below the input field showing the current text length
 - The counter changes color depending on the length of the text (red if less than 20 characters, yellow if  20-40 characters, green if more than 40 characters)
 - Increased the size of the input box to encourage more detailed responses
 - Add a message in the UI encouraging more detailed responses
+
+> **Note:**  
+> The UI may occasionally display the incorrect version when the page is refreshed multiple times.  
+> This issue occurs specifically when using 50/50 routing via the `VirtualService`, rather than routing based on the `x-user` header.  
+> The likely cause is caching behavior.
 
 ![img.png](new_version_screenshot_1.png)
 
