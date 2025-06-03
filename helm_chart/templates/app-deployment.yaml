@@ -28,7 +28,10 @@ spec:
                 name: {{ .Release.Name }}-app-config
             - secretRef:
                 name: {{ .Release.Name }}-secret
-                
+          env:
+            - name: APP_SERVICE_VERSION
+              value: "{{ .Values.app.image.tag1 }}"
+
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -60,7 +63,10 @@ spec:
                 name: {{ .Release.Name }}-app-config
             - secretRef:
                 name: {{ .Release.Name }}-secret
-                
+          env:
+            - name: APP_SERVICE_VERSION
+              value: "{{ .Values.app.image.tag2 }}"
+
 ---
 apiVersion: v1
 kind: Service
@@ -76,7 +82,6 @@ spec:
       protocol: TCP
       port: 80
       targetPort: {{ .Values.service.port }}
-
   type: {{ .Values.service.type }}
 
 ---
@@ -86,6 +91,5 @@ metadata:
   name: {{ .Release.Name }}-app-config
 data:
   MODEL_SERVICE_URL: "http://{{ .Release.Name }}-model-service:{{ .Values.backendService.port }}"
-  APP_SERVICE_VERSION: "{{ .Values.app.version }}"
   PORT: "{{ .Values.service.port }}"
   HOST: "{{ .Values.service.host }}"
