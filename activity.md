@@ -179,7 +179,7 @@ Created PR: https://github.com/remla25-team17/model-training/pull/14 (A4)
 Approved PR: https://github.com/remla25-team17/operation/pull/61 (A5)
 
 -- Ana: --
-Created PR:
+Created PR: https://github.com/remla25-team17/operation/pull/70 (A2)
 
 Approved PR:
 
