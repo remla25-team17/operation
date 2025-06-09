@@ -170,3 +170,30 @@ Approved PR: https://github.com/remla25-team17/operation/pull/58
 Created PR: https://github.com/remla25-team17/operation/pull/63
 
 Approved PR: https://github.com/remla25-team17/operation/pull/62
+
+# Week 7
+
+-- Monica: --
+Created PR:
+
+Approved PR:
+
+-- Ana: --
+Created PR:
+
+Approved PR:
+
+-- Marina: --
+Created PR: https://github.com/remla25-team17/model-service/pull/17 (A1. This PR adds multi-staging to the Dockerfile.)
+
+Approved PR: https://github.com/remla25-team17/model-training/pull/14 (A4)
+
+-- Matteo: --
+Created PR:
+
+Approved PR:
+
+-- Jordy: --
+Created PR:
+
+Approved PR:
