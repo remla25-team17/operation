@@ -181,7 +181,7 @@ Approved PR: https://github.com/remla25-team17/operation/pull/61 (A5)
 -- Ana: --
 Created PR: https://github.com/remla25-team17/operation/pull/70 (A2)
 
-Approved PR:
+Approved PR: https://github.com/remla25-team17/app/pull/24 (A1)
 
 -- Marina: --
 Created PR: https://github.com/remla25-team17/model-service/pull/17 (A1. This PR adds multi-staging to the Dockerfile.)
