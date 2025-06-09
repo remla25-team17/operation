@@ -684,12 +684,13 @@ To access the Prometheus dashbaord locally, run:
 
 The following custom metrics are exposed by the application and can be scraped by Prometheus:
 
-| **Metric Name**       | **Type**     | **Description**                                                        |
-|-----------------------|--------------|------------------------------------------------------------------------|
-| `num_requests_total`  | Counter      | Total number of requests made to the `sentiment` API.                  |
-| `request_latency_seconds` | Histogram  | Latency distribution of `sentiment` API requests, measured in seconds. |
-| `cpu_usage_percent`   | Gauge        | Current CPU usage percentage.                       |
-| `ram_usage_percent`   | Gauge        | Current RAM usage percentage.                       |
+| **Metric Name**       | **Type**     | **Description**                                                          |
+|-----------------------|--------------|--------------------------------------------------------------------------|
+| `num_requests_total`  | Counter      | Total number of requests made to the `sentiment` API.                    |
+| `request_latency_seconds` | Histogram  | Latency distribution of `sentiment` API requests, measured in seconds.   |
+| `input_text_length` | Histogram  | Distribution of length of input text, measured in number  of characters. |
+| `cpu_usage_percent`   | Gauge        | Current CPU usage percentage.                                            |
+| `ram_usage_percent`   | Gauge        | Current RAM usage percentage.                                            |
 
 
 ### Grafana Installation
@@ -726,5 +727,5 @@ Across this project, we have used GenAI solutions (e.g. ChatGPT, GitHub Copilot)
 - We used AI to write the schema specifications for the Flask API in `model-service` and validate this.
 - We use AI for understanding various concepts that we have been working on, especially helping us understand the root cause of some issues.
 - We used AI to debug step 18 in `provisioning/node.yml`. If this was run on two nodes the second would give an error. The task was missing `run_once: true`.
-
 - We used AI to debug why the app from the helm chart was not connecting to the model-service and it suggested to change some ports to 80
+- We used AI to assist in improving the writing of `docs/continuous-experimentation.md`.
