@@ -7,7 +7,7 @@ services:
     platform: linux/amd64
     volumes:
       - ./model:/app/model/
-      - ./bag_of_words:/app/bag_of_words/
+      - ./model:/app/bag_of_words/
     env_file:
       - environments/model-service.env
     secrets:
