@@ -604,6 +604,13 @@ Add an entry to your hosts file:
 echo "$(kubectl get svc istio-ingressgateway -n istio-system -o jsonpath='{.status.loadBalancer.ingress[0].ip}') app.local" | sudo tee -a /etc/hosts
 ```
 
+and on windows:
+
+```bash
+echo "$(kubectl get svc istio-ingressgateway -n istio-system -o jsonpath='{.status.loadBalancer.ingress[0].ip}') app.local" | sudo tee -a /mnt/c/Windows/System32/drivers/etc/hosts
+```
+
+
 Now you can access the application at `http://app.local/`
 
 ### Testing Traffic Routing
