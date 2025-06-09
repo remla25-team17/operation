@@ -149,7 +149,7 @@ export MODEL_IMAGE_TAG=latest
 3️⃣ Start the services:
 
 ```bash
-docker compose up
+docker compose up --pull always
 ```
 
 This will:
