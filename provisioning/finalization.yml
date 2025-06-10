@@ -121,19 +121,34 @@
       state: present
       src: dashboard-ingress.yaml
       namespace: kubernetes-dashboard
-#
-  # Step 23. Install Istio
+
+  - name: Determine architecture
+    ansible.builtin.shell: uname -m
+    register: arch_result
+
+  - name: Set Istio architecture
+    set_fact:
+      istio_arch: "{{ 'arm64' if arch_result.stdout == 'aarch64' else 'amd64' }}"
+
   - name: Download Istioctl
     ansible.builtin.get_url:
-      url: https://github.com/istio/istio/releases/download/1.25.2/istio-1.25.2-linux-amd64.tar.gz
-      dest: /home/vagrant/istio-1.25.2-linux-amd64.tar.gz
+      url: "https://github.com/istio/istio/releases/download/1.25.2/istio-1.25.2-linux-{{ istio_arch }}.tar.gz"
+      dest: "/home/vagrant/istio-1.25.2-linux-{{ istio_arch }}.tar.gz"
 
   - name: Unarchive Istioctl
     ansible.builtin.unarchive:
-      src: /home/vagrant/istio-1.25.2-linux-amd64.tar.gz
+      src: /home/vagrant/istio-1.25.2-linux-{{ istio_arch }}.tar.gz
       dest: /home/vagrant/
       remote_src: yes
 
+  - name: Add istioctl to global PATH using symlink
+    become: true
+    ansible.builtin.file:
+      src: /home/vagrant/istio-1.25.2/bin/istioctl
+      dest: /usr/local/bin/istioctl
+      state: link
+      force: yes
+      
   - name: Install Istioctl
     ansible.builtin.command: |
       istio-1.25.2/bin/istioctl install -y -f istioconfig.yml

@@ -81,7 +81,7 @@ operation/
 │   ├── run.bash               # Script to set up SSH keys and start VMs
 │   ├── generate_key.bash      # Script to generate SSH keys
 │   ├── destroy.bash           # Script to tear down VMs
-│   └── config_k8s.sh          # Script to setup local K8s connection
+│   └── vagrant_config_k8s.sh          # Script to setup local K8s connection
 │
 ├── secretsDocker/             # Secret files for secure Docker deployment
 │   └── example_secret.txt     # Example secret file
@@ -408,8 +408,7 @@ To leave the node perform `ctrl+d` and destroy Vagrant using `vagrant destroy -f
 We initialized the Kubernetes control plane using `kubeadm`, configuring it to advertise the controller's IP address and setting the appropriate Pod network CIDR (Classless Inter-Domain Routing).
 
 ### Configure kubectl Access (Step 14)
-We made the cluster configuration available to the `vagrant` user on the controller VM, enabling direct use of `kubectl`. Additionally, we copied the configuration file to the host machine so that `kubectl` can be used from outside the VM. Example script: `sh ./cnfig_k8s.sh`.
-
+We made the cluster configuration available to the `vagrant` user on the controller VM, enabling direct use of `kubectl`. Additionally, we copied the configuration file to the host machine so that `kubectl` can be used from outside the VM. Example script: `./scripts/vagrant_config_k8s.sh`.
 
 
 ### Deploy Flannel Network Plugin (Step 15)
@@ -445,6 +444,12 @@ We set up the Kubernetes Dashboard, adding a `ServiceAccount` and `ClusterRoleBi
 ### Install Istio (Step 23)
 
 We integrated Istio into the cluster by configuring its ingress gateway as a LoadBalancer service. 
+
+> Please go to `./provisioning` and run `ansible-playbook -u vagrant -i 192.168.56.100, finalization.yml` to run the `finalization.yaml` playbook (Step 20-23).
+
+> Also note: We tested the execution of the cluster setup on macOS, and it successfully completed all the steps. However, we acknowledge that OS-related issues may occur on other operating systems. Nonetheless, the cluster should support Linux.
+
+
 
 ## [⚙️ Kubernetes Orchestration](#️-k8s-orchestration)
 > Note: this section explains how to deploy the native K8s resources in the Vagrant cluster that we have previously set up with `kubectl` . Instead, for deploying the resources easily, please follow the [Helm](#-helm) deployment.
@@ -482,9 +487,7 @@ For testing purposes, run the following commands
 ```bash
 kubectl get pods -n ingress-nginx
 kubectl get svc -n ingress-nginx
-kubectl get ingress
 kubectl get svc
-kubectl get pods
 kubectl describe ingress app-ingress
 ```
 
@@ -513,8 +516,13 @@ kubectl get pods
 ```
 3. When all pods are **Running** check the services with 
 ```bash 
-minikube service list
+minikube service list 
 ``` 
+or run this command if you deployed in the Vagrant cluster:
+```bash 
+kubectl get svc
+``` 
+
 4. After changing values you can use 
 ```bash
 helm upgrade --install <release-name> ./helm_chart --namespace default
@@ -522,8 +530,7 @@ helm upgrade --install <release-name> ./helm_chart --namespace default
 
 To access the app you have 2 options:
 1. Directly click on the address provided through the ingress controller (the row of target port=http/80), it should take you to the sentiment app website.
-2. Run the following IP mapping locally `echo "<INGRESS CTRL IP ADDRESS> app.local" | sudo tee -a /etc/hosts`\
-  -> For example, `<INGRESS CTRL IP ADDRESS>` could be `192.168.59.100` 
+2. Run the following IP mapping locally `echo "$(kubectl get svc istio-ingressgateway -n istio-system -o jsonpath='{.status.loadBalancer.ingress[0].ip}') app.local" | sudo tee -a /etc/hosts`
 
 >Now you can access the application at `http://app.local/`
 
