@@ -1,13 +1,11 @@
 app:
   name: app
   replicas: 1
-  version: "0.1.0"
   image:
     repository: "ghcr.io/remla25-team17/app-service"
     tag1: "latest"
     tag2: "latest"
     pullPolicy: Always
-  # This will now reference the templated service name
 
 model:
   name: model-service
@@ -15,13 +13,11 @@ model:
   version: "0.1.2"
   image:
     repository: "ghcr.io/remla25-team17/model-service"
-    tag1: "latest"
-    tag2: "latest"
+    tag1: "0.1.23-canary.4"
+    tag2: "0.1.23-canary.4"
     pullPolicy: Always
   modelUrl: "https://github.com/remla25-team17/model-training/releases/download/0.1.2/model.pkl"
   modelPath: "model/model.pkl"
-  bowUrl: "https://github.com/remla25-team17/model-training/releases/download/0.1.2/bag_of_words.pkl"
-  bowPath: "model/bag_of_words.pkl"
 
 service:
   type: ClusterIP
