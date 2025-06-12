@@ -68,3 +68,66 @@ From the good requirements, we have implemented the following:
 - The dashboard applies functions (like rate or avg ) to enhance the plots.
   From the good requirements, we have not implemented the following:
 - The dashboard contains specific visualizations for Gauges and Counters
+
+## Comments for A4:
+
+For more information on each step, please visit the README in model-training.
+
+### Automated Tests
+
+We have implemented everything up to and including the excellent requirements.
+
+### Continuous Training
+
+We have implemented everything up to and including the excellent requirements.
+
+### Project Organization
+
+We have implemented everything up to and including the excellent requirements.
+
+### Pipeline Management with DVC
+
+We have implemented everything up to and including the excellent requirements.
+
+### Code quality
+
+We have implemented everything up to and including part of the excellent requirements. The test adequacy score we have not implemented it yet.
+
+## Comments for A5:
+
+### Traffic Management
+
+We have implemented everything up to and including the excellent requirements.
+
+### Additional Use Case
+
+We have implemented everything up to and including the excellent requirements.
+
+### Continuous Experimentation
+
+We have implemented everything up to the sufficient requirement 'The system implements the metric that allows exploring the concrete hypothesis.' The requirements missing are:
+
+**Sufficient**
+
+- The documentation describes the experiment. It explains the implemented changes, the expected effect that gets experimented on, and the relevant metric that is tailored to the experiment.
+- The experiment involves two deployed versions of at least one container image.
+- Both component versions are reachable through the deployed experiment.
+
+**Good**
+
+- Prometheus picks up the metric.
+- Grafana has a dashboard to visualize the differences and support the decision process.
+- The documentation contains a screenshot of the visualization.
+
+**Excellent**
+
+- The documentation explains the decision process for accepting or rejecting the experiment in details,
+  ie.g., which criteria is used and how the available dashboard supports the decision.
+
+### Deployment Documentation
+
+We have implemented everything up to and including the excellent requirements.
+
+### Extension Proposal
+
+We have implemented everything up to and including the excellent requirements.

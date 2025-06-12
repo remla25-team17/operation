@@ -142,3 +142,58 @@ Approved PR: https://github.com/remla25-team17/model-training/pull/7 (A4)
 Created PR: https://github.com/remla25-team17/model-training/pull/9 (A4)
 
 Approved PR: https://github.com/remla25-team17/model-training/pull/8 (A4)
+
+
+# Week 6
+
+-- Monica: --
+Created PR: https://github.com/remla25-team17/operation/pull/67
+
+Approved PR: https://github.com/remla25-team17/app/pull/22
+
+-- Ana: --
+Created PR: https://github.com/remla25-team17/operation/pull/62
+
+Approved PR: https://github.com/remla25-team17/operation/pull/63
+
+-- Marina: --
+Created PR: https://github.com/remla25-team17/operation/pull/58 (A5. This pr added Istio traffic routing.)
+
+Approved PR: https://github.com/remla25-team17/operation/pull/67
+
+-- Matteo: --
+Created PR: https://github.com/remla25-team17/app/pull/22
+
+Approved PR: https://github.com/remla25-team17/operation/pull/58
+
+-- Jordy: --
+Created PR: https://github.com/remla25-team17/operation/pull/63
+
+Approved PR: https://github.com/remla25-team17/operation/pull/62
+
+# Week 7
+
+-- Monica: --
+Created PR: https://github.com/remla25-team17/model-training/pull/14 (A4)
+
+Approved PR: https://github.com/remla25-team17/operation/pull/61 (A5)
+
+-- Ana: --
+Created PR: https://github.com/remla25-team17/operation/pull/70 (A2)
+
+Approved PR: https://github.com/remla25-team17/app/pull/24 (A1)
+
+-- Marina: --
+Created PR: https://github.com/remla25-team17/model-service/pull/17 (A1. This PR adds multi-staging to the Dockerfile.)
+
+Approved PR: https://github.com/remla25-team17/model-training/pull/14 (A4)
+
+-- Matteo: --
+Created PR: https://github.com/remla25-team17/operation/pull/61 (A5)
+
+Approved PR: https://github.com/remla25-team17/model-service/pull/17 (A1)
+
+-- Jordy: --
+Created PR: https://github.com/remla25-team17/lib-ml/pull/13 (A1)
+
+Approved PR: https://github.com/remla25-team17/operation/pull/71 (A1)
