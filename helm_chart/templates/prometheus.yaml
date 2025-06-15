@@ -1,0 +1,6 @@
+alerting:
+  alertmanagers:
+  - scheme: http
+    static_configs:
+    - targets:
+      - {{ .Release.Name }}-alertmanager.monitoring.svc:9093
