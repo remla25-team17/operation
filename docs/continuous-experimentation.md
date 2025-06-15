@@ -18,7 +18,7 @@ The new version (v2 or app service version 0.1.17) introduces the following chan
 
 > **Note:**  
 > The UI may occasionally display the incorrect version when the page is refreshed multiple times.  
-> This issue occurs specifically when using 50/50 routing via the `VirtualService`, rather than routing based on the `x-user` header.  
+> This issue occurs specifically when using 90/10 routing via the `VirtualService`, rather than routing based on the `x-user` header.  
 > The likely cause is caching behavior.
 
 ![img.png](new_version_screenshot_1.png)
@@ -43,7 +43,7 @@ The experiment involves two deployments:
 - **app-service:v2** - The enhanced version with character counter and visual feedback
 
 Both versions are deployed simultaneously using our Helm chart with Istio for traffic management. 
-Traffic is split 50/50 between the two versions to ensure a fair comparison.
+Traffic is split 90/10 between the two versions to ensure a fair comparison.
 
 ## Prometheus Configuration
 
