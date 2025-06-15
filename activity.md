@@ -197,3 +197,9 @@ Approved PR: https://github.com/remla25-team17/model-service/pull/17 (A1)
 Created PR: https://github.com/remla25-team17/lib-ml/pull/13 (A1)
 
 Approved PR: https://github.com/remla25-team17/operation/pull/71 (A1)
+
+# Week 8
+
+-- Ana: --
+Created PR: https://github.com/remla25-team17/operation/pull/78
+Approved PR: 
