@@ -147,29 +147,29 @@ Approved PR: https://github.com/remla25-team17/model-training/pull/8 (A4)
 # Week 6
 
 -- Monica: --
-Created PR: https://github.com/remla25-team17/operation/pull/67
+Created PR: https://github.com/remla25-team17/operation/pull/67 (A5)
 
-Approved PR: https://github.com/remla25-team17/app/pull/22
+Approved PR: https://github.com/remla25-team17/app/pull/22 (A5)
 
 -- Ana: --
-Created PR: https://github.com/remla25-team17/operation/pull/62
+Created PR: https://github.com/remla25-team17/operation/pull/62 (A5)
 
-Approved PR: https://github.com/remla25-team17/operation/pull/63
+Approved PR: https://github.com/remla25-team17/operation/pull/63 (A5)
 
 -- Marina: --
 Created PR: https://github.com/remla25-team17/operation/pull/58 (A5. This pr added Istio traffic routing.)
 
-Approved PR: https://github.com/remla25-team17/operation/pull/67
+Approved PR: https://github.com/remla25-team17/operation/pull/67 (A5)
 
 -- Matteo: --
-Created PR: https://github.com/remla25-team17/app/pull/22
+Created PR: https://github.com/remla25-team17/app/pull/22 (A5)
 
-Approved PR: https://github.com/remla25-team17/operation/pull/58
+Approved PR: https://github.com/remla25-team17/operation/pull/58 (A5)
 
 -- Jordy: --
-Created PR: https://github.com/remla25-team17/operation/pull/63
+Created PR: https://github.com/remla25-team17/operation/pull/63 (A5)
 
-Approved PR: https://github.com/remla25-team17/operation/pull/62
+Approved PR: https://github.com/remla25-team17/operation/pull/62 (A5)
 
 # Week 7
 
