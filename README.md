@@ -214,12 +214,42 @@ docker swarm leave --force
 For advanced deployment with Kubernetes, we've set up an automated provisioning system using Vagrant and Ansible.
 > Note: All the script files that we mention are inside the `scripts/` directory.
 
-**1. Generate SSH Key**
+To set this up, run the following command:
+
+```bash
+./scripts/run.bash
+```
+
+If you encounter a "permission denied" error, make the script executable and remove the Windows line endings:
+
+```bash
+sed -i $'s/\r$//' scripts/run.bash
+chmod +x ./scripts/run.bash
+```
+
+If there is not already one created, this script will create an ssh keypair. It may ask you for a passphrase or ask confirmation.
+After the key has been created. This key will be copied to a specific folder in your linux home path, and there it will be chmodded to be secure. 
+Then it will run vagrant up to start the cluster.
+The public key will be automatically added to all the vms.
+
+Provisioning is automatically done by the script. If you want to manually provision the cluster, run the following command:
+```bash
+vagrant provision
+```
+
+The amount of worker nodes can be changed in the Vagrantfile.
+
+If you want to destroy the cluster, run the following command:
+```bash
+vagrant destroy -f
+```
+
+<!-- **1. Generate SSH Key**
 
 First, generate the SSH key pair needed for the VM setup:
 
 ```bash
-./generate_key.bash
+./scripts/
 ```
 
 If you encounter a "permission denied" error, make the script executable:
@@ -243,24 +273,16 @@ This script will:
 
 If you need to make the script executable:
 ```bash
-chmod +x run.bash
-```
+chmod +x run.bash -->
+<!-- ``` -->
 
-**3. Updating Configurations**
 
-After changing Ansible playbooks, you can apply the changes without recreating VMs:
+<!-- After changing Ansible playbooks, you can apply the changes without recreating VMs:
 
 ```bash
 vagrant provision
-```
+``` -->
 
-**4. Tear Down the Cluster**
-
-To destroy the VMs when done:
-
-```bash
-./destroy.bash
-```
 
 💡 _Note: The Kubernetes cluster consists of one control node (192.168.56.100) and two worker nodes (192.168.56.101, 192.168.56.102), all provisioned with the necessary Kubernetes components and configured with SSH access._
 
