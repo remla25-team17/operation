@@ -1,4 +1,18 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+#if ssh key does not exist, generate it
+if [ ! -f ./ssh/id_rsa ]; then
+    mkdir -p ./ssh
+    ssh-keygen -t rsa -b 4096 -f ./ssh/id_rsa -C "remla25-17"
+    echo "[+] SSH key generated"
+fi
+
+
+#if .vagrant directory exists, destroy it
+if [ -d .vagrant ]; then
+    rm -rf .vagrant
+fi
+
 echo "[*] Copying SSH keypair into WSL home..."
 
 mkdir -p ~/vagrant_ssh
