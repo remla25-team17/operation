@@ -4,17 +4,7 @@
 
 Created PR: https://github.com/remla25-team17/lib-version/pull/4 (A1)
 
-Created PR: https://github.com/remla25-team17/app/pull/6 (A1)
-
-Created PR: https://github.com/remla25-team17/app/pull/11 (A1)
-
-Created PR: https://github.com/remla25-team17/app/pull/15 (A1)
-
 Approved PR: https://github.com/remla25-team17/app/pull/1 (A1)
-
-Approved PR: https://github.com/remla25-team17/app/pull/8 (A1)
-
-Approved PR: https://github.com/remla25-team17/app/pull/12 (A1)
 
 -- Ana: --
 
@@ -80,11 +70,7 @@ Approved PR: https://github.com/remla25-team17/operation/pull/25 (A2)
 
 Created PR: https://github.com/remla25-team17/operation/pull/43 (A3)
 
-Created PR: https://github.com/remla25-team17/operation/pull/45 (A2)
-
 Approved PR: https://github.com/remla25-team17/app/pull/19 (A3)
-
-Approved PR: https://github.com/remla25-team17/operation/pull/40 (A3)
 
 -- Ana: --
 
