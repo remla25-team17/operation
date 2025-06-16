@@ -7,6 +7,12 @@ if [ ! -f ./ssh/id_rsa ]; then
     echo "[+] SSH key generated"
 fi
 
+
+#if .vagrant directory exists, destroy it
+if [ -d .vagrant ]; then
+    rm -rf .vagrant
+fi
+
 echo "[*] Copying SSH keypair into WSL home..."
 
 mkdir -p ~/vagrant_ssh
