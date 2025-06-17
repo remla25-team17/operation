@@ -6,6 +6,23 @@ spec:
   gateways: [ "{{ .Release.Name }}-gateway" ]
   hosts: [ "*" ]
   http:
+  - match:
+    - headers:
+        x-end-user:
+          exact: "user1"
+    route:
+    - destination: 
+        host: {{ .Release.Name }}-app
+        subset: v1
+  - match:
+    - headers:
+        x-end-user:
+          exact: "user2"
+    route:
+    - destination: 
+        host: {{ .Release.Name }}-app
+        subset: v2
+
   - route:
     - destination:
         host: {{ .Release.Name }}-app
