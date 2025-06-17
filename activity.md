@@ -16,7 +16,7 @@ Approved PR: https://github.com/remla25-team17/model-service/pull/6 (A1)
 
 -- Marina: --
 
-Created PR: https://github.com/remla25-team17/lib-ml/pull/5 (A1. This PR set up the lib_ml.)
+Created PR: https://github.com/remla25-team17/lib-ml/pull/5 (A1)
 
 Approved PR: https://github.com/remla25-team17/app/pull/14 (A1)
 
@@ -48,7 +48,7 @@ Approved PR: https://github.com/remla25-team17/operation/pull/30 (A2)
 
 -- Marina: --
 
-Created PR: https://github.com/remla25-team17/operation/pull/25 (A2. This PR finalized the setup and contributes to steps 10-12)
+Created PR: https://github.com/remla25-team17/operation/pull/25 (A2)
 
 Approved PR: https://github.com/remla25-team17/operation/pull/24 (A2)
 
@@ -80,7 +80,7 @@ Reviewd PR: https://github.com/remla25-team17/operation/pull/36 (A3)
 
 -- Marina: --
 
-Created PR: https://github.com/remla25-team17/operation/pull/36 (A3. This PR contributes to making the Helm chart.)
+Created PR: https://github.com/remla25-team17/operation/pull/36 (A3)
 
 Approved PR: https://github.com/remla25-team17/operation/pull/41 (A3)
 
@@ -118,7 +118,7 @@ Approved PR: https://github.com/remla25-team17/model-training/pull/4 (A4)
 
 -- Marina: --
 
-Created PR: https://github.com/remla25-team17/model-training/pull/4 (A4. This PR creates the training files and creates the cookiecutter template.)
+Created PR: https://github.com/remla25-team17/model-training/pull/4 (A4)
 
 Approved PR: https://github.com/remla25-team17/model-training/pull/7 (A4)
 
@@ -141,7 +141,7 @@ Created PR: https://github.com/remla25-team17/operation/pull/62 (A5)
 Approved PR: https://github.com/remla25-team17/operation/pull/63 (A5)
 
 -- Marina: --
-Created PR: https://github.com/remla25-team17/operation/pull/58 (A5. This pr added Istio traffic routing.)
+Created PR: https://github.com/remla25-team17/operation/pull/58 (A5)
 
 Approved PR: https://github.com/remla25-team17/operation/pull/67 (A5)
 
@@ -168,7 +168,7 @@ Created PR: https://github.com/remla25-team17/operation/pull/70 (A2)
 Approved PR: https://github.com/remla25-team17/app/pull/24 (A1)
 
 -- Marina: --
-Created PR: https://github.com/remla25-team17/model-service/pull/17 (A1. This PR adds multi-staging to the Dockerfile.)
+Created PR: https://github.com/remla25-team17/model-service/pull/17 (A1)
 
 Approved PR: https://github.com/remla25-team17/model-training/pull/14 (A4)
 
@@ -184,6 +184,7 @@ Approved PR: https://github.com/remla25-team17/operation/pull/71 (A1)
 
 # Week 8
 
+
 -- Monica: --
 Created PR: https://github.com/remla25-team17/operation/pull/79 (A3)
 
@@ -192,7 +193,7 @@ Approved PR: https://github.com/remla25-team17/model-training/pull/16 (A4)
 -- Ana: --
 Created PR: https://github.com/remla25-team17/operation/pull/78 (A5)
 
-Approved PR:
+Approved PR: https://github.com/remla25-team17/operation/pull/77 (A5)
 
 -- Marina: --
 Created PR: https://github.com/remla25-team17/model-training/pull/16 (A4)
@@ -208,3 +209,4 @@ Approved PR: https://github.com/remla25-team17/operation/pull/81 (A2)
 Created PR: https://github.com/remla25-team17/operation/pull/81 (A2)
 
 Approved PR: https://github.com/remla25-team17/operation/pull/83 (A1)
+
