@@ -11,10 +11,13 @@ public_key = File.read(File.expand_path(File.join(Dir.home, "vagrant_ssh", "vagr
 
 INVENTORY_PATH = "provisioning/templates/inventory.cfg"
 
+private_key_path = "#{ENV['HOME']}/vagrant_ssh/vagrant_id_rsa"
+user = "vagrant"
+
 # Generate inventory.cfg dynamically
-inventory = "[controller]\nctrl ansible_host=192.168.56.100\n\n[workers]\n"
+inventory = "[controller]\nctrl ansible_host=192.168.56.100 ansible_ssh_user=#{user} ansible_ssh_private_key_file=#{private_key_path} num_workers=#{num_workers}\n\n[workers]\n"
 (1..num_workers).each do |i|
-  inventory += "node-#{ i } ansible_host=192.168.56.#{100 + i}\n"
+  inventory += "node-#{ i } ansible_host=192.168.56.#{100 + i} ansible_ssh_user=#{user} ansible_ssh_private_key_file=#{private_key_path} num_workers=#{num_workers}\n"
 end
 inventory += "\n[all:children]\ncontroller\nworkers\n"
 
@@ -50,20 +53,23 @@ Vagrant.configure("2") do |config|
     ctrl.vm.provision "ansible" do |ansible|
       ansible.compatibility_mode = "2.0"
       ansible.playbook = "provisioning/general.yml" #playbook
-      ansible.inventory_path = INVENTORY_PATH #inventory file
+      #ansible.ssh_private_key_file = private_key_path
       ansible.extra_vars = {
-        ansible_ssh_private_key_file: "~/vagrant_ssh/vagrant_id_rsa", #ssh key to use
+        ansible_ssh_private_key_file: private_key_path,
         num_workers: num_workers
       }
+      ansible.inventory_path = INVENTORY_PATH #inventory file
+      #ansible.raw_arguments     = ["--private-key=#{private_key_path}"]
     end
 
     ctrl.vm.provision "ansible" do |ansible|
       ansible.compatibility_mode = "2.0"
       ansible.playbook = "provisioning/ctrl.yml" #playbook
-      ansible.inventory_path = INVENTORY_PATH #inventory file
       ansible.extra_vars = {
-        ansible_ssh_private_key_file: "~/vagrant_ssh/vagrant_id_rsa" #ssh key to use
+        ansible_ssh_private_key_file: private_key_path
       }
+      ansible.inventory_path = INVENTORY_PATH #inventory file
+      #ansible.raw_arguments     = ["--private-key=#{private_key_path}"]
     end
   end
 
@@ -89,20 +95,22 @@ Vagrant.configure("2") do |config|
       node.vm.provision "ansible" do |ansible|
         ansible.compatibility_mode = "2.0"
         ansible.playbook = "provisioning/general.yml"
-        ansible.inventory_path = INVENTORY_PATH #inventory file
         ansible.extra_vars = {
-          ansible_ssh_private_key_file: "~/vagrant_ssh/vagrant_id_rsa", #ssh key to use
+          ansible_ssh_private_key_file: private_key_path,
           num_workers: num_workers
         }
+        ansible.inventory_path = INVENTORY_PATH #inventory file
+        #ansible.raw_arguments     = ["--private-key=#{private_key_path}"]
       end
 
       node.vm.provision "ansible" do |ansible|
         ansible.compatibility_mode = "2.0"
         ansible.playbook = "provisioning/node.yml"
-        ansible.inventory_path = INVENTORY_PATH #inventory file
         ansible.extra_vars = {
-          ansible_ssh_private_key_file: "~/vagrant_ssh/vagrant_id_rsa" #ssh key to use
+          ansible_ssh_private_key_file: private_key_path
         }
+        ansible.inventory_path = INVENTORY_PATH #inventory file
+        #ansible.raw_arguments     = ["--private-key=#{private_key_path}"]
       end
     end
   end
