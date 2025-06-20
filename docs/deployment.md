@@ -9,7 +9,6 @@ This document provides a comprehensive guide to understanding the deployment set
 - [Deployment structure](#deployment-structure)
 - [Data flow](#data-flow)
 
-
 ## [Deployment structure](#deployment-structure)
 
 - Deployments: We are using one Deployment for the application and one for the model-service. We are also using multiple versions of the model-service to demonstrate canary deployments.
@@ -20,6 +19,7 @@ This document provides a comprehensive guide to understanding the deployment set
 - EnvoyFilter: An Envoy filter is used to rate limit requests to the app service. This helps to prevent abuse and ensures fair usage of the service.
 
 ### Other components:
+
 - Monitoring: Prometheus is used for monitoring the services, collecting metrics, and Grafana is used for visualizing these metrics. Configuring Prometheus involves setting up ServiceMonitors and PrometheusRules.
 - ConfigMaps: ConfigMaps are used to store configuration data for various components, such as the envoy filters, Grafana dashboards and Alertmanager configurations.
 
@@ -38,7 +38,7 @@ This document provides a comprehensive guide to understanding the deployment set
 
 ### 3. **App Service Communication**
 
-- The **Istio VirtualService** splits the traffic: 90% to v1 and 10% to v2, for canary/weighted experiments.
+- The **Istio VirtualService** checks for the field `x-end-user` in the request header. If this field is found as `x-end-user: "user1"`, then it is forwarded to v1 of the app, and in the case of `x-end-user: "user1"` to v2. If there is no `x-end-user` field in the header, the VirtualService splits the traffic: 90% to v1 and 10% to v2, for canary/weighted experiments.
 - The selected **App Deployment** pod receives the request via the **App Service** (ClusterIP).
 
 ### 4. **Model Service Communication**

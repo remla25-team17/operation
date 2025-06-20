@@ -21,9 +21,10 @@ The new version (v2 or app service version 0.1.17) introduces the following chan
 > This issue occurs specifically when using 90/10 routing via the `VirtualService`, rather than routing based on the `x-user` header.  
 > The likely cause is caching behavior.
 
-![img.png](new_version_screenshot_1.png)
-
-![img_1.png](new_version_screenshot_2.png)
+<p float="left">
+  <img src="../images/new_version_screenshot_1.png" width="45%" />
+  <img src="../images/new_version_screenshot_2.png" width="45%" />
+</p>
 
 ## Falsifiable Hypothesis
 
@@ -74,4 +75,4 @@ To manually import the app dashboard:
 
 Below is a screenshot of our Grafana dashboard showing the comparison between v1 and v2:
 
-![Input Length Comparison Experiment Dashboard](dashboard_screenshot.png))
+![Input Length Comparison Experiment Dashboard](../images/dashboard_screenshot.png)
