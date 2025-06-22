@@ -216,7 +216,7 @@ Approved PR: https://github.com/remla25-team17/operation/pull/83 (A1)
 -- Monica: --
 Created PR: https://github.com/remla25-team17/operation/pull/86 (A3)
 
-Approved PR:
+Approved PR: https://github.com/remla25-team17/operation/pull/89 (A3)
 
 -- Ana: --
 Created PR: https://github.com/remla25-team17/operation/pull/88 (A3)
