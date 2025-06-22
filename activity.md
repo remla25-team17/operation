@@ -234,6 +234,6 @@ Created PR:
 Approved PR:
 
 -- Jordy: --
-Created PR: 
+Created PR: https://github.com/remla25-team17/model-training/pull/19 (A4)
 
-Approved PR:
+Approved PR: https://github.com/remla25-team17/operation/pull/84 (A5)
