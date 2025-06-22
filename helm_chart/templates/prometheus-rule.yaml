@@ -22,5 +22,6 @@ spec:
           labels:
             severity: critical
           annotations:
-            summary: "Error rate on endpoint {{ $labels.endpoint }} is higher than 10%."
-            description: "Error rate of {{ $value }}% on endpoint {{ $labels.endpoint }}."
+            summary: "Error rate on endpoint {{`{{ $labels.endpoint }}`}} is higher than 10%."
+            description: "Error rate of {{`{{ $value }}`}}% on endpoint {{`{{ $labels.endpoint }}`}}."
+
