@@ -11,10 +11,10 @@ This document provides a comprehensive guide to understanding the deployment set
 
 ## [Deployment structure](#deployment-structure)
 
-- Deployments: We are using one Deployment for the application and one for the model-service. We are also using multiple versions of the model-service to demonstrate canary deployments.
+- Deployments: We are using one Deployment for the application and one for the model-service. We are also using multiple versions of the app-service to demonstrate canary deployments.
 - Services: Each Deployment is associated with a Kubernetes Service. The app service is used to expose the application, while the model service is used to handle prediction requests.
 - Istio Gateway: It is defined to manage HTTP traffic routing for the hostname app.local in a Kubernetes cluster. It listens on port 80 and routes traffic to the app VirtualService.
-- VirtualService: The VirtualService defines routing rules for HTTP traffic. It routes requests to the app service and model service based on the request path. The app VirtualService additionally specifies a canary deployment strategy for the model service, by directing 90% of traffic to the v1 version and 10% to the v2 version.
+- VirtualService: The VirtualService defines routing rules for HTTP traffic. It routes requests to the app service and model service based on the request path. The app VirtualService additionally specifies a canary deployment strategy for the app-service, by directing 90% of traffic to the v1 version and 10% to the v2 version.
 - DestinationRule: The DestinationRule defines policies for the app and model services. While they does not currently configure additional setting, they can be used to specify load balancing strategies.
 - EnvoyFilter: An Envoy filter is used to rate limit requests to the app service. This helps to prevent abuse and ensures fair usage of the service.
 
