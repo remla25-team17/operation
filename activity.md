@@ -210,3 +210,30 @@ Created PR: https://github.com/remla25-team17/operation/pull/81 (A2)
 
 Approved PR: https://github.com/remla25-team17/operation/pull/83 (A1)
 
+
+# Week 9
+
+-- Monica: --
+Created PR: 
+
+Approved PR:
+
+-- Ana: --
+Created PR: 
+
+Approved PR: https://github.com/remla25-team17/operation/pull/79 (A3)
+
+-- Marina: --
+Created PR: 
+
+Approved PR:
+
+-- Matteo: --
+Created PR:
+
+Approved PR:
+
+-- Jordy: --
+Created PR: 
+
+Approved PR:
