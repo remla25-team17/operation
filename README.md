@@ -646,7 +646,7 @@ We also offer the per-user [rate limiting](https://istio.io/latest/docs/tasks/po
 This is already deployed (`helm_chart/templates/istio-rate-limit-envoy.`) if you followed the Helm chart release. The `ConfigMap` defined the rate limiting rule that will be applied: allow 2 requests per minute per user (based on the x-end-user header)
 
 #### 2. Deploy Envoy's Rate Limit Service 
-Wait untill the redis and ratelimit pods are created:
+Wait untill the redis and ratelimit pods are created after running the following command:
 ```bash
 kubectl apply -n istio-system -f https://raw.githubusercontent.com/istio/istio/release-1.26/samples/ratelimit/rate-limit-service.yaml
 ```
