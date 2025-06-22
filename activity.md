@@ -231,9 +231,9 @@ Created PR: https://github.com/remla25-team17/operation/pull/84 (A5)
 Approved PR: https://github.com/remla25-team17/operation/pull/86 (A3)
 
 -- Matteo: --
-Created PR:
+Created PR: https://github.com/remla25-team17/operation/pull/89 (A3)
 
-Approved PR:
+Approved PR: https://github.com/remla25-team17/model-training/pull/17 (A4)
 
 -- Jordy: --
 Created PR: https://github.com/remla25-team17/model-training/pull/19 (A4)
