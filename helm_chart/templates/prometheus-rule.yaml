@@ -16,3 +16,11 @@ spec:
           annotations:
             summary: "Increased API request volume detected"
             description: "The API request volume has increased significantly in the last minute."
+        - alert: HighAPIErrorRate
+          expr: ( sum(rate(num_requests_total{status_code=~"500"}[5m])) by (endpoint) / sum(rate(num_requests_total[5m])) by (endpoint) ) > 0.1
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Error rate on endpoint {{ $labels.endpoint }} is higher than 10%."
+            description: "Error rate of {{ $value }}% on endpoint {{ $labels.endpoint }}."
