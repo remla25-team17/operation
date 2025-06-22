@@ -526,7 +526,7 @@ Follow these instruction to install Prometheus on the cluster. This will be late
    ```
 
 ### **Create Helm Deployment**
-Make sure minikube is running. Use `minikube status` to check. If it is not running, start it with `minikube start`
+Make sure minikube is running. Use `minikube status` to check. If it is not running, start it with `minikube start --memory=4096 --cpus=4 --driver=docker`
 
 1. Create a deployment on Helm 
 ```bash
@@ -595,7 +595,7 @@ istioctl install
 ```bash
    helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
    helm repo update
-   helm install prometheus prometheus-community/kube-prometheus-stack
+   helm install --namespace monitoring --create-namespace  prometheus prometheus-community/kube-prometheus-stack
 ```
 
 
@@ -694,7 +694,7 @@ Follow these instruction to install Prometheus on the cluster:
    ```bash
    helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
    helm repo update
-   helm install prometheus prometheus-community/kube-prometheus-stack
+   helm install --namespace monitoring --create-namespace prometheus prometheus-community/kube-prometheus-stack
    ```
 
 Check that the ServiceMonitor resources are correctly created and the Prometheus pods are running:
@@ -706,7 +706,7 @@ Check that the ServiceMonitor resources are correctly created and the Prometheus
 ### Accessing the Prometheus Dashboard
 To access the Prometheus dashbaord locally, run:
    ```bash
-    kubectl port-forward svc/prometheus-kube-prometheus-prometheus 9090
+    kubectl -n monitoring port-forward svc/prometheus-kube-prometheus-prometheus 9090
    ```
 
 ### Available Metrics
