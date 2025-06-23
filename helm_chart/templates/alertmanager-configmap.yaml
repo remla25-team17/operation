@@ -21,5 +21,5 @@ data:
       - to: 'remla25-team17@example.com'
         from: 'remla25-team17@example.com'
         smarthost: 'smtp.example.com:587'
-        auth_username: 'remla25-team17'
-        auth_password: {{.Values.secrets.smtpPassword }}
+        auth_username: /etc/alertmanager/secrets/smtpUsername
+        auth_password: /etc/alertmanager/secrets/smtpPassword

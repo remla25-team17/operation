@@ -736,6 +736,29 @@ To manually import the app dashboard:
 3. Paste the contents of `grafana/main_dashboard.json`, click **Load**, then **Import**.
 4. Select your Prometheus data source when prompted.
 
+### Alerting Setup
+
+To enable email alerting with Alertmanager, you must create a Kubernetes Secret containing your SMTP credentials and email address before deploying the Helm chart.
+
+1. Install Prometheus on the cluster
+
+2. Create the SMTP Secret:
+
+```bash
+kubectl create secret generic smtp-secret \
+  --from-literal=smtpUsername='your-smtp-username' \
+  --from-literal=smtpPassword='your-smtp-password' \
+  -n monitoring
+```
+
+> Note: Replace the values with your actual SMTP credentials and email address.  
+> Never commit these credentials to version control.
+
+3. Deploy the Helm chart
+
+```bash
+helm install <release-name> ./helm_chart
+```
 
 ## [⚙️ GitHub Actions & CI/CD](#️-github-actions--cicd)
 
