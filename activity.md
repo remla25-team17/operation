@@ -210,3 +210,32 @@ Created PR: https://github.com/remla25-team17/operation/pull/81 (A2)
 
 Approved PR: https://github.com/remla25-team17/operation/pull/83 (A1)
 
+
+# Week 9
+
+-- Monica: --
+Created PR: https://github.com/remla25-team17/operation/pull/86 (A3)
+
+Approved PR: https://github.com/remla25-team17/operation/pull/89 (A3)
+
+-- Ana: --
+Created PR: https://github.com/remla25-team17/operation/pull/88 (A3)
+
+Created PR: https://github.com/remla25-team17/model-training/pull/18 (A4)
+
+Approved PR: https://github.com/remla25-team17/operation/pull/79 (A3)
+
+-- Marina: --
+Created PR: https://github.com/remla25-team17/operation/pull/84 (A5)
+
+Approved PR: https://github.com/remla25-team17/operation/pull/86 (A3)
+
+-- Matteo: --
+Created PR: https://github.com/remla25-team17/operation/pull/89 (A3)
+
+Approved PR: https://github.com/remla25-team17/model-training/pull/17 (A4)
+
+-- Jordy: --
+Created PR: https://github.com/remla25-team17/model-training/pull/19 (A4)
+
+Approved PR: https://github.com/remla25-team17/operation/pull/84 (A5)
