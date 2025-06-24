@@ -7,3 +7,13 @@ spec:
   image: quay.io/prometheus/alertmanager:v0.24.0
   replicas: 1
   version: v0.24.0
+  volumes:
+    - name: smtp-secret
+      secret:
+        secretName: {{ .Release.Name }}-secret
+  containers:
+    - name: alertmanager
+      volumeMounts:
+        - name: smtp-secret
+          mountPath: /etc/alertmanager/secrets
+          readOnly: true
