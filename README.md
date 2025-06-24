@@ -55,10 +55,6 @@ operation/
 │       ├── istio-rate-limit-envoy.yaml    # The Envoy rate limiting filters
 │       └── additional configuration files...
 │
-├── k8s/                       # Kubernetes resources for direct application
-│   ├── app-deployment.yaml    # App service deployment
-│   ├── app-ingress.yaml       # Ingress configuration
-│   └── model-service-deployment.yaml # Model service deployment
 │
 ├── provisioning/              # Ansible playbooks for K8s configuration
 │   ├── ctrl.yml               # Controller node configuration
@@ -484,34 +480,6 @@ To set up our deployment with Kubernetes, the following components are introduce
 - `Ingress` defines external access (usually HTTP/HTTPS) to your services. 
 - `Ingress Controller` is the actual software that runs your Ingress (e.g. NGINX).
 
-> Note! Before deploying the app, make sure the Secret is created when you SSH in the VM!:
-```bash
-vagrant ssh ctrl
-kubectl create secret generic universal-secret --from-literal=PASSWORD='password'
-```
-
-Now you can safely deploy the application:
-
-```bash
-cd ../../vagrant/k8s/
-kubectl apply -f .
-```
-
-Then run the following IP mapping locally:
-
-```bash
-echo "192.168.56.90 app.local" | sudo tee -a /etc/hosts
-```
-
->Now you can access the application at `http://app.local/`
-
-For testing purposes, run the following commands 
-```bash
-kubectl get pods -n ingress-nginx
-kubectl get svc -n ingress-nginx
-kubectl get svc
-kubectl describe ingress app-ingress
-```
 
 ## [⚓ Helm](#-helm)
 
@@ -646,7 +614,7 @@ We also offer the per-user [rate limiting](https://istio.io/latest/docs/tasks/po
 This is already deployed (`helm_chart/templates/istio-rate-limit-envoy.`) if you followed the Helm chart release. The `ConfigMap` defined the rate limiting rule that will be applied: allow 2 requests per minute per user (based on the x-end-user header)
 
 #### 2. Deploy Envoy's Rate Limit Service 
-Wait untill the redis and ratelimit pods are created:
+Wait untill the redis and ratelimit pods are created after running the following command:
 ```bash
 kubectl apply -n istio-system -f https://raw.githubusercontent.com/istio/istio/release-1.26/samples/ratelimit/rate-limit-service.yaml
 ```
