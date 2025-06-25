@@ -117,6 +117,7 @@ Our Sentiment Analysis application is implemented across multiple services and r
 
 | Repository                                                         | Description                                                                                      |
 | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
+| [operation](https://github.com/remla25-team17/operation)           | Contains deployment configurations, monitoring setup, and orchestration for the entire system.   |
 | [model-training](https://github.com/remla25-team17/model-training) | Handles training and evaluation of the sentiment analysis model.                                 |
 | [model-service](https://github.com/remla25-team17/model-service)   | Flask API that serves the trained model for real-time predictions.                               |
 | [lib-ml](https://github.com/remla25-team17/lib-ml)                 | Shared machine learning utilities and preprocessing code used by both training and service apps. |
