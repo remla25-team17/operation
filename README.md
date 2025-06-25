@@ -743,9 +743,10 @@ We use **GitHub Actions** to automate our entire CI/CD pipeline. Key aspects inc
 Across this project, we have used GenAI solutions (e.g. ChatGPT, GitHub Copilot) for the following:
 - Generating templates and suggesting content for the READMEs across all the repositories. 
 - The AI was especially helpful in debugging various issues. One place that we used this was for creating the `GitVersion.yml` file across all the repositories. The problem was that the documentation for GitVersion was scattered and outdated in some places and ChatGPT helped in retrieving up-to-date information easily. 
-- Another place that we used AI was in the `release.yml` files. Specifically, there was the issue where we did not understand why the pre-release included the changelog from the main branch but not from the `develop/` one. Hence, ChatGPT suggested to make a deep fetch request and enforce the current commit-sha.
-- We used AI to write the schema specifications for the Flask API in `model-service` and validate this.
-- We use AI for understanding various concepts that we have been working on, especially helping us understand the root cause of some issues.
-- We used AI to debug step 18 in `provisioning/node.yml`. If this was run on two nodes the second would give an error. The task was missing `run_once: true`.
-- We used AI to debug why the app from the helm chart was not connecting to the model-service and it suggested to change some ports to 80
-- We used AI to assist in improving the writing of `docs/continuous-experimentation.md`.
+- In the `release.yml` files. Specifically, there was the issue where we did not understand why the pre-release included the changelog from the main branch but not from the `develop/` one. Hence, ChatGPT suggested to make a deep fetch request and enforce the current commit-sha.
+- Write the schema specifications for the Flask API in `model-service` and validate this.
+- Understand various concepts that we have been working on, especially helping us understand the root cause of some issues.
+- Debug step 18 in `provisioning/node.yml`. If this was run on two nodes the second would give an error. The task was missing `run_once: true`.
+- Debug why the app from the helm chart was not connecting to the model-service and it suggested to change some ports to 80.
+- Assist in improving the writing of `docs/continuous-experimentation.md` and `docs/extension.md`.
+- Helped debug an issue in the Dockerfile of the `model-service` where it was not able to find some libraries between the different stages. It suggested to copy the environment variables from the first stage to the second stage also.
